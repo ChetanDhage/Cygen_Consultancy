@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  font-family: sans-serif;
+}
+.hero-section-img{
+  background-image: url("./assets/ApartmentCoderSm.jpg");
+  background-repeat: no-repeat;
+   background-size: cover;
+  background-position: center;
+}
+html {
+  scroll-behavior: smooth;
+}
