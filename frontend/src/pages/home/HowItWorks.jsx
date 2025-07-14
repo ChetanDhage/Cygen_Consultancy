@@ -6,19 +6,19 @@ const steps = [
     number: '1',
     title: 'Describe Your Challenge',
     desc: 'Briefly explain your technical challenge or question.',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     number: '2',
     title: 'Find Your Expert',
     desc: 'Browse and select from available domain experts.',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     number: '3',
     title: 'Connect & Collaborate',
     desc: 'Connect via chat, audio or video session.',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     number: '4',
@@ -32,7 +32,7 @@ const HowItWorks = () => {
   return (
     <section id='how-it-works' className="py-16 px-4 md:px-20 bg-white dark:bg-[#090d13]">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=' text-green-500'>CyGen</span> Works</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=' text-primary0'>CyGen</span> Works</h2>
         <p className="text-gray-600 mt-2">Simple steps to connect with domain experts and solve your challenges</p>
       </div>
 
@@ -58,7 +58,7 @@ const HowItWorks = () => {
             className="w-full rounded-2xl shadow-lg object-cover "
           />
           <div className="absolute bottom-4 right-4 bg-white shadow-lg px-4 py-2 rounded-xl flex items-center gap-2">
-            <div className="p-2 bg-green-100 text-green-600 rounded-full">
+            <div className="p-2 bg-blue-100 text-blue-600 rounded-full">
               <BsPeopleFill size={20} />
             </div>
             <div>

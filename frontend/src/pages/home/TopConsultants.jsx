@@ -10,7 +10,7 @@ const consultants = [
     experience: '12 years',
     fee: '₹850/hr',
     sessions: '420+',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     name: 'Michael Chen',
@@ -20,7 +20,7 @@ const consultants = [
     experience: '8 years',
     fee: '₹1200/hr',
     sessions: '320+',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   },
   {
     name: 'Priya Sharma',
@@ -40,7 +40,7 @@ const consultants = [
     experience: '10 years',
     fee: '₹950/hr',
     sessions: '380+',
-    color: 'bg-green-100 text-green-600'
+    color: 'bg-blue-100 text-blue-600'
   }
 ];
 
@@ -57,7 +57,7 @@ const renderStars = (rating) => {
 
 const TopConsultants = () => {
   return (
-    <section id='consultants' className=" py-12 px-4 md:px-16 dark:bg-[#090d13]">
+    <section id='consultants' className=" py-12 px-4 md:px-16 dark:bg-[#090d13] ">
       <div className="mb-10 text-center">
         <h2 className="text-3xl md:text-3xl font-bold text-gray-800 dark:text-white">Top Rated Consultants</h2>
         <p className="text-gray-600 mt-2">Experts available for immediate consultation</p>
@@ -98,10 +98,10 @@ const TopConsultants = () => {
 
             {/* Connect Button & Bookmark */}
             <div className="mt-4 flex items-center justify-between">
-              <button className="bg-green-600 text-white w-full py-2 rounded-full text-sm font-semibold hover:bg-green-700">
+              <button className="bg-blue-600 text-white w-full py-2 rounded-full text-sm font-semibold hover:bg-blue-700">
                 Connect Now
               </button>
-              <BsBookmark className="ml-2 text-gray-500 cursor-pointer hover:text-green-600" />
+              <BsBookmark className="ml-2 text-gray-500 cursor-pointer hover:text-blue-600" />
             </div>
           </div>
         ))}

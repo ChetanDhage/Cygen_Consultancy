@@ -2,15 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   font-family: sans-serif;
 }
-.hero-section-img{
+
+.hero-section-img {
   background-image: url("./assets/ApartmentCoderSm.jpg");
   background-repeat: no-repeat;
-   background-size: cover;
+  background-size: cover;
   background-position: center;
 }
+
 html {
   scroll-behavior: smooth;
+}
+
+@layer components {
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg shadow-sm bg-gray-100 text-gray-800 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600;
+  }
 }

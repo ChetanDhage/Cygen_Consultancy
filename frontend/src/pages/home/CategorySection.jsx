@@ -9,22 +9,22 @@ const categories = [
     title: "IT Infrastructure",
     desc: "Network, servers, cloud setup and management",
     tags: ["IaC", "CI/CD", "Monitoring"],
-    icon: <BsServer size={24} className="text-green-600" />,
-    tagColor: "bg-green-100 text-green-600"
+    icon: <BsServer size={24} className="text-blue-600" />,
+    tagColor: "bg-blue-100 text-blue-600"
   },
   {
     title: "Security",
     desc: "Protect your systems and data",
     tags: ["IAM", "Blockchain", "Cryptography"],
-    icon: <BsShieldLock size={24} className="text-green-600" />,
-    tagColor: "bg-green-100 text-green-600"
+    icon: <BsShieldLock size={24} className="text-blue-600" />,
+    tagColor: "bg-blue-100 text-blue-600"
   },
   {
     title: "AI & Data",
     desc: "Machine learning, analytics and BI",
     tags: ["Deep Learning", "Predictive Analytics", "Chatbots"],
-    icon: <BsCpu size={24} className="text-green-600" />,
-    tagColor: "bg-green-100 text-green-600"
+    icon: <BsCpu size={24} className="text-blue-600" />,
+    tagColor: "bg-blue-100 text-blue-600"
   },
   {
     title: "IoT",
@@ -105,7 +105,7 @@ const CategorySection = () => {
       </div>
 
       <div className="text-center mt-10">
-        <a href="#" className="text-green-600 font-medium hover:underline">
+        <a href="#" className="text-blue-600 font-medium hover:underline">
           View all categories →
         </a>
       </div>

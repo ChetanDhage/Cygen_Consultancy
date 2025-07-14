@@ -1,85 +1,90 @@
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import React from 'react';
+import { BsFillChatDotsFill, BsFillPersonCheckFill } from 'react-icons/bs';
 
 const HeroSection = () => {
-  const [activeTab, setActiveTab] = useState('find');
-
   return (
-    <div
-      id="home"
-      className="relative dark:bg-[#090d13] bg-white w-full overflow-hidden flex items-center justify-center text-white sm:px-4"
-    >
-      <div
-        className="relative w-full lg:w-10/12 lg:h-[600px] h-[400px] flex justify-center items-center mt-10 md:rounded-3xl overflow-hidden hero-section-img"
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40" />
+    <section id='home' className="bg-gradient-to-r w-full lg:h-[90vh] h-full dark:bg-[#090d13] text-black dark:text-white py-12 px-6 md:px-16 lg:flex lg:justify-between items-center">
+      {/* Left Side */}
+      <div className="max-w-xl">
+        <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white leading-tight">
+          Connect with <span className="text-primary">Experts</span> in Real-Time
+        </h1>
+        <p className="text-gray-600 mt-4 text-lg">
+          Get instant access to verified consultants across various domains. Solve your technical challenges through chat, audio, or video sessions.
+        </p>
 
-        <div className="relative z-10 lg:w-2/3 w-full">
-          <div className="px-4 max-w-3xl mx-auto md:ml-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              Connecting clients in <br /> need to freelancers <br /> who deliver
-            </h1>
-
-            <div className="md:max-w-xl w-full bg-gradient-to-r from-green-500 to-cyan-500 md:rounded-3xl shadow-2xl p-4">
-              {/* Tabs */}
-              <div className="flex mb-4 gap-4 justify-center">
-                <button
-                  aria-pressed={activeTab === 'find'}
-                  className={`px-4 py-2 rounded-full font-semibold transition duration-300 ease-in-out ${
-                    activeTab === 'find'
-                      ? 'bg-white text-black'
-                      : 'bg-gray-700 text-white'
-                  }`}
-                  onClick={() => setActiveTab('find')}
-                >
-                  Find talent
-                </button>
-                <button
-                  aria-pressed={activeTab === 'browse'}
-                  className={`px-4 py-2 rounded-full font-semibold transition duration-300 ease-in-out ${
-                    activeTab === 'browse'
-                      ? 'bg-white text-black'
-                      : 'bg-gray-700 text-white'
-                  }`}
-                  onClick={() => setActiveTab('browse')}
-                >
-                  Browse jobs
-                </button>
-              </div>
-
-              {/* Search Bar */}
-              <div className="flex items-center rounded-full bg-white overflow-hidden p-1">
-                <input
-                  type="text"
-                  placeholder="Search by role, skills, or keywords"
-                  className="flex-grow px-4 py-2 text-black outline-none"
-                />
-                <button className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition">
-                  <FaSearch className="text-lime-400" />
-                  Search
-                </button>
-              </div>
-
-              {/* Client Logos */}
-              <div className="flex justify-center items-center gap-8 mt-6 text-sm text-gray-100">
-                {['Microsoft', 'airbnb', 'Bissell', 'Glassdoor'].map((brand) => (
-                  <a
-                    key={brand}
-                    href="#"
-                    className="opacity-60 hover:opacity-100 transition"
-                  >
-                    {brand}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* Buttons */}
+        <div className="mt-6 flex gap-4">
+          <button className="bg-primary text-white  px-6 py-3 rounded-md shadow hover:bg-blue-700 transition duration-300">
+            Find an Expert
+          </button>
+          <button className="border border-primary text-primary px-6 py-3 rounded-md hover:bg-blue-50 transition duration-300">
+            Become a Consultant
+          </button>
         </div>
 
-        {/* Optional empty space on right for layout symmetry */}
-        <div className="lg:block hidden w-1/3"></div>
+        {/* Stats */}
+        <div className="flex gap-8 mt-5 flex-wrap">
+          <div className=' p-4 shadow-primary shadow-sm rounded-2xl '>
+            <p className="text-2xl font-bold text-black dark:text-white">15K+</p>
+            <p className="text-gray-500 text-sm">Experts</p>
+          </div>
+          <div className=' p-4 shadow-primary shadow-sm rounded-2xl '>
+            <p className="text-2xl font-bold text-black dark:text-white">50+</p>
+            <p className="text-gray-500 text-sm">Domains</p>
+          </div>
+          <div className=' p-4 shadow-primary shadow-sm rounded-2xl '>
+            <p className="text-2xl font-bold text-black dark:text-white">98%</p>
+            <p className="text-gray-500 text-sm">Satisfaction</p>
+          </div>
+          <div className=' p-4 shadow-primary shadow-sm rounded-2xl '>
+            <p className="text-2xl font-bold text-black dark:text-white">24/7</p>
+            <p className="text-gray-500 text-sm">Support</p>
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* Right Side (Chat UI) */}
+      <div className="relative mt-12 lg:mt-0 w-full max-w-md text-black ">
+        <div className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-800 to-black shadow-xl rounded-xl p-6 space-y-4  ">
+          <div className="text-gray-500 text-sm font-semibold text-right">Chat Support</div>
+          
+          <div className="flex gap-2 items-start">
+            <BsFillChatDotsFill className="text-primary mt-1" />
+            <div className="bg-gray-100 p-3 w-full text-sm rounded-b-2xl rounded-tr-2xl">
+              Hi there! I'm CyGen Bot. What domain are you looking for help with today?
+            </div>
+          </div>
+
+          <div className="flex gap-2 items-end justify-end">
+            <div className="bg-blue-100 p-3 w-fit text-right text-sm rounded-b-2xl rounded-tl-2xl">
+              I need help with Network Security configuration.
+            </div>
+          </div>
+
+          <div className="flex gap-2 items-start">
+            <BsFillChatDotsFill className="text-primary mt-1" />
+            <div className="bg-gray-100 p-3  w-full text-sm rounded-b-2xl rounded-tr-2xl">
+              Great! I found 12 available Network Security experts. Would you like to connect now?
+            </div>
+          </div>
+
+          <button className="bg-primary text-left text-white text-sm  px-6 py-2 rounded-3xl w-full hover:bg-blue-700 transition">
+            Connect Now
+          </button>
+        </div>
+
+        {/* Expert Card */}
+        <div className="absolute -bottom-6 right-0 bg-white shadow-lg rounded-xl p-4 flex items-center gap-4 w-full max-w-xs">
+          <div className="bg-green-100 w-3 h-3 rounded-full"></div>
+          <div>
+            <p className="font-semibold text-black ">Alex Morgan</p>
+            <p className="text-sm text-gray-500">Network Security · 8 yrs exp</p>
+          </div>
+          <BsFillPersonCheckFill className="text-green-500 ml-auto" />
+        </div>
+      </div>
+    </section>
   );
 };
 

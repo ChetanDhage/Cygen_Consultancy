@@ -5,23 +5,23 @@ const features = [
   {
     title: 'Instant Connections',
     desc: 'Get matched with available experts in seconds, not days. Solve urgent problems immediately.',
-    icon: <BsLightningCharge size={24} className="text-green-600" />,
-    bgColor: 'bg-green-100 text-green-600',
-    linkColor: 'text-green-600'
+    icon: <BsLightningCharge size={24} className="text-primary" />,
+    bgColor: 'bg-primary text-primary',
+    linkColor: 'text-primary'
   },
   {
     title: 'Verified Experts',
     desc: 'All consultants undergo rigorous vetting to ensure top-quality expertise in their domains.',
-    icon: <BsShieldCheck size={24} className="text-green-600" />,
-    bgColor: 'bg-green-100 text-green-600',
-    linkColor: 'text-green-600'
+    icon: <BsShieldCheck size={24} className="text-primary" />,
+    bgColor: 'bg-primary text-primary',
+    linkColor: 'text-primary'
   },
   {
     title: 'Multiple Channels',
     desc: 'Connect via chat, audio, or video – whatever works best for your consultation needs.',
-    icon: <BsChatDots size={24} className="text-green-600" />,
-    bgColor: 'bg-green-100 text-green-600',
-    linkColor: 'text-green-600'
+    icon: <BsChatDots size={24} className="text-primary" />,
+    bgColor: 'bg-primary text-primary',
+    linkColor: 'text-primary'
   }
 ];
 

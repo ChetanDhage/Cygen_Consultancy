@@ -9,7 +9,7 @@ const Footer = lazy(() => import('../pages/home/Footer'));
 
 const Home = () => {
     return (
-        <div>
+        <>
             <Suspense fallback={<div>Loading..</div>}>
                 <HeroSection />
                 <CategorySection />
@@ -19,7 +19,7 @@ const Home = () => {
                 <Testimonials />
                 <Footer />
             </Suspense>
-        </div>
+        </>
     )
 }
 

@@ -3,14 +3,14 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub, FaPaperPlane, FaRobot }
 
 const Footer = () => {
   return (
-    <div id='contact' className="bg-gradient-to-r from-green-500 to-cyan-500 text-white">
+    <div id='contact' className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
       {/* Call to Action */}
       <div className="text-center py-16 px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-3">Ready to Solve Your Technical Challenges?</h2>
         <p className="text-lg mb-6">Join thousands of professionals who use CyGen to connect with domain experts in real-time</p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <button className="bg-white text-green-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition">Find an Expert Now</button>
-          <button className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-green-600 transition">Become a Consultant</button>
+          <button className="bg-white text-blue-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition">Find an Expert Now</button>
+          <button className="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-600 transition">Become a Consultant</button>
         </div>
       </div>
 
@@ -20,7 +20,7 @@ const Footer = () => {
           {/* Logo & Social */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="bg-green-600 p-2 rounded-full">
+              <div className="bg-blue-600 p-2 rounded-full">
                 <FaPaperPlane className="text-white" />
               </div>
               <span className="text-xl font-semibold text-white">CyGen</span>
@@ -66,7 +66,7 @@ const Footer = () => {
                 placeholder="Your email address"
                 className="px-4 py-2 rounded-l-lg bg-white text-gray-800 w-full outline-none"
               />
-              <button className="bg-green-600 px-4 rounded-r-lg">
+              <button className="bg-blue-600 px-4 rounded-r-lg">
                 <FaPaperPlane className="text-white" />
               </button>
             </div>
@@ -81,7 +81,7 @@ const Footer = () => {
 
         {/* Chat Bot Icon */}
         <div className=" fixed bottom-8 right-8">
-          <div className="bg-green-600 p-3 rounded-full shadow-lg cursor-pointer hover:scale-105 transition">
+          <div className="bg-blue-600 p-3 rounded-full shadow-lg cursor-pointer hover:scale-105 transition">
             <FaRobot className="text-white text-2xl" />
           </div>
         </div>
