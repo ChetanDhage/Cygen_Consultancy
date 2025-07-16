@@ -6,7 +6,7 @@ const HeroSection = () => {
     <section id='home' className="bg-gradient-to-r w-full lg:h-[90vh] h-full dark:bg-[#090d13] text-black dark:text-white py-12 px-6 md:px-16 lg:flex lg:justify-between items-center">
       {/* Left Side */}
       <div className="max-w-xl">
-        <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white leading-tight">
+        <h1 className="text-4xl md:text-4xl font-bold text-black dark:text-white leading-tight">
           Connect with <span className="text-primary">Experts</span> in Real-Time
         </h1>
         <p className="text-gray-600 mt-4 text-lg">
@@ -15,10 +15,10 @@ const HeroSection = () => {
 
         {/* Buttons */}
         <div className="mt-6 flex gap-4">
-          <button className="bg-primary text-white  px-6 py-3 rounded-md shadow hover:bg-blue-700 transition duration-300">
+          <button className="bg-primary text-white font-semibold  px-4 py-2 rounded-md shadow hover:bg-blue-700 transition duration-300">
             Find an Expert
           </button>
-          <button className="border border-primary text-primary px-6 py-3 rounded-md hover:bg-blue-50 transition duration-300">
+          <button className="border border-primary text-primary font-semibold px-4 py-2 rounded-md hover:bg-blue-50 transition duration-300">
             Become a Consultant
           </button>
         </div>
@@ -48,7 +48,7 @@ const HeroSection = () => {
       <div className="relative mt-12 lg:mt-0 w-full max-w-md text-black ">
         <div className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-800 to-black shadow-xl rounded-xl p-6 space-y-4  ">
           <div className="text-gray-500 text-sm font-semibold text-right">Chat Support</div>
-          
+
           <div className="flex gap-2 items-start">
             <BsFillChatDotsFill className="text-primary mt-1" />
             <div className="bg-gray-100 p-3 w-full text-sm rounded-b-2xl rounded-tr-2xl">
