@@ -13,21 +13,21 @@ const SessionDetails = () => {
       <div className=" w-full flex gap-4 mx-auto p-6 bg-gray-100 rounded-lg shadow-md ">
         <div className=" bg-white p-6 rounded-lg ">
           <div className=" my-4">
-            <h3 className="text-lg font-semibold text-gray-800">Subject: Financial planning for startup</h3>
+            <h3 className="text-lg font-semibold text-gray-600">Subject: Financial planning for startup</h3>
             <br />
             <div className=' flex gap-2 border border-primary bg-primary-light  rounded-r-full px-6 py-4'>
               <div className='w-10 h-10 rounded-full flex items-center justify-center font-bold text-white bg-primary'>
                 AR
               </div>
               <div>
-                <p className="text-md text-gray-800">Alex Reynolds</p>
+                <p className="text-md text-gray-600">Alex Reynolds</p>
                 <p className="text-xs text-gray-600">CEO, TechStart Inc.</p>
               </div>
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Session Details</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Session Details</h3>
            
             <div className="flex items-center space-x-4 mb-1">
               <FaCalendarAlt className="text-gray-500" />
@@ -46,7 +46,7 @@ const SessionDetails = () => {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Session Type</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Session Type</h3>
             <div className="w-full space-x-4 mb-1">
               
               <div className=" flex gap-2 items-center">
@@ -66,8 +66,8 @@ const SessionDetails = () => {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Query Description</h3>
-            <p className="text-gray-700">
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Query Description</h3>
+            <p className="text-gray-500">
               We're launching a new productivity app in Q4 and need help refining our go-to-market strategy.
               Specifically looking for guidance on: - Target audience segmentation - Pricing strategy -
               Digital marketing channels prioritization - Pre-launch buzz creation We have a $50k marketing
@@ -76,16 +76,16 @@ const SessionDetails = () => {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Attached Documents</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Attached Documents</h3>
             <div className="flex items-center space-x-2 mb-2">
               <input type="checkbox" className="rounded text-primary" />
               <FaFileWord className="text-primary" />
-              <span className="text-gray-700">Marketing_Plan.docx</span>
+              <span className="text-gray-500">Marketing_Plan.docx</span>
             </div>
             <div className="flex items-center space-x-2">
               <input type="checkbox" className="rounded text-primary" />
               <FaFilePdf className="text-red-500" />
-              <span className="text-gray-700">Product_Overview.pdf</span>
+              <span className="text-gray-500">Product_Overview.pdf</span>
             </div>
           </div>
 
@@ -101,11 +101,11 @@ const SessionDetails = () => {
 
         <div className=" w-full bg-white p-6 rounded-lg ">
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Session Preparation</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Session Preparation</h3>
             <div className="flex items-center justify-between space-x-2 mb-2 text-sm">
               <div className="flex gap-2 items-center">
                 <FaCheck className="text-green-500" />
-                <span className="text-gray-700">Payment Confirmed</span>
+                <span className="text-gray-500">Payment Confirmed</span>
               </div>
               <span className=" text-primary ml-2">$300 received</span>
             </div>
@@ -113,27 +113,27 @@ const SessionDetails = () => {
             <div className="flex items-center space-x-2 mb-2 text-sm">
               <div className="flex gap-2 items-center">
                 <FaCheck className="text-green-500" />
-                <span className="text-gray-700">Calendar Invite Sent</span>
+                <span className="text-gray-500">Calendar Invite Sent</span>
               </div>
               <span className="  text-primary ml-2">Added to your calendar</span>
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Review Materials</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Review Materials</h3>
             <div className="flex items-center space-x-2 mb-2 text-sm">
               <input type="checkbox" className="rounded text-primary" />
-              <span className="text-gray-700">2 documents attached</span>
+              <span className="text-gray-500">2 documents attached</span>
             </div>
             <div className="flex items-center space-x-2 text-sm">
               <input type="checkbox" className="rounded text-primary" />
-              <span className="text-gray-700">Prepare Questions</span>
+              <span className="text-gray-500">Prepare Questions</span>
               <span className="text-gray-500 ml-2">Outline key discussion points</span>
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Follow-up Sessions</h3>
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Follow-up Sessions</h3>
             <div className="border border-primary p-2 rounded-full text-center ">
               <div className="flex items-center justify-center space-x-2  text-sm animate-pulse">
                 <span className="text-gray-900">Session #2</span>

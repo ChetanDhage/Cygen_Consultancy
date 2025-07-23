@@ -9,7 +9,7 @@ const steps = [
     description: 'Briefly explain your technical issue or question. Provide as much detail as possible.',
     link: '#',
     icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg className="w-8 h-8  text-primary" fill="currentColor" viewBox="0 0 20 20">
         <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v10H4V5zm2 2a1 1 0 000 2h8a1 1 0 100-2H6z" />
       </svg>
     )
@@ -20,7 +20,7 @@ const steps = [
     description: 'Browse our verified consultants or let our AI match you with the perfect expert.',
     link: '#',
     icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg className="w-8 h-8  text-primary" fill="currentColor" viewBox="0 0 20 20">
         <path d="M8 4a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4zm6 8a6 6 0 00-12 0h12z" />
       </svg>
     )
@@ -31,7 +31,7 @@ const steps = [
     description: 'Start a session via chat, audio, or video. Share your screen if needed.',
     link: '#',
     icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg className="w-8 h-8  text-primary" fill="currentColor" viewBox="0 0 20 20">
         <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 0v10h12V5H4zm2 2h8v2H6V7zm0 4h8v2H6v-2z" />
       </svg>
     )
@@ -42,7 +42,7 @@ const steps = [
     description: 'Get your solution and provide feedback. Download session notes for reference.',
     link: '#',
     icon: (
-      <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+      <svg className="w-8 h-8  text-primary" fill="currentColor" viewBox="0 0 20 20">
         <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h8l4-4V5a2 2 0 00-2-2H4z" />
       </svg>
     )
@@ -118,13 +118,13 @@ const HowWork = () => {
       <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-bold mb-4 dark:text-white text-black">How CyGen <span className="text-blue-600">Work</span> </h2>
+            <h2 className="text-4xl font-bold mb-4 dark:text-white text-black">How CyGen <span className="text-primary">Work</span> </h2>
             <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
               Connect with domain experts in just a few simple steps. Get technical solutions quickly and efficiently.
             </p>
             <div className="flex gap-4">
-              <button className="border bg-primary border-blue-600  text-white
-             font-semibold px-6 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-950">
+              <button className="border bg-primary border-primary  text-white
+             font-semibold px-6 py-2 rounded hove text-primary dark:hove text-primary">
                 Get Started
               </button>
             </div>
@@ -140,7 +140,7 @@ const HowWork = () => {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black text-white p-8 rounded-xl shadow-lg flex flex-col gap-3"
+              className="dark:bg-[#0b1225] text-white p-8 rounded-xl shadow-lg flex flex-col gap-3"
             >
               <div className="flex items-center gap-2 ">
                 <div className="text-2xl font-bold dark:text-white text-black">{step.number}</div>
@@ -148,7 +148,7 @@ const HowWork = () => {
               </div>
               <h3 className="text-lg font-semibold dark:text-white text-black">{step.title}</h3>
               <p className="text-sm dark:text-white text-black">{step.description}</p>
-              <a href={step.link} className="text-blue-400 hover:underline text-sm mt-auto">Learn more →</a>
+              <a href={step.link} className=" text-primary hover:underline text-sm mt-auto">Learn more →</a>
             </div>
           ))}
         </div>
@@ -161,7 +161,7 @@ const HowWork = () => {
           {features.map((feature, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-xl shadow-md bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black"
+              className="p-6 rounded-xl shadow-md bg-white dark:bg-[#0b1225]"
             >
 
               <div className=' flex gap-4 '>
@@ -200,7 +200,7 @@ const HowWork = () => {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="p-4 rounded-lg shadow-md bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black hover:shadow-lg hover:scale-105 transition-transform"
+              className="p-4 rounded-lg shadow-md bg-white dark:bg-[#0b1225] hover:shadow-lg hover:scale-105 transition-transform"
             >
               <h2 className="text-md font-semibold text-gray-600 dark:text-white mb-1">
                 {faq.question}

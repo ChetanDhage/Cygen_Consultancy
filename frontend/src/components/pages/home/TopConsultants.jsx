@@ -10,7 +10,7 @@ const consultants = [
     experience: '12 years',
     fee: '₹850/hr',
     sessions: '420+',
-    color: 'bg-blue-100 text-blue-600'
+    color: 'bg-primary text-white'
   },
   {
     name: 'Michael Chen',
@@ -20,7 +20,7 @@ const consultants = [
     experience: '8 years',
     fee: '₹1200/hr',
     sessions: '320+',
-    color: 'bg-blue-100 text-blue-600'
+    color: 'bg-primary text-white'
   },
   {
     name: 'Priya Sharma',
@@ -40,7 +40,7 @@ const consultants = [
     experience: '10 years',
     fee: '₹950/hr',
     sessions: '380+',
-    color: 'bg-blue-100 text-blue-600'
+    color: 'bg-primary text-white'
   }
 ];
 
@@ -59,21 +59,21 @@ const TopConsultants = () => {
   return (
     <section id='consultants' className=" py-12 px-4 md:px-16 dark:bg-[#090d13] ">
       <div className="mb-10 text-center">
-        <h2 className="text-3xl md:text-3xl font-bold text-gray-800 dark:text-white">Top Rated Consultants</h2>
+        <h2 className="text-3xl md:text-3xl font-bold text-gray-600 dark:text-white">Top Rated Consultants</h2>
         <p className="text-gray-600 mt-2">Experts available for immediate consultation</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {consultants.map((consultant, index) => (
-          <div key={index} className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black p-6 rounded-3xl shadow hover:shadow-md transition relative">
+          <div key={index} className="bg-white dark:bg-[#0b1225] p-6 rounded-3xl shadow hover:shadow-md transition relative">
             {/* Avatar Placeholder */}
             <div className="w-16 h-16 bg-gray-200 rounded-full mb-4 mx-auto" />
-            <h3 className="font-semibold text-lg text-center text-gray-800 dark:text-white">{consultant.name}</h3>
+            <h3 className="font-semibold text-lg text-center text-gray-600 dark:text-white">{consultant.name}</h3>
 
             {/* Rating */}
             <div className="flex items-center justify-center gap-1 text-sm mt-1">
               {renderStars(consultant.rating)}
-              <span className="text-gray-700 dark:text-white ml-1">{consultant.rating}</span>
+              <span className="text-gray-500 dark:text-white ml-1">{consultant.rating}</span>
               <span className="text-gray-400 dark:text-white ">({consultant.reviews})</span>
             </div>
 
@@ -90,18 +90,18 @@ const TopConsultants = () => {
             </div>
 
             {/* Info */}
-            <div className="mt-4 text-sm text-gray-700 dark:text-white space-y-1 text-center">
+            <div className="mt-4 text-sm text-gray-500 dark:text-white space-y-1 text-center">
               <p><strong>Experience:</strong> {consultant.experience}</p>
               <p><strong>Fee:</strong> {consultant.fee}</p>
               <p><strong>Sessions:</strong> {consultant.sessions}</p>
             </div>
 
             {/* Connect Button & Bookmark */}
-            <div className="mt-4 flex items-center justify-between">
-              <button className="bg-blue-600 text-white w-full py-2 rounded-full text-sm font-semibold hover:bg-blue-700">
+            <div className="mt-4 flex items-center justify-center m-auto">
+              <button className="bg-primary text-white w-1/2 py-2 rounded-full text-sm font-semibold hover:bg-primary">
                 Connect Now
               </button>
-              <BsBookmark className="ml-2 text-gray-500 cursor-pointer hover:text-blue-600" />
+              <BsBookmark className="ml-2 text-gray-500 cursor-pointer hover:text-primary" />
             </div>
           </div>
         ))}

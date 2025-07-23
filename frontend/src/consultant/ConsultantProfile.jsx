@@ -51,7 +51,7 @@ const ConsultantProfile = () => {
               {consultant.tags.map(tag => (
                 <span
                   key={tag}
-                  className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-700"
+                  className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-500"
                 >
                   {tag}
                 </span>
@@ -62,7 +62,7 @@ const ConsultantProfile = () => {
             <div className="mt-6">
               <h3 className="font-semibold text-lg mb-1">About Me</h3>
               <hr className=' border border-primary mb-2' />
-              <p className="text-gray-700 text-sm">{consultant.bio}</p>
+              <p className="text-gray-500 text-sm">{consultant.bio}</p>
             </div>
 
             {/* Availability */}
@@ -91,7 +91,7 @@ const ConsultantProfile = () => {
                 key={index}
                 className="bg-gray-50 rounded-lg p-4 border border-gray-200"
               >
-                <p className="italic text-sm text-gray-800 mb-2">{review.text}</p>
+                <p className="italic text-sm text-gray-600 mb-2">{review.text}</p>
                 <div className="flex items-center gap-2">
                   {[...Array(review.rating)].map((_, i) => (
                     <FaStar key={i} className="text-yellow-500" />

@@ -138,7 +138,7 @@ const NotificationPage = () => {
                 className={`px-4 py-3 text-sm font-medium transition whitespace-nowrap ${
                   activeTab === tab
                     ? 'text-primary border-b-2 border-primary'
-                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                    : 'text-gray-500 hover:text-gray-500 dark:hover:text-gray-300'
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -172,7 +172,7 @@ const NotificationPage = () => {
                       </h3>
                       <span className="text-xs text-gray-500">{NotificationPage.time}</span>
                     </div>
-                    <p className={`text-sm ${!NotificationPage.read ? 'text-gray-800 dark:text-gray-200' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <p className={`text-sm ${!NotificationPage.read ? 'text-gray-600 dark:text-gray-200' : 'text-gray-500 dark:text-gray-400'}`}>
                       {NotificationPage.message}
                     </p>
                     <div className="mt-2 flex space-x-3">
@@ -186,7 +186,7 @@ const NotificationPage = () => {
                       )}
                       <button
                         onClick={() => deleteNotificationPage(NotificationPage.id)}
-                        className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                        className="text-xs text-gray-500 hover:text-gray-500 dark:hover:text-gray-300"
                       >
                         Delete
                       </button>
@@ -200,7 +200,7 @@ const NotificationPage = () => {
 
         {/* Footer */}
         <div className="bg-gray-50 dark:bg-gray-700 px-6 py-3 text-right">
-          <button className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-300">
+          <button className="text-sm text-gray-500 hover:text-gray-500 dark:text-gray-300">
             View older NotificationPages
           </button>
         </div>

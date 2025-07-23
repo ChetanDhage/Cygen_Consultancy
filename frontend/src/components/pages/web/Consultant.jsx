@@ -46,12 +46,12 @@ const Consultant = () => {
       <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-bold mb-4  text-black  dark:text-white">Find the <span className="text-blue-600">Right Expert</span> for Your Needs </h2>
+            <h2 className="text-4xl font-bold mb-4  text-black  dark:text-white">Find the <span className="text-primary">Right Expert</span> for Your Needs </h2>
             <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
               Find specialized consultants across technical domains. Connect with professionals who understand your challenges.
             </p>
             <div className="flex gap-4">
-              <button className="border bg-primary border-blue-600  text-white
+              <button className=" bg-primary -primary  text-white
              font-semibold px-6 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-950">
                 Browse Consultant
               </button>
@@ -70,26 +70,26 @@ const Consultant = () => {
           {['Expertise', 'Experience', 'Availability', 'Min. Rating'].map((label) => (
             <div key={label}>
               <label className="block  mb-1 px-4 py-2 rounded-full  bg-primary text-white font-semibold">{label}</label>
-              <select className=" border dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black dark:text-white text-black px-3 py-2  rounded-full">
+              <select className="  dark:bg-[#0b1225] dark:text-white text-black px-3 py-2  rounded-full">
                 <option className=' '>All {label}</option>
               </select>
             </div>
           ))}
           <div className="flex items-end gap-3">
-            <button className=" border dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black dark:text-white text-black px-4 py-2 rounded-full">
-              Reset Filters
+            <button className="  dark:bg-[#0b1225] dark:text-white text-black px-4 py-2 rounded-full">
+              Reset Filters 
             </button>
-            <button className=" border dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black dark:text-white text-black px-4 py-2 rounded-full">
+            <button className="  dark:bg-[#0b1225] dark:text-white text-black px-4 py-2 rounded-full">
               Apply Filters
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="  grid grid-cols-1 md:grid-cols-3 gap-6">
           {consultants.map((consultant, index) => (
             <div
               key={index}
-              className=" border dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black rounded-xl p-5 shadow-md"
+              className="  dark:bg-[#0b1225] rounded-xl p-5 shadow-md"
             >
               <div className="flex items-center mb-4">
                 <div className="w-14 h-14 bg-gray-300 dark:bg-gray-600 rounded-full flex-shrink-0" />
@@ -120,7 +120,7 @@ const Consultant = () => {
                 <p>Sessions: {consultant.sessions}</p>
               </div>
 
-              <button className="bg-primary  text-white  text-sm px-4 py-2  rounded-full w-full">
+              <button className="bg-primary text-white text-center text-sm px-4 py-2 rounded-full  flex  font-semibold">
                 Connect
               </button>
             </div>

@@ -32,7 +32,7 @@ const HowItWorks = () => {
   return (
     <section id='how-it-works' className="py-16 px-4 md:px-20 bg-white dark:bg-[#090d13]">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=' text-primary0'>CyGen</span> Works</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-600  dark:text-white">How <span className=' text-primary0'>CyGen</span> Works</h2>
         <p className="text-gray-600 mt-2">Simple steps to connect with domain experts and solve your challenges</p>
       </div>
 
@@ -40,11 +40,11 @@ const HowItWorks = () => {
         {/* Steps */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {steps.map((step, i) => (
-            <div key={i} className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black rounded-xl shadow p-5 relative">
+            <div key={i} className="bg-white dark:bg-[#0b1225] rounded-xl shadow p-5 relative">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step.color} mb-4`}>
                 {step.number}
               </div>
-              <h3 className="font-semibold text-lg text-gray-800 dark:text-white">{step.title}</h3>
+              <h3 className="font-semibold text-lg text-gray-600 dark:text-white">{step.title}</h3>
               <p className="text-gray-600 text-sm mt-1">{step.desc}</p>
             </div>
           ))}

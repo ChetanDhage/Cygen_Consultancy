@@ -41,7 +41,7 @@ const Testimonials = () => {
   return (
     <section className="bg-[#f4f8fd] dark:bg-[#090d13] py-16 px-4 md:px-20">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">What Our Users Say</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-600 dark:text-white">What Our Users Say</h2>
         <p className="text-gray-600 mt-2">Success stories from customers and consultants</p>
       </div>
 
@@ -49,16 +49,16 @@ const Testimonials = () => {
         {testimonials.map((item, index) => (
           <div
             key={index}
-            className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
+            className="bg-white dark:bg-[#0b1225] rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="w-10 h-10 bg-gray-200 rounded-full" />
               <div>
-                <h4 className="font-semibold text-gray-800 dark:text-white">{item.name}</h4>
+                <h4 className="font-semibold text-gray-600 dark:text-white">{item.name}</h4>
                 <p className="text-sm text-gray-500">{item.title}</p>
               </div>
             </div>
-            <p className="text-gray-700 text-sm mb-4">{item.text}</p>
+            <p className="text-gray-500 text-sm mb-4">{item.text}</p>
             <div className="flex">{renderStars(item.rating)}</div>
           </div>
         ))}

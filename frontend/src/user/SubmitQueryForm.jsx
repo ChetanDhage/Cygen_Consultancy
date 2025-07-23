@@ -68,7 +68,7 @@ const SubmitQueryForm = () => {
               className={`flex-1 flex flex-col items-center justify-center border rounded-lg py-3 px-2 transition ${
                 selectedMethod === label
                   ? 'border-primary bg-blue-50 text-primary'
-                  : 'border-gray-300 text-gray-700 hover:border-primary'
+                  : 'border-gray-300 text-gray-500 hover:border-primary'
               }`}
             >
               <div className="text-xl mb-1">{icon}</div>

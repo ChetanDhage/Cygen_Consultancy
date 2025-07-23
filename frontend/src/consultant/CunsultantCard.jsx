@@ -16,7 +16,7 @@ const ConsultantCard = () => {
         </div>
         <p className="text-sm text-gray-600 mb-1">Business Strategy Consultant</p>
         <span className="text-green-600 text-xs font-medium">● Available Now</span>
-        <p className="text-sm text-gray-700 mt-2">
+        <p className="text-sm text-gray-500 mt-2">
           10+ years experience helping businesses scale with data-driven strategies.
         </p>
 

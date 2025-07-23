@@ -118,14 +118,14 @@ const QueryInbox = () => {
                                         AR
                                     </div>
                                     <div>
-                                        <p className="text-md text-gray-800">Alex Reynolds</p>
+                                        <p className="text-md text-gray-600">Alex Reynolds</p>
                                         <p className="text-xs text-gray-600">CEO, TechStart Inc.</p>
                                     </div>
                                 </div>
                             </div>
                             <span className="text-sm  text-primary bg-blue-100 px-2 py-1 rounded-full w-fit h-fit">New</span>
                         </div>
-                        <p className="text-sm text-gray-700 mb-4">
+                        <p className="text-sm text-gray-500 mb-4">
                             I'm launching a new SaaS startup and need help with financial planning. Specifically, I need
                             assistance with creating a 3-year financial projection, setting up a budget for the first year,
                             and advice on funding options. We're pre-revenue and have 6 months of runway. Would appreciate

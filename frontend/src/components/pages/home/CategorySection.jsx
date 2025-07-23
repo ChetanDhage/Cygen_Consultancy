@@ -79,19 +79,19 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <section id='categories' className="bg-[#f5f8fc] dark:bg-[#090d13] py-12 px-4 md:px-16">
+    <section id='categories' className=" bg-primary-light dark:bg-[#090d13] py-12 px-4 md:px-16">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-gray-800">Explore by Category</h2>
+        <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-gray-600">Explore by Category</h2>
         <p className="text-gray-600 mt-2">Find experts across various technical domains and industries</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {categories.map((cat, index) => (
-          <div key={index} className=" dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black bg-white p-6 rounded-3xl shadow hover:shadow-md transition duration-200  hover:scale-105">
+          <div key={index} className=" dark:bg-[#0b1225] bg-white p-6 rounded-3xl shadow hover:shadow-md transition duration-200  hover:scale-105">
             <div className="flex items-center justify-center w-12 h-12 rounded-md mb-4 bg-gray-100">
               {cat.icon}
             </div>
-            <h3 className="font-semibold text-lg text-gray-800 dark:text-white ">{cat.title}</h3>
+            <h3 className="font-semibold text-lg text-gray-600 dark:text-white ">{cat.title}</h3>
             <p className="text-sm text-gray-500 mt-1">{cat.desc}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {cat.tags.map((tag, idx) => (
@@ -105,7 +105,7 @@ const CategorySection = () => {
       </div>
 
       <div className="text-center mt-10">
-        <a href="#" className="text-blue-600 font-medium hover:underline">
+        <a href="#" className="text-primary font-medium hover:underline">
           View all categories →
         </a>
       </div>

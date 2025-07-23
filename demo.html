@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consultant Signup Portal | CyGen</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            secondary: '#0ea5e9',
+            dark: '#1e293b',
+            light: '#f8fafc',
+            accent: '#6366f1',
+            success: '#10b981'
+          },
+          boxShadow: {
+            'form': '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+            'input': '0 4px 20px rgba(59, 130, 246, 0.15)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f7ff 100%); 
+      min-height: 100vh;
+    }
+    .form-card { 
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); 
+      border-radius: 20px; 
+      overflow: hidden; 
+      transition: all 0.3s ease; 
+      background: linear-gradient(145deg, #ffffff 0%, #f9fbfd 100%);
+    }
+    .form-card:hover { 
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12); 
+      transform: translateY(-5px);
+    }
+    .progress-bar { 
+      height: 10px; 
+      border-radius: 5px; 
+      transition: width 0.5s ease; 
+    }
+    .input-group { 
+      transition: all 0.3s ease; 
+    }
+    .input-group:focus-within { 
+      transform: translateY(-3px); 
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+    }
+    .upload-area { 
+      border: 2px dashed #d1d5db; 
+      border-radius: 12px;
+      transition: all 0.3s ease; 
+      background: #f9fafb;
+    }
+    .upload-area:hover, .upload-area.dragover { 
+      border-color: #6366f1; 
+      background-color: #f0f9ff; 
+    }
+    .certification-item { 
+      animation: fadeIn 0.4s ease; 
+    }
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+    .tab-indicator { 
+      transition: all 0.3s ease; 
+      position: relative;
+    }
+    .tab-indicator::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: #6366f1;
+      transition: width 0.3s ease;
+    }
+    .tab-indicator.active::after {
+      width: 100%;
+    }
+    .input-field {
+      transition: all 0.3s;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 16px;
+      background: #ffffff;
+    }
+    .input-field:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      outline: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
+    }
+    .btn-secondary {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-weight: 500;
+      transition: all 0.3s;
+      background: #ffffff;
+    }
+    .btn-secondary:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
+    .file-preview {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      margin-top: 8px;
+      animation: fadeIn 0.3s;
+    }
+    .success-message {
+      animation: slideIn 0.5s forwards;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    @keyframes slideIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    .floating-label {
+      position: absolute;
+      top: -10px;
+      left: 14px;
+      background: white;
+      padding: 0 8px;
+      font-size: 12px;
+      color: #4f46e5;
+      font-weight: 500;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+    .input-group:focus-within .floating-label {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="py-12">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <div class="flex justify-center mb-6">
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-r from-accent to-primary flex items-center justify-center shadow-lg">
+          <i class="fas fa-user-tie text-white text-3xl"></i>
+        </div>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-dark mb-3">Consultant Signup Portal</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+        Join our network of experts and share your knowledge with businesses worldwide.
+      </p>
+      <div class="mt-8 max-w-xl mx-auto">
+        <div class="flex justify-between text-sm text-gray-600 mb-3 font-medium">
+          <span>Personal Info</span><span>Professional</span><span>Certifications</span>
+        </div>
+        <div class="bg-gray-200 h-2.5 rounded-full overflow-hidden">
+          <div class="progress-bar bg-gradient-to-r from-secondary to-primary w-1/3"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-card bg-white">
+      <div class="flex border-b border-gray-100">
+        <div class="tab-indicator w-1/3 text-center py-5 font-semibold text-primary relative active">
+          <i class="fas fa-user mr-2"></i> Personal Info
+        </div>
+        <div class="tab-indicator w-1/3 text-center py-5 font-medium text-gray-500 relative">
+          <i class="fas fa-briefcase mr-2"></i> Professional
+        </div>
+        <div class="tab-indicator w-1/3 text-center py-5 font-medium text-gray-500 relative">
+          <i class="fas fa-certificate mr-2"></i> Certifications
+        </div>
+      </div>
+      
+      <div class="p-6 md:p-10">
+        <form id="consultantForm">
+          <!-- Personal Info -->
+          <div id="personalInfo">
+            <h2 class="text-2xl font-bold text-dark mb-8">Personal Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="input-group relative">
+                <label class="floating-label">Full Name</label>
+                <input type="text" id="name" class="input-field w-full" placeholder="John Smith" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Date of Birth</label>
+                <input type="date" id="dob" class="input-field w-full" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Email Address</label>
+                <input type="email" id="email" class="input-field w-full" placeholder="john@example.com" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Contact Number</label>
+                <input type="tel" id="phone" class="input-field w-full" placeholder="(123) 456-7890" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Location / City</label>
+                <input type="text" id="location" class="input-field w-full" placeholder="New York" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">LinkedIn Profile</label>
+                <input type="url" id="linkedin" class="input-field w-full" placeholder="https://linkedin.com/in/username" />
+              </div>
+              <div class="input-group">
+                <label class="block text-gray-700 text-sm font-medium mb-3">Profile Photo</label>
+                <div class="upload-area relative border-dashed border-2 rounded-lg p-6 text-center cursor-pointer">
+                  <input type="file" id="photo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
+                  <div class="flex flex-col items-center justify-center">
+                    <i class="fas fa-camera text-3xl text-gray-400 mb-3"></i>
+                    <p class="text-gray-600 font-medium">Click to upload or drag & drop</p>
+                    <p class="text-gray-500 text-sm mt-1">JPG or PNG (max 5MB)</p>
+                  </div>
+                </div>
+                <div id="photoPreview" class="hidden mt-3"></div>
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Create Password</label>
+                <input type="password" id="password" class="input-field w-full" placeholder="••••••••" />
+              </div>
+            </div>
+            <div class="flex justify-between mt-12">
+              <div></div>
+              <button type="button" id="nextToProfessional" class="btn-primary text-white font-medium flex items-center">
+                Next: Professional <i class="fas fa-arrow-right ml-3"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Professional Details -->
+          <div id="professionalDetails" class="hidden">
+            <h2 class="text-2xl font-bold text-dark mb-8">Professional Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="input-group relative">
+                <label class="floating-label">Designation / Job Title</label>
+                <input type="text" class="input-field w-full" placeholder="Cloud Architect" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Current Company</label>
+                <input type="text" class="input-field w-full" placeholder="ABC Corp" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Industry / Domain</label>
+                <input type="text" class="input-field w-full" placeholder="IT, Security, Healthcare..." />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Skills</label>
+                <input type="text" class="input-field w-full" placeholder="AWS, Python, AI..." />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Languages Known</label>
+                <input type="text" class="input-field w-full" placeholder="English, Hindi, Spanish" />
+              </div>
+              <div class="input-group relative">
+                <label class="floating-label">Expected Fee ($/hr)</label>
+                <input type="number" min="0" class="input-field w-full" placeholder="75" />
+              </div>
+              <div class="input-group">
+                <label class="block text-gray-700 text-sm font-medium mb-2">Work Mode</label>
+                <select class="input-field w-full">
+                  <option value="">Select work mode</option>
+                  <option value="remote">Remote</option>
+                  <option value="on-site">On-site</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+              </div>
+              <div class="input-group md:col-span-2">
+                <label class="block text-gray-700 text-sm font-medium mb-3">About Me / Pitch</label>
+                <textarea rows="4" class="input-field w-full" placeholder="Tell us about yourself, your expertise, and what makes you unique..."></textarea>
+              </div>
+              
+              <!-- Resume Upload Section -->
+              <div class="input-group md:col-span-2">
+                <label class="block text-gray-700 text-sm font-medium mb-3">Upload Resume</label>
+                <div class="upload-area relative border-dashed border-2 rounded-lg p-8 text-center cursor-pointer">
+                  <input type="file" id="resume" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.doc,.docx">
+                  <div class="flex flex-col items-center justify-center">
+                    <i class="fas fa-file-pdf text-4xl text-accent mb-4"></i>
+                    <p class="text-gray-700 font-medium text-lg">Upload Your Resume</p>
+                    <p class="text-gray-600 mt-2">Click to upload or drag & drop</p>
+                    <p class="text-gray-500 text-sm mt-1">PDF or DOC (max 10MB)</p>
+                  </div>
+                </div>
+                <div id="resumePreview" class="hidden mt-4"></div>
+              </div>
+            </div>
+            
+            <div class="flex justify-between mt-12">
+              <button type="button" id="backToPersonal" class="btn-secondary text-gray-700 flex items-center">
+                <i class="fas fa-arrow-left mr-3"></i> Back
+              </button>
+              <button type="button" id="nextToCertifications" class="btn-primary text-white flex items-center">
+                Next: Certifications <i class="fas fa-arrow-right ml-3"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Certifications Section -->
+          <div id="certificationsSection" class="hidden">
+            <h2 class="text-2xl font-bold text-dark mb-8">Certifications & Documents</h2>
+            
+            <div id="certificationsContainer">
+              <!-- Certification 1 -->
+              <div class="certification-item bg-gray-50 p-6 rounded-xl mb-6 border border-gray-100">
+                <h3 class="font-medium text-gray-700 mb-5 text-lg">Certification #1</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div class="input-group relative">
+                    <label class="floating-label">Certification Name</label>
+                    <div class="relative">
+                      <input type="text" id="certName1" class="input-field w-full" placeholder="AWS Certified Solutions Architect" />
+                    </div>
+                  </div>
+                  
+                  <div class="input-group">
+                    <label class="block text-gray-700 text-sm font-medium mb-3">
+                      Upload Certification
+                    </label>
+                    <div class="upload-area relative border-dashed border-2 rounded-lg p-6 text-center cursor-pointer">
+                      <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.jpg,.png">
+                      <div class="flex flex-col items-center justify-center">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3"></i>
+                        <p class="text-gray-600 font-medium">Click to upload or drag & drop</p>
+                        <p class="text-gray-500 text-sm mt-1">PDF, JPG, or PNG (max 5MB)</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Add more certifications button -->
+            <div class="flex justify-center mb-8">
+              <button type="button" id="addCertification" class="px-5 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition flex items-center">
+                <i class="fas fa-plus-circle mr-3"></i> Add Another Certification
+              </button>
+            </div>
+            
+            <!-- Terms and Conditions -->
+            <div class="bg-primary p-6 rounded-xl mb-8 border border-primary">
+              <div class="flex items-start">
+                <input type="checkbox" id="terms" class="mt-1 mr-3 h-5 w-5 text-accent rounded">
+                <label for="terms" class="text-gray-700">
+                  I agree to the <a href="#" class="text-primary font-medium hover:underline">Terms of Service</a> and <a href="#" class="text-primary font-medium hover:underline">Privacy Policy</a>. I understand that my documents will be verified before my profile is activated on the portal.
+                </label>
+              </div>
+            </div>
+            
+            <div class="flex justify-between mt-8">
+              <button type="button" id="backToProfessional" class="btn-secondary text-gray-700 flex items-center">
+                <i class="fas fa-arrow-left mr-3"></i> Back
+              </button>
+              <button type="submit" class="px-8 py-4 bg-success text-white rounded-lg font-semibold hover:bg-primary transition flex items-center shadow-md hover:shadow-lg">
+                <i class="fas fa-check-circle mr-3"></i> Submit Application
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Success Message (Hidden by default) -->
+    <div id="successMessage" class="hidden mt-10 p-8 bg-white rounded-2xl text-center form-card success-message">
+      <div class="flex justify-center mb-6">
+        <div class="w-24 h-24 rounded-full bg-primary flex items-center justify-center">
+          <i class="fas fa-check-circle text-primary text-5xl"></i>
+        </div>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Application Submitted!</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg mb-6">
+        Thank you for applying to become a CyGen consultant. Your documents are being reviewed and we'll contact you within 1-2 business days.
+      </p>
+      <button id="newApplication" class="btn-primary text-white font-medium">
+        <i class="fas fa-plus mr-3"></i> Create New Application
+      </button>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Form navigation
+      const personalSection = document.getElementById('personalInfo');
+      const professionalSection = document.getElementById('professionalDetails');
+      const certificationsSection = document.getElementById('certificationsSection');
+      const successMessage = document.getElementById('successMessage');
+      
+      const nextToProfessional = document.getElementById('nextToProfessional');
+      const nextToCertifications = document.getElementById('nextToCertifications');
+      const backToPersonal = document.getElementById('backToPersonal');
+      const backToProfessional = document.getElementById('backToProfessional');
+      const newApplication = document.getElementById('newApplication');
+      
+      const progressBar = document.querySelector('.progress-bar');
+      const tabs = document.querySelectorAll('.tab-indicator');
+      
+      // Navigation to Professional Section
+      nextToProfessional.addEventListener('click', function() {
+        personalSection.classList.add('hidden');
+        professionalSection.classList.remove('hidden');
+        progressBar.style.width = '66%';
+        
+        // Update tabs
+        tabs[0].classList.remove('active', 'text-primary');
+        tabs[0].classList.add('text-gray-500');
+        tabs[1].classList.add('active', 'text-primary');
+        tabs[1].classList.remove('text-gray-500');
+      });
+      
+      // Navigation to Certifications Section
+      nextToCertifications.addEventListener('click', function() {
+        professionalSection.classList.add('hidden');
+        certificationsSection.classList.remove('hidden');
+        progressBar.style.width = '100%';
+        
+        // Update tabs
+        tabs[1].classList.remove('active', 'text-primary');
+        tabs[1].classList.add('text-gray-500');
+        tabs[2].classList.add('active', 'text-primary');
+        tabs[2].classList.remove('text-gray-500');
+      });
+      
+      // Back to Personal Section
+      backToPersonal.addEventListener('click', function() {
+        professionalSection.classList.add('hidden');
+        personalSection.classList.remove('hidden');
+        progressBar.style.width = '33%';
+        
+        // Update tabs
+        tabs[1].classList.remove('active', 'text-primary');
+        tabs[1].classList.add('text-gray-500');
+        tabs[0].classList.add('active', 'text-primary');
+        tabs[0].classList.remove('text-gray-500');
+      });
+      
+      // Back to Professional Section
+      backToProfessional.addEventListener('click', function() {
+        certificationsSection.classList.add('hidden');
+        professionalSection.classList.remove('hidden');
+        progressBar.style.width = '66%';
+        
+        // Update tabs
+        tabs[2].classList.remove('active', 'text-primary');
+        tabs[2].classList.add('text-gray-500');
+        tabs[1].classList.add('active', 'text-primary');
+        tabs[1].classList.remove('text-gray-500');
+      });
+      
+      // Add certification fields
+      const addCertificationBtn = document.getElementById('addCertification');
+      const certificationsContainer = document.getElementById('certificationsContainer');
+      let certCount = 1;
+      
+      addCertificationBtn.addEventListener('click', function() {
+        certCount++;
+        const newCert = document.createElement('div');
+        newCert.classList.add('certification-item', 'bg-gray-50', 'p-6', 'rounded-xl', 'mb-6', 'border', 'border-gray-100');
+        newCert.innerHTML = `
+          <div class="flex justify-between items-center mb-5">
+            <h3 class="font-medium text-gray-700 text-lg">Certification #${certCount}</h3>
+            <button type="button" class="remove-certification text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="input-group relative">
+              <label class="floating-label">Certification Name</label>
+              <div class="relative">
+                <input type="text" id="certName${certCount}" class="input-field w-full" placeholder="e.g. AWS Certified Solutions Architect" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="block text-gray-700 text-sm font-medium mb-3">
+                Upload Certification
+              </label>
+              <div class="upload-area relative border-dashed border-2 rounded-lg p-6 text-center cursor-pointer">
+                <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.jpg,.png">
+                <div class="flex flex-col items-center justify-center">
+                  <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3"></i>
+                  <p class="text-gray-600 font-medium">Click to upload or drag & drop</p>
+                  <p class="text-gray-500 text-sm mt-1">PDF, JPG, or PNG (max 5MB)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        certificationsContainer.appendChild(newCert);
+        
+        // Add event listener for remove button
+        newCert.querySelector('.remove-certification').addEventListener('click', function() {
+          newCert.remove();
+        });
+      });
+      
+      // File upload functionality
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+      fileInputs.forEach(input => {
+        input.addEventListener('change', function(e) {
+          if (this.files && this.files[0]) {
+            const fileName = this.files[0].name;
+            const fileSize = (this.files[0].size / 1024 / 1024).toFixed(2); // MB
+            const fileType = this.files[0].type;
+            
+            // Create preview element
+            let icon = 'fa-file';
+            let color = 'bg-gray-200';
+            
+            if (fileType.includes('image')) {
+              icon = 'fa-image';
+              color = 'bg-primary';
+            } else if (fileType.includes('pdf')) {
+              icon = 'fa-file-pdf';
+              color = 'bg-red-100';
+            } else if (fileType.includes('word')) {
+              icon = 'fa-file-word';
+              color = 'bg-primary';
+            }
+            
+            const preview = document.createElement('div');
+            preview.classList.add('file-preview');
+            preview.innerHTML = `
+              <div class="w-10 h-10 ${color} rounded-lg flex items-center justify-center mr-3">
+                <i class="fas ${icon} text-gray-700"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-800 truncate">${fileName}</div>
+                <div class="text-xs text-gray-500">${fileSize} MB</div>
+              </div>
+              <button class="remove-file ml-2 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+              </button>
+            `;
+            
+            // Get the preview container based on input ID
+            let previewContainer;
+            if (this.id === 'photo') {
+              previewContainer = document.getElementById('photoPreview');
+            } else if (this.id === 'resume') {
+              previewContainer = document.getElementById('resumePreview');
+            } else {
+              // For certification files
+              previewContainer = this.closest('.input-group').querySelector('.file-preview-container') || 
+                document.createElement('div');
+              previewContainer.classList.add('file-preview-container', 'mt-3');
+              if (!this.closest('.input-group').querySelector('.file-preview-container')) {
+                this.closest('.input-group').appendChild(previewContainer);
+              }
+            }
+            
+            // Clear existing previews
+            while (previewContainer.firstChild) {
+              previewContainer.removeChild(previewContainer.firstChild);
+            }
+            
+            previewContainer.appendChild(preview);
+            previewContainer.classList.remove('hidden');
+            
+            // Add remove file functionality
+            preview.querySelector('.remove-file').addEventListener('click', function() {
+              previewContainer.classList.add('hidden');
+              input.value = '';
+            });
+          }
+        });
+      });
+      
+      // File upload hover effect
+      const uploadAreas = document.querySelectorAll('.upload-area');
+      uploadAreas.forEach(area => {
+        area.addEventListener('dragover', function(e) {
+          e.preventDefault();
+          this.classList.add('dragover');
+        });
+        
+        area.addEventListener('dragleave', function() {
+          this.classList.remove('dragover');
+        });
+        
+        area.addEventListener('drop', function(e) {
+          e.preventDefault();
+          this.classList.remove('dragover');
+          const files = e.dataTransfer.files;
+          if (files.length) {
+            const fileInput = this.querySelector('input[type="file"]');
+            fileInput.files = files;
+            fileInput.dispatchEvent(new Event('change'));
+          }
+        });
+      });
+      
+      // Form submission
+      const form = document.getElementById('consultantForm');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide form and show success message
+        document.querySelector('.form-card').classList.add('hidden');
+        successMessage.classList.remove('hidden');
+      });
+      
+      // New application button
+      newApplication.addEventListener('click', function() {
+        // Reset form and UI
+        form.reset();
+        successMessage.classList.add('hidden');
+        document.querySelector('.form-card').classList.remove('hidden');
+        
+        // Hide all sections except personal info
+        professionalSection.classList.add('hidden');
+        certificationsSection.classList.add('hidden');
+        personalSection.classList.remove('hidden');
+        
+        // Reset progress bar
+        progressBar.style.width = '33%';
+        
+        // Reset tabs
+        tabs.forEach(tab => {
+          tab.classList.remove('active', 'text-primary');
+          tab.classList.add('text-gray-500');
+        });
+        tabs[0].classList.add('active', 'text-primary');
+        tabs[0].classList.remove('text-gray-500');
+        
+        // Clear file previews
+        document.querySelectorAll('.file-preview-container, #photoPreview, #resumePreview').forEach(el => {
+          el.classList.add('hidden');
+          el.innerHTML = '';
+        });
+        
+        // Reset certification container
+        while (certificationsContainer.children.length > 1) {
+          certificationsContainer.removeChild(certificationsContainer.lastChild);
+        }
+        certCount = 1;
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+

@@ -45,17 +45,17 @@ const Category = () => {
   return (
     <>
       <Navbar />
-      <div className=" w-full bg-[#f0f5ff] dark:bg-[#090d13] text-gray-800 dark:text-white py-16 lg:px-4 px-2">
+      <div className=" w-full bg-primary-light dark:bg-[#090d13] text-gray-600 dark:text-white py-16 lg:px-4 px-2">
         {/* Section Top */}
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 mb-16">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-bold mb-4">Explore <span className="text-blue-600">Expert Categories</span></h2>
+            <h2 className="text-4xl font-bold mb-4">Explore <span className="text-primary">Expert Categories</span></h2>
             <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
               Find specialized consultants across technical domains. Connect with professionals who understand your challenges.
             </p>
             <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-6 py-2 rounded">Find an Expert</button>
-              <button className="border border-blue-600 text-blue-600 px-6 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-950">
+              <button className="bg-primary text-white px-6 py-2 rounded">Find an Expert</button>
+              <button className="border border-primary text-primary px-6 py-2 rounded hover:bg-primary dark:hover:bg-primary">
                 Browse Categories
               </button>
             </div>
@@ -73,19 +73,19 @@ const Category = () => {
           {categories.map((cat, idx) => (
             <div
               key={idx}
-              className="bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black rounded-xl p-6 shadow-md"
+              className="bg-white dark:bg-[#0b1225] rounded-xl p-6 shadow-md"
             >
               <div className="text-4xl mb-4">{cat.icon}</div>
               <h3 className="font-bold text-xl mb-2">{cat.title}</h3>
-              <p className="mb-4 text-gray-700 dark:text-gray-200">{cat.desc}</p>
+              <p className="mb-4 text-gray-500 dark:text-gray-200">{cat.desc}</p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {cat.tags.map((tag, tagIdx) => (
-                  <span key={tagIdx} className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
+                  <span key={tagIdx} className="bg-primary dark:bg-primary text-white  px-3 py-1 rounded-full text-sm">
                     {tag}
                   </span>
                 ))}
               </div>
-              <button className="text-blue-600 dark:text-blue-300 hover:underline">View Experts →</button>
+              <button className="text-primary dark:text-primary hover:underline">View Experts →</button>
             </div>
           ))}
         </div>

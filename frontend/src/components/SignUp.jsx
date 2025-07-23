@@ -94,7 +94,7 @@ const SignUp = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-6 md:p-10 bg-white dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black dark:text-gray-100 rounded-xl shadow-xl">
+      <form onSubmit={handleSubmit} className="p-6 md:p-10 bg-white dark:bg-[#0b1225] dark:text-gray-100 rounded-xl shadow-xl">
         {step === 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-8">Personal Information</h2>
@@ -136,7 +136,7 @@ const SignUp = () => {
               <input className="input-field" type="file" accept=".pdf,.doc,.docx" />
             </div>
             <div className="flex justify-between mt-12">
-              <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center">
+              <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center">
                 <FaArrowLeft className="mr-2" /> Back
               </button>
               <button type="button" onClick={handleNext} className="btn-primary text-white px-6 py-3 rounded-lg bg-primary hover:bg-primary flex items-center">
@@ -159,7 +159,7 @@ const SignUp = () => {
               </div>
             ))}
             <div className="flex justify-center mb-8">
-              <button type="button" onClick={handleAddCertification} className="px-5 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center">
+              <button type="button" onClick={handleAddCertification} className="px-5 py-3 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center">
                 <FaPlusCircle className="mr-2" /> Add Another Certification
               </button>
             </div>
@@ -172,7 +172,7 @@ const SignUp = () => {
               </label>
             </div>
             <div className="flex justify-between mt-8">
-              <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center">
+              <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center">
                 <FaArrowLeft className="mr-2" /> Back
               </button>
               <button type="submit" className="px-8 py-4 bg-primary hover:bg-primary text-white rounded-lg font-semibold shadow-md flex items-center">
