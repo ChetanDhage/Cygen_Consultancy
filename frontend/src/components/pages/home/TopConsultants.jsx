@@ -65,7 +65,10 @@ const TopConsultants = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {consultants.map((consultant, index) => (
-          <div key={index} className="bg-white dark:bg-[#0b1225] p-6 rounded-3xl shadow hover:shadow-md transition relative">
+          <div key={index} className=" relative bg-white/90 dark:bg-white/10 backdrop-blur-lg  border-gray-200 dark:border-gray-700 p-6 rounded-3xl shadow hover:shadow-md transition hover:border-primary border-r border-b duration-300 hover:scale-105 ">
+            
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300 rounded-2xl"></div>
+
             {/* Avatar Placeholder */}
             <div className="w-16 h-16 bg-gray-200 rounded-full mb-4 mx-auto" />
             <h3 className="font-semibold text-lg text-center text-gray-600 dark:text-white">{consultant.name}</h3>

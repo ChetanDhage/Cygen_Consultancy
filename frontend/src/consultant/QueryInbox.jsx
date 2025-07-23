@@ -114,7 +114,7 @@ const QueryInbox = () => {
                                 <h3 className="text-lg font-semibold">Subject: Financial planning for startup</h3>
                                 <br />
                                 <div className=' flex gap-2'>
-                                    <div className='w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary  bg-primary-light'>
+                                    <div className='w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary  bg-primaryLight'>
                                         AR
                                     </div>
                                     <div>

@@ -107,7 +107,7 @@ const HeroSection = () => {
                 { icon: <BsLightningCharge className="text-purple-400" />, text: "Instant Connection" }
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3 text-gray-500">
-                  <div className="w-8 h-8 rounded-full dark:bg-gray-800 flex items-center justify-center border border-primary-light shadow-sm">
+                  <div className="w-8 h-8 rounded-full dark:bg-gray-800 flex items-center justify-center border border-primaryLight shadow-sm">
                     {item.icon}
                   </div>
                   <span>{item.text}</span>

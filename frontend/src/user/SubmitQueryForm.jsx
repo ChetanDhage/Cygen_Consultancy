@@ -13,7 +13,7 @@ const SubmitQueryForm = () => {
       <h2 className="text-xl font-semibold mb-4">Submit Your Query</h2>
 
       {/* Consultant Info */}
-      <div className="flex items-center gap-4 bg-primary-light p-4 rounded-lg  mb-6">
+      <div className="flex items-center gap-4 bg-primaryLight p-4 rounded-lg  mb-6">
         <img
           src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" // Replace with actual image path
           alt="Sarah Johnson"

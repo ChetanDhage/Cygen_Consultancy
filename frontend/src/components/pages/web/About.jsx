@@ -29,7 +29,7 @@ const About = () => {
     <Navbar/>
     <div className="bg-gray-50 dark:bg-[#090d13] text-gray-600 dark:text-white">
       {/* Hero Section */}
-      <section className="py-16  bg-primary-light dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
+      <section className="py-16  bg-primaryLight dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-4xl font-bold mb-6 text-dark dark:text-white">Innovating Security, Protecting Success</h1>
           <p className="text-md text-gray-600 dark:text-gray-300 mb-8">

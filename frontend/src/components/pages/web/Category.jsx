@@ -45,7 +45,7 @@ const Category = () => {
   return (
     <>
       <Navbar />
-      <div className=" w-full bg-primary-light dark:bg-[#090d13] text-gray-600 dark:text-white py-16 lg:px-4 px-2">
+      <div className=" w-full bg-primaryLight dark:bg-[#090d13] text-gray-600 dark:text-white py-16 lg:px-4 px-2">
         {/* Section Top */}
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 mb-16">
           <div className="max-w-2xl">

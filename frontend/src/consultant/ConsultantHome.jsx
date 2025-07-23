@@ -20,7 +20,7 @@ const ConsultantHome = () => {
 
             <div className=' p-6'>
                 {/* Welcome Banner */}
-                <section className=" w-full  bg-primary-light text-primary p-6 rounded-xl shadow mb-6">
+                <section className=" w-full  bg-primaryLight text-primary p-6 rounded-xl shadow mb-6">
                     <h3 className="text-lg font-semibold text-black">Welcome back, John!</h3>
                     <p className="text-sm">You have 3 new queries and 2 scheduled sessions today</p>
                     <Link to={inboxQueryPath}>

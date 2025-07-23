@@ -47,7 +47,7 @@ const ConsultantDashboard = () => {
           <h1 className="text-2xl font-bold text-primary mb-8">Cygen</h1>
           <nav className="space-y-2">
             <button className="flex items-center gap-3 text-primary font-semibold mb-4">
-              <span className=" bg-primary-light p-2 rounded-md">
+              <span className=" bg-primaryLight p-2 rounded-md">
                 <FaUser className="w-5 h-5" />
               </span>
               Dashboard
@@ -73,7 +73,7 @@ const ConsultantDashboard = () => {
             <Link to={ProfilePath}><FaUser className="w-6 h-6 text-primary" title='Profile' /></Link>
             <Link to={NotificationPath}><FaBell className="w-6 h-6 text-gray-600" title='Notification' /></Link>
           </div>
-          <div className="mt-5 p-3 bg-primary-light text-center rounded-lg">
+          <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
             <p className="text-sm">Need help?</p>
             <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
               Contact Support
@@ -107,7 +107,7 @@ const MenuItem = ({ icon, label, badge, path, active}) => {
   return (
     <Link to={`/consultant-dashboard${path}`}>
       <div
-        className={`flex items-center justify-between p-2 my-2 rounded-lg cursor-pointer ${active ? 'bg-primary-light font-semibold' : 'hover:bg-gray-100'
+        className={`flex items-center justify-between p-2 my-2 rounded-lg cursor-pointer ${active ? 'bg-primaryLight font-semibold' : 'hover:bg-gray-100'
           }`}
       >
         <div className="flex items-center gap-3 text-sm">

@@ -44,8 +44,8 @@ const categories = [
     title: "Data Engineering",
     desc: "Data pipelines, warehousing, and processing",
     tags: ["ETL", "Data Lakes", "Big Data"],
-    icon: <BsDatabase size={24} className="text-indigo-500" />,
-    tagColor: "bg-indigo-100 text-indigo-500"
+    icon: <BsDatabase size={24} className="text-primary" />,
+    tagColor: "bg-primaryLight text-primary"
   },
   {
     title: "Cloud Security",
@@ -79,7 +79,7 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <section id='categories' className=" bg-primary-light dark:bg-[#090d13] py-12 px-4 md:px-16">
+    <section id='categories' className=" bg-primaryLight dark:bg-[#090d13] py-12 px-4 md:px-16">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-gray-600">Explore by Category</h2>
         <p className="text-gray-600 mt-2">Find experts across various technical domains and industries</p>
@@ -87,22 +87,43 @@ const CategorySection = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {categories.map((cat, index) => (
-          <div key={index} className=" dark:bg-[#0b1225] bg-white p-6 rounded-3xl shadow hover:shadow-md transition duration-200  hover:scale-105">
-            <div className="flex items-center justify-center w-12 h-12 rounded-md mb-4 bg-gray-100">
+          <div
+            key={index}
+            className="relative group p-6 rounded-3xl shadow-md bg-white/90 dark:bg-white/10 backdrop-blur-lg  border-gray-200 dark:border-gray-700 hover:border-primary border-r border-b transition-all duration-300 hover:scale-105 overflow-hidden"
+          >
+            {/* Gradient Overlay on Hover */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300 rounded-2xl"></div>
+
+            {/* Icon */}
+            <div className="flex items-center justify-center w-14 h-14 rounded-full mb-5 shadow border border-gray-200 dark:border-gray-700">
               {cat.icon}
             </div>
-            <h3 className="font-semibold text-lg text-gray-600 dark:text-white ">{cat.title}</h3>
-            <p className="text-sm text-gray-500 mt-1">{cat.desc}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
+
+            {/* Title */}
+            <h3 className="font-bold text-xl text-gray-800 dark:text-white mb-2">
+              {cat.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+              {cat.desc}
+            </p>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2">
               {cat.tags.map((tag, idx) => (
-                <span key={idx} className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${cat.tagColor}`}>
-                  {tag}
+                <span
+                  key={idx}
+                  className={`text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 ${cat.tagColor}`}
+                >
+                  #{tag}
                 </span>
               ))}
             </div>
           </div>
         ))}
       </div>
+
 
       <div className="text-center mt-10">
         <a href="#" className="text-primary font-medium hover:underline">
