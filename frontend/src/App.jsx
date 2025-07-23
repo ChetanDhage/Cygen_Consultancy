@@ -10,19 +10,29 @@ import Consultant from './components/pages/web/Consultant'
 import HowItWorks from './components/pages/web/HowWork'
 import Contact from './components/pages/web/Contact'
 
+import UserDashboard from './user/Dashboard'
+import ConsultantProfile from './consultant/ConsultantProfile'
+import SubmitQueryForm from './user/SubmitQueryForm'
+import ConsultantDashboard from './consultant/Dashboard'
+
 const App = () => {
   return (
     <>
-      <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
+
         <Route path='/about' element={<About />} />
         <Route path='/category' element={<Category />} />
         <Route path='/consultants' element={<Consultant />} />
         <Route path='/how-it-works' element={<HowItWorks />} />
         <Route path='/contact' element={<Contact />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
+
+        <Route path='/consultant-dashboard/*' element={<ConsultantDashboard/>} />
+        
+
       </Routes>
     </>
   )

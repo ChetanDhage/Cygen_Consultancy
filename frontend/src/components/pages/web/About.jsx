@@ -1,5 +1,6 @@
 import React from 'react';
 import { BsEnvelopeAtFill, BsLinkedin } from 'react-icons/bs';
+import Navbar from '../../Navbar';
 
 const OurValues = [
   {
@@ -24,6 +25,8 @@ const OurValues = [
 
 const About = () => {
   return (
+    <>
+    <Navbar/>
     <div className="bg-gray-50 dark:bg-[#090d13] text-gray-800 dark:text-white">
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
@@ -96,6 +99,7 @@ const About = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

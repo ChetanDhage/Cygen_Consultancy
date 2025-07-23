@@ -1,6 +1,7 @@
 import React from 'react';
 import Footer from '../home/Footer';
 import { BsCamera, BsCheckCircleFill } from 'react-icons/bs';
+import Navbar from '../../Navbar';
 const steps = [
   {
     number: 1,
@@ -112,6 +113,7 @@ const faqs = [
 const HowWork = () => {
   return (
     <>
+    <Navbar/>
       {/* Section Top */}
       <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">

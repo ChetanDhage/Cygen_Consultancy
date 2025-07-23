@@ -1,9 +1,11 @@
 import React from 'react'
 import Footer from '../home/Footer'
+import Navbar from '../../Navbar'
 
 const Contact = () => {
   return (
     <div>
+      <Navbar/>
       <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-4xl font-bold mb-6 text-dark dark:text-white">Contact CyGen</h1>

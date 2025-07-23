@@ -1,5 +1,6 @@
 import React from 'react';
 import Footer from '../home/Footer';
+import Navbar from '../../Navbar';
 
 const consultants = [
   {
@@ -40,9 +41,8 @@ const consultants = [
 const Consultant = () => {
   return (
     <>
-
+      <Navbar/>
       {/* Section Top */}
-
       <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">
           <div className="max-w-2xl">
