@@ -29,8 +29,8 @@ const Navbar = () => {
       <div className=" w-full px-4 py-3 flex justify-between items-center">
         <div className=' flex gap-8 items-center'>
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 cursor-pointer" >
-           <img src={Logo} alt="" className=' w-[150px] h-[60px] object-fill ' />
+          <Link to="/" className="flex items-center gap-2 cursor-pointer ml-4" >
+           <img src={Logo} alt="logo" className=' w-[50px] h-[40px] object-fill ' />
           </Link>
 
           {/* Desktop Nav */}
