@@ -1,15 +1,13 @@
-import User from "./User.js";
+import mongoose from "mongoose";
 
 const consultantSchema = new mongoose.Schema({
-  // Personal Info
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   fullName: { type: String, required: true },
   dateOfBirth: Date,
   contactNumber: String,
   location: String,
   linkedIn: String,
   avatar: String,
-
-  // Professional Info
   designation: String,
   currentCompany: String,
   industry: String,
@@ -19,14 +17,33 @@ const consultantSchema = new mongoose.Schema({
   workMode: String,
   about: String,
   resume: String,
-
-  // Certifications
   certifications: [
     {
       name: String,
       file: String,
     },
   ],
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  availability: {
+    type: Boolean,
+    default: false,
+  },
+  earnings: {
+    total: { type: Number, default: 0 },
+    available: { type: Number, default: 0 },
+    pending: { type: Number, default: 0 },
+  },
+  tokens: [
+    {
+      token: { type: String, required: true },
+    },
+  ],
+  createdAt: { type: Date, default: Date.now },
 });
 
-export default User.discriminator("Consultant", consultantSchema);
+const Consultant = mongoose.model("Consultant", consultantSchema);
+export default Consultant;
