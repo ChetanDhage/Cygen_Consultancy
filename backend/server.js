@@ -9,6 +9,11 @@ import sessionRoutes from "./routes/session.routes.js";
 import queryRoutes from "./routes/query.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
+import availabilityRoutes from "./routes/availability.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
+import documentRoutes from "./routes/document.routes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -30,6 +35,10 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/queries", queryRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/availability", availabilityRoutes);
+app.use("/api/analytics", analyticsRoutes);
+app.use("/api/documents", documentRoutes);
 
 // Health check
 app.get("/", (req, res) => {
@@ -37,10 +46,7 @@ app.get("/", (req, res) => {
 });
 
 // Error handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);

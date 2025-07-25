@@ -6,46 +6,35 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      trim: true,
+      lowercase: true,
     },
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: Object.values(USER_ROLES),
-      default: USER_ROLES.CONSULTANT,
+      enum: ["user", "consultant", "admin"],
+      default: "consultant",
     },
-    status: {
-      type: String,
-      enum: Object.values(ACCOUNT_STATUS),
-      default: ACCOUNT_STATUS.PENDING,
-    },
+    tokens: [
+      {
+        token: { type: String, required: true },
+      },
+    ],
     createdAt: { type: Date, default: Date.now },
   },
-  { discriminatorKey: "role" }
+  { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+// Add methods to user schema
+userSchema.methods.generateAuthToken = async function () {
+  const token = jwt.sign(
+    { _id: this._id, role: this.role },
+    process.env.JWT_SECRET
+  );
+  this.tokens = this.tokens.concat({ token });
+  await this.save();
+  return token;
+};
 
-
-
-// import mongoose from 'mongoose';
-
-// const userSchema = new mongoose.Schema({
-//   email: { 
-//     type: String, 
-//     required: true, 
-//     unique: true,
-//     trim: true,
-//     lowercase: true
-//   },
-//   password: { type: String, required: true },
-//   role: { 
-//     type: String, 
-//     enum: ['user', 'consultant', 'admin'], 
-//     default: 'consultant' 
-//   },
-//   createdAt: { type: Date, default: Date.now }
-// });
-
-// const User = mongoose.model('User', userSchema);
-// export default User;
+const User = mongoose.model("User", userSchema);
+export default User;

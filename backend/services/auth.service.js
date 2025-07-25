@@ -2,21 +2,19 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Consultant from "../models/Consultant.js";
-import { USER_ROLES, ACCOUNT_STATUS } from "../config/constants.js";
+import { ROLES } from "../config/roles.js";
 
-// Generate JWT Token
-const generateToken = (id, role) => {
-  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
+const generateToken = (userId, role) => {
+  return jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
   });
 };
 
-// Register new consultant
 export const registerConsultant = async (userData, files) => {
   // Check if user exists
-  const userExists = await User.findOne({ email: userData.email });
-  if (userExists) {
-    throw new Error("User already exists");
+  const existingUser = await User.findOne({ email: userData.email });
+  if (existingUser) {
+    throw new Error("Email already registered");
   }
 
   // Hash password
@@ -27,44 +25,41 @@ export const registerConsultant = async (userData, files) => {
   const user = await User.create({
     email: userData.email,
     password: hashedPassword,
-    role: USER_ROLES.CONSULTANT,
+    role: ROLES.CONSULTANT,
   });
 
   // Create consultant profile
-  const consultantData = {
-    ...userData,
+  const consultant = await Consultant.create({
     userId: user._id,
+    fullName: userData.fullName,
+    contactNumber: userData.contactNumber,
+    designation: userData.designation,
+    industry: userData.industry,
+    skills: userData.skills,
+    fee: userData.fee,
+    about: userData.about,
     avatar: files.avatar?.[0]?.path,
     resume: files.resume?.[0]?.path,
     certifications: files.certifications?.map((file, index) => ({
       name: userData.certificationNames[index],
       file: file.path,
     })),
-  };
-
-  delete consultantData.password;
-  delete consultantData.certificationNames;
-
-  await Consultant.create(consultantData);
+  });
 
   return {
     id: user._id,
     email: user.email,
     role: user.role,
-    status: user.status,
+    token: generateToken(user._id, user.role),
+    consultantId: consultant._id,
   };
 };
 
-// Authenticate user
-export const loginUser = async (email, password) => {
-  const user = await User.findOne({ email });
+export const loginConsultant = async (email, password) => {
+  const user = await User.findOne({ email, role: ROLES.CONSULTANT });
 
   if (!user) {
     throw new Error("Invalid credentials");
-  }
-
-  if (user.status !== ACCOUNT_STATUS.APPROVED) {
-    throw new Error("Account not approved");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -72,10 +67,16 @@ export const loginUser = async (email, password) => {
     throw new Error("Invalid credentials");
   }
 
+  const consultant = await Consultant.findOne({ userId: user._id });
+  if (!consultant) {
+    throw new Error("Consultant profile not found");
+  }
+
   return {
     id: user._id,
     email: user.email,
     role: user.role,
+    consultantId: consultant._id,
     token: generateToken(user._id, user.role),
   };
 };
