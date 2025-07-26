@@ -15,8 +15,8 @@ import QueryInbox from './QueryInbox';
 import SessionDetails from './SessionDetails';
 import EarningsTransactions from './EarningsTransactions';
 import ConsultantRegistration from './ConsultantRegistration';
-import ConsultantProfile from './ConsultantProfile';
-import NotificationPage from './NotificationPage';
+import ConsultantProfile from '../components/common/Profile';
+import NotificationPage from '../components/common/NotificationPage';
 
 
 const ProfilePath = '/consultant-dashboard/profile';

@@ -1,7 +1,5 @@
-import React from 'react'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
-import Navbar from './components/Navbar'
 import { Route, Router, Routes } from 'react-router-dom'
 import Home from './components/Home'
 import About from './components/pages/web/About'
@@ -10,10 +8,8 @@ import Consultant from './components/pages/web/Consultant'
 import HowItWorks from './components/pages/web/HowWork'
 import Contact from './components/pages/web/Contact'
 
-import UserDashboard from './user/Dashboard'
-import ConsultantProfile from './consultant/ConsultantProfile'
-import SubmitQueryForm from './user/SubmitQueryForm'
 import ConsultantDashboard from './consultant/Dashboard'
+import AdminDashboard from './admin/AdminDashboard'
 
 const App = () => {
   return (
@@ -29,7 +25,7 @@ const App = () => {
         <Route path='/consultants' element={<Consultant />} />
         <Route path='/how-it-works' element={<HowItWorks />} />
         <Route path='/contact' element={<Contact />} />
-
+        <Route path='/admin-dashboard/*' element={<AdminDashboard/>} />
         <Route path='/consultant-dashboard/*' element={<ConsultantDashboard/>} />
         
 
