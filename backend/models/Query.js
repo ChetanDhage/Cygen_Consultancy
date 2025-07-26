@@ -1,28 +1,42 @@
 import mongoose from "mongoose";
 
-const querySchema = new mongoose.Schema({
-  consultantId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Consultant",
-    required: true,
+const querySchema = new mongoose.Schema(
+  {
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    consultant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    subject: {
+      type: String,
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["new", "accepted", "rejected", "completed"],
+      default: "new",
+    },
+    feeProposed: Number,
+    documents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Document",
+      },
+    ],
+    session: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session",
+    },
   },
-  clientId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  title: { type: String, required: true },
-  description: String,
-  proposedFee: Number,
-  duration: Number, // in minutes
-  attachments: [String],
-  status: {
-    type: String,
-    enum: ["new", "accepted", "rejected", "pending"],
-    default: "new",
-  },
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
-const Query = mongoose.model("Query", querySchema);
-export default Query;
+export default mongoose.model("Query", querySchema);

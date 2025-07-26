@@ -1,19 +1,19 @@
 import express from "express";
 import {
-  getProfile,
-  updateProfile,
-  updateCertifications,
-  updateAvailability,
+  getAllConsultants,
+  updateConsultantProfile,
 } from "../controllers/consultant.controller.js";
-import { auth } from "../middleware/auth.js";
+import { protect } from "../middleware/auth.js";
+import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-router.use(auth);
-
-router.get("/profile/:id", getProfile);
-router.put("/profile/:id", updateProfile);
-router.put("/certifications/:id", updateCertifications);
-router.put("/availability/:id", updateAvailability);
+router.get("/", getAllConsultants);
+router.put(
+  "/profile",
+  protect,
+  upload.array("certifications", 10),
+  updateConsultantProfile
+);
 
 export default router;

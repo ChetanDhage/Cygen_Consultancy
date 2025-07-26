@@ -1,19 +1,17 @@
 import express from "express";
 import {
-  createSession,
-  getSessions,
+  getConsultantSessions,
   getSessionDetails,
-  updateSession,
+  createFollowUpSession,
 } from "../controllers/session.controller.js";
-import { auth } from "../middleware/auth.js";
+import { protect, consultant } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(auth);
+router.use(protect, consultant);
 
-router.post("/", createSession);
-router.get("/", getSessions);
+router.get("/", getConsultantSessions);
 router.get("/:id", getSessionDetails);
-router.put("/:id", updateSession);
+router.post("/follow-up", createFollowUpSession);
 
 export default router;

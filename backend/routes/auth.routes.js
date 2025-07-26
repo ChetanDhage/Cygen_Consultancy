@@ -1,17 +1,29 @@
 import express from "express";
-import { register, login } from "../controllers/auth.controller.js";
-import { handleFileUpload } from "../middleware/upload.js";
+import {
+  register,
+  registerConsultant,
+  login,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+} from "../controllers/auth.controller.js";
+import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-// Consultant registration route
+router.post("/register", register);
 router.post(
-  "/signup/consultant",
-  handleFileUpload(["avatar", "resume", "certificationFiles"]),
-  register
+  "/register/consultant",
+  upload.fields([
+    { name: "profilePhoto", maxCount: 1 },
+    { name: "resume", maxCount: 1 },
+    { name: "certifications", maxCount: 5 },
+  ]),
+  registerConsultant
 );
-
-// Login route
 router.post("/login", login);
+router.get("/verify/:token", verifyEmail);
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password/:token", resetPassword);
 
 export default router;

@@ -1,87 +1,71 @@
 import Consultant from "../models/Consultant.js";
+import User from "../models/User.js";
+import { uploadToCloudinary } from "../config/cloudinary.js";
+import { notFoundError } from "../utils/helpers.js";
 
-export const getProfile = async (req, res) => {
+// Get all consultants
+export const getAllConsultants = async (req, res, next) => {
   try {
-    const consultant = await Consultant.findById(req.params.id);
-    if (!consultant) {
-      return res.status(404).json({ error: "Consultant not found" });
-    }
-    res.json(consultant);
+    const { category, minRating, maxFee, experience } = req.query;
+
+    const filter = { status: "approved" };
+    if (category) filter.industry = category;
+    if (maxFee) filter.fee = { $lte: maxFee };
+    if (experience) filter.yearsOfExperience = { $gte: experience };
+
+    const consultants = await Consultant.find(filter)
+      .populate("user", "name email")
+      .select("-certifications -resume");
+
+    res.json(consultants);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-export const updateProfile = async (req, res) => {
+// Update consultant profile
+export const updateConsultantProfile = async (req, res, next) => {
   try {
-    const updates = Object.keys(req.body);
-    const allowedUpdates = [
-      "fullName",
-      "contactNumber",
-      "location",
-      "designation",
-      "currentCompany",
-      "industry",
-      "skills",
-      "languages",
-      "fee",
-      "about",
-      "availability",
-    ];
-
-    const isValidOperation = updates.every((update) =>
-      allowedUpdates.includes(update)
-    );
-
-    if (!isValidOperation) {
-      return res.status(400).json({ error: "Invalid updates!" });
-    }
-
-    const consultant = await Consultant.findById(req.params.id);
+    const consultant = await Consultant.findOne({ user: req.user._id });
 
     if (!consultant) {
-      return res.status(404).json({ error: "Consultant not found" });
+      return notFoundError("Consultant profile not found", res);
     }
 
-    updates.forEach((update) => (consultant[update] = req.body[update]));
-    await consultant.save();
+    const {
+      contactNumber,
+      location,
+      linkedInProfile,
+      yearsOfExperience,
+      fee,
+      about,
+      skills,
+    } = req.body;
 
-    res.json(consultant);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+    if (contactNumber) consultant.contactNumber = contactNumber;
+    if (location) consultant.location = location;
+    if (linkedInProfile) consultant.linkedInProfile = linkedInProfile;
+    if (yearsOfExperience) consultant.yearsOfExperience = yearsOfExperience;
+    if (fee) consultant.fee = fee;
+    if (about) consultant.about = about;
+    if (skills)
+      consultant.skills = skills.split(",").map((skill) => skill.trim());
 
-export const updateCertifications = async (req, res) => {
-  try {
-    const consultant = await Consultant.findById(req.params.id);
-
-    if (!consultant) {
-      return res.status(404).json({ error: "Consultant not found" });
+    // Handle certifications
+    if (req.files?.certifications) {
+      for (const file of req.files.certifications) {
+        const result = await uploadToCloudinary(file.path);
+        consultant.certifications.push({
+          name: file.originalname,
+          fileUrl: result.secure_url,
+          fileId: result.public_id,
+        });
+      }
     }
 
-    consultant.certifications = req.body.certifications;
     await consultant.save();
-
     res.json(consultant);
   } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-export const updateAvailability = async (req, res) => {
-  try {
-    const consultant = await Consultant.findById(req.params.id);
-
-    if (!consultant) {
-      return res.status(404).json({ error: "Consultant not found" });
-    }
-
-    consultant.availability = req.body.availability;
-    await consultant.save();
-
-    res.json(consultant);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };

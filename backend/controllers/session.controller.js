@@ -1,58 +1,64 @@
 import Session from "../models/Session.js";
+import { notFoundError } from "../utils/helpers.js";
 
-export const createSession = async (req, res) => {
+// Get consultant sessions
+export const getConsultantSessions = async (req, res, next) => {
   try {
-    const session = new Session({
-      ...req.body,
-      consultantId: req.consultant._id,
-    });
-
-    await session.save();
-    res.status(201).json(session);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-export const getSessions = async (req, res) => {
-  try {
-    const sessions = await Session.find({
-      consultantId: req.consultant._id,
-    }).sort({ startTime: -1 });
+    const sessions = await Session.find({ consultant: req.user._id })
+      .populate("customer", "name email")
+      .sort({ date: -1 });
 
     res.json(sessions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-export const getSessionDetails = async (req, res) => {
+// Get session details
+export const getSessionDetails = async (req, res, next) => {
   try {
-    const session = await Session.findById(req.params.id);
+    const session = await Session.findById(req.params.id)
+      .populate("customer", "name email")
+      .populate("documents")
+      .populate("followUpSessions");
 
     if (!session) {
-      return res.status(404).json({ error: "Session not found" });
+      return notFoundError("Session not found", res);
     }
 
     res.json(session);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-export const updateSession = async (req, res) => {
+// Create follow-up session
+export const createFollowUpSession = async (req, res, next) => {
   try {
-    const session = await Session.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
+    const { parentSessionId, date, duration, type, fee } = req.body;
+
+    const parentSession = await Session.findById(parentSessionId);
+    if (!parentSession) {
+      return notFoundError("Parent session not found", res);
+    }
+
+    const followUpSession = new Session({
+      consultant: parentSession.consultant,
+      customer: parentSession.customer,
+      date,
+      duration,
+      type,
+      fee,
+      status: "scheduled",
     });
 
-    if (!session) {
-      return res.status(404).json({ error: "Session not found" });
-    }
+    await followUpSession.save();
 
-    res.json(session);
+    parentSession.followUpSessions.push(followUpSession._id);
+    await parentSession.save();
+
+    res.status(201).json(followUpSession);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 };

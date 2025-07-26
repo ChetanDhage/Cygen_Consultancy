@@ -1,17 +1,15 @@
 import express from "express";
 import {
-  getQueries,
-  getQueryDetails,
+  getConsultantQueries,
   updateQueryStatus,
 } from "../controllers/query.controller.js";
-import { auth } from "../middleware/auth.js";
+import { protect, consultant } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(auth);
+router.use(protect, consultant);
 
-router.get("/", getQueries);
-router.get("/:id", getQueryDetails);
-router.put("/:id/status", updateQueryStatus);
+router.get("/", getConsultantQueries);
+router.put("/:id", updateQueryStatus);
 
 export default router;

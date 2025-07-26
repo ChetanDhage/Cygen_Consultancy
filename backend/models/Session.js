@@ -1,36 +1,60 @@
 import mongoose from "mongoose";
 
-const sessionSchema = new mongoose.Schema({
-  consultantId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Consultant",
-    required: true,
+const sessionSchema = new mongoose.Schema(
+  {
+    consultant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+    duration: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["scheduled", "completed", "cancelled"],
+      default: "scheduled",
+    },
+    type: {
+      type: String,
+      enum: ["video", "audio", "chat"],
+      required: true,
+    },
+    fee: {
+      type: Number,
+      required: true,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "refunded"],
+      default: "pending",
+    },
+    meetingLink: String,
+    notes: String,
+    documents: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Document",
+      },
+    ],
+    followUpSessions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Session",
+      },
+    ],
   },
-  clientId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  title: { type: String, required: true },
-  description: String,
-  startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
-  duration: Number, // in minutes
-  fee: { type: Number, required: true },
-  status: {
-    type: String,
-    enum: ["scheduled", "completed", "cancelled"],
-    default: "scheduled",
-  },
-  paymentStatus: {
-    type: String,
-    enum: ["pending", "paid", "failed"],
-    default: "pending",
-  },
-  meetingLink: String,
-  documents: [String],
-  createdAt: { type: Date, default: Date.now },
-});
+  { timestamps: true }
+);
 
-const Session = mongoose.model("Session", sessionSchema);
-export default Session;
+export default mongoose.model("Session", sessionSchema);
