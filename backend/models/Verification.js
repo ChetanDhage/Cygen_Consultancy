@@ -1,6 +1,6 @@
 // models/Verification.js
 import mongoose from "mongoose";
-import { VERIFICATION_STATUS } from "../config/constants.js"; // Import the constant
+import { VERIFICATION_STATUS } from "../config/constants.js";
 
 const verificationSchema = new mongoose.Schema(
   {
@@ -19,7 +19,7 @@ const verificationSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: Object.values(VERIFICATION_STATUS), // Now properly defined
+      enum: Object.values(VERIFICATION_STATUS),
       default: VERIFICATION_STATUS.PENDING,
     },
     reviewedBy: {

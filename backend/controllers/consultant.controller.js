@@ -1,29 +1,13 @@
+// controllers/consultant.controller.js
 import Consultant from "../models/Consultant.js";
 import User from "../models/User.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
+import {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+} from "../config/cloudinary.js";
 import { notFoundError } from "../utils/helpers.js";
 
-// Get all consultants
-export const getAllConsultants = async (req, res, next) => {
-  try {
-    const { category, minRating, maxFee, experience } = req.query;
-
-    const filter = { status: "approved" };
-    if (category) filter.industry = category;
-    if (maxFee) filter.fee = { $lte: maxFee };
-    if (experience) filter.yearsOfExperience = { $gte: experience };
-
-    const consultants = await Consultant.find(filter)
-      .populate("user", "name email")
-      .select("-certifications -resume");
-
-    res.json(consultants);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Update consultant profile
+// Update consultant profile (including certifications)
 export const updateConsultantProfile = async (req, res, next) => {
   try {
     const consultant = await Consultant.findOne({ user: req.user._id });
@@ -32,24 +16,11 @@ export const updateConsultantProfile = async (req, res, next) => {
       return notFoundError("Consultant profile not found", res);
     }
 
-    const {
-      contactNumber,
-      location,
-      linkedInProfile,
-      yearsOfExperience,
-      fee,
-      about,
-      skills,
-    } = req.body;
+    const { yearsOfExperience, specialization } = req.body;
 
-    if (contactNumber) consultant.contactNumber = contactNumber;
-    if (location) consultant.location = location;
-    if (linkedInProfile) consultant.linkedInProfile = linkedInProfile;
+    // Update fields
     if (yearsOfExperience) consultant.yearsOfExperience = yearsOfExperience;
-    if (fee) consultant.fee = fee;
-    if (about) consultant.about = about;
-    if (skills)
-      consultant.skills = skills.split(",").map((skill) => skill.trim());
+    if (specialization) consultant.specialization = specialization;
 
     // Handle certifications
     if (req.files?.certifications) {
@@ -58,12 +29,67 @@ export const updateConsultantProfile = async (req, res, next) => {
         consultant.certifications.push({
           name: file.originalname,
           fileUrl: result.secure_url,
-          fileId: result.public_id,
+          publicId: result.public_id,
         });
       }
     }
 
     await consultant.save();
+
+    // Get updated consultant profile with user data
+    const updatedConsultant = await Consultant.findById(
+      consultant._id
+    ).populate("user", "name email contactNumber");
+
+    res.json({
+      message: "Profile updated successfully",
+      consultant: updatedConsultant,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Remove a certification
+export const removeCertification = async (req, res, next) => {
+  try {
+    const { certificationId } = req.params;
+    const consultant = await Consultant.findOne({ user: req.user._id });
+
+    if (!consultant) {
+      return notFoundError("Consultant profile not found", res);
+    }
+
+    // Find the certification
+    const certification = consultant.certifications.id(certificationId);
+    if (!certification) {
+      return notFoundError("Certification not found", res);
+    }
+
+    // Delete from Cloudinary
+    await deleteFromCloudinary(certification.publicId);
+
+    // Remove from array
+    consultant.certifications.pull(certificationId);
+    await consultant.save();
+
+    res.json({ message: "Certification removed successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get consultant profile
+export const getConsultantProfile = async (req, res, next) => {
+  try {
+    const consultant = await Consultant.findOne({ user: req.user._id })
+      .populate("user", "name email contactNumber profilePhoto")
+      .populate("verification");
+
+    if (!consultant) {
+      return notFoundError("Consultant profile not found", res);
+    }
+
     res.json(consultant);
   } catch (error) {
     next(error);

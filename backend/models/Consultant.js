@@ -1,4 +1,6 @@
+// models/Consultant.js
 import mongoose from "mongoose";
+import { CONSULTANT_STATUS, WORK_MODES } from "../config/constants.js";
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -25,65 +27,27 @@ const consultantSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    dateOfBirth: Date,
-    contactNumber: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
-    linkedInProfile: String,
-    designation: {
-      type: String,
-      required: true,
-    },
-    currentCompany: String,
-    industry: {
-      type: String,
-      required: true,
-    },
-    skills: {
-      type: [String],
-      required: true,
-    },
-    languages: [String],
-    fee: {
-      type: Number,
-      required: true,
-    },
-    workMode: {
-      type: String,
-      enum: ["remote", "onsite", "hybrid"],
-      default: "remote",
-    },
-    about: {
-      type: String,
-      required: true,
-    },
-    resume: {
-      url: String,
-      publicId: String,
-    },
-    certifications: [certificationSchema],
     yearsOfExperience: {
       type: Number,
       required: true,
     },
+    contactNumber: {
+      type: String,
+      required: true,
+    },
+    specialization: {
+      type: String,
+      required: true,
+    },
+    certifications: [certificationSchema],
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
+      enum: Object.values(CONSULTANT_STATUS),
+      default: CONSULTANT_STATUS.PENDING,
     },
-    rejectionReason: String,
-    availability: {
-      type: [
-        {
-          day: String,
-          slots: [String],
-        },
-      ],
+    verification: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Verification",
     },
   },
   {
@@ -93,7 +57,7 @@ const consultantSchema = new mongoose.Schema(
   }
 );
 
-// Add virtual for average rating (if implementing reviews)
+// Add virtual for average rating
 consultantSchema.virtual("averageRating").get(function () {
   // Implementation would depend on your review system
   return 4.5; // Example value
