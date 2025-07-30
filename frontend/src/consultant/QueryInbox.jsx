@@ -9,7 +9,7 @@ const queries = [
         title: 'Financial planning for startup',
         status: 'New',
         initials: 'AR',
-        color: 'bg-blue-100 text-blue-500',
+        color: 'bg-blue-100 text-primary',
     },
     {
         id: 2,
@@ -76,7 +76,7 @@ const QueryInbox = () => {
                                 <p className="text-gray-400 my-1">{query.time}</p>
                                 <span
                                     className={`text-xs font-medium px-2 py-0.5 my-1 rounded-full ${query.status === 'New'
-                                        ? 'bg-blue-100 text-blue-500'
+                                        ? 'bg-blue-100 text-primary'
                                         : query.status === 'Accepted'
                                             ? 'bg-green-100 text-green-600'
                                             : query.status === 'Pending'

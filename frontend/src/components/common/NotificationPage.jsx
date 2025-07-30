@@ -84,7 +84,7 @@ const NotificationPage = () => {
 
   const getIconByType = (type) => {
     switch (type) {
-      case 'request': return <FiBell className="text-blue-500 text-xl" />;
+      case 'request': return <FiBell className="text-primary text-xl" />;
       case 'reminder': return <FiClock className="text-yellow-500 text-xl" />;
       case 'payment': return <FiCheck className="text-green-500 text-xl" />;
       case 'alert': return <FiAlertCircle className="text-red-500 text-xl" />;

@@ -49,23 +49,6 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="flex items-center my-6">
-          {/* <hr className="flex-grow border-gray-300" />
-          <span className="mx-4 text-gray-400 text-sm">Or continue with</span>
-          <hr className="flex-grow border-gray-300" /> */}
-        </div>
-
-        {/* <div className="flex justify-between space-x-3">
-          <button className="flex-1 border border-gray-300 rounded-md p-2 flex items-center justify-center hover:bg-gray-100">
-            <FaGoogle className="text-red-500 text-xl" />
-          </button>
-          <button className="flex-1 border border-gray-300 rounded-md p-2 flex items-center justify-center hover:bg-gray-100">
-            <FaGithub className="text-gray-500 text-xl" />
-          </button>
-          <button className="flex-1 border border-gray-300 rounded-md p-2 flex items-center justify-center hover:bg-gray-100">
-            <FaLinkedinIn className="text-priamry text-xl" />
-          </button>
-        </div> */}
       </div>
     </div>
   );

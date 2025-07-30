@@ -1,76 +1,110 @@
-import React from 'react';
-import { NavLink, Route, Routes } from 'react-router-dom';
-import { FaUserTie, FaFlag, FaChartBar, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
-import { BsShieldLockFill } from 'react-icons/bs';
+import { useEffect, useState } from 'react';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { FaUserTie, FaFlag, FaChartBar, FaCalendarAlt, FaCheckCircle, FaUser, FaBell } from 'react-icons/fa';
 
 import SubAdminProfile from './SubAdminProfile';
 import SubAdminVerification from './SubAdminVerification';
 import SubAdminModeration from './SubAdminModeration';
 import SubAdminAnalytics from './SubAdminAnalytics';
 import DashboardOverview from './DashboardOverview';
+import MenuItem from '../components/common/MenuItem';
+import NotificationPage from '../components/common/NotificationPage';
+
+const ProfilePath = '/subadmin-dashboard/profile';
+const NotificationPath = '/subadmin-dashboard/notification';
 
 const SubAdminDashboard = () => {
+  const [params, setParams] = useState();
+  const para = useParams();
+  useEffect(() => {
+    setParams(para['*']);
+    console.log(params);
+  }, [para]);
+
+  const menuItems = [
+    {
+      icon: <FaCalendarAlt />,
+      label: 'Dashboard',
+      path: "/subadmin-dashboard/",
+      active: params === "" ? true : false
+    },
+    {
+      icon: <FaUserTie />,
+      label: 'Consultant Verifications',
+      // badge: 3,
+      path: "/subadmin-dashboard/verification",
+      active: params === "verification" ? true : false
+    },
+    {
+      icon: <FaFlag />,
+      label: ' Content Moderation',
+      path: "/subadmin-dashboard/moderation",
+      active: params === "moderation" ? true : false
+    },
+    {
+      icon: <FaChartBar />,
+      label: 'Domain Analytics',
+      path: "/subadmin-dashboard/analytics",
+      active: params === "analytics" ? true : false
+    },
+  ];
+
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex overscroll-auto">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md flex flex-col justify-between">
+      <aside className="lg:flex hidden w-64 bg-white shadow-md p-6 flex-col justify-between min-h-screen">
         <div>
-          {/* Logo & Title */}
-          <div className="flex items-center px-6 py-4 border-b">
-            <BsShieldLockFill className="text-blue-600 text-2xl mr-2" />
-            <div>
-              <h1 className="text-xl font-bold">CyGen</h1>
-              <p className="text-sm text-gray-500">Sub-admin Portal</p>
+          <h1 className="text-2xl font-bold text-primary mb-8">Cygen</h1>
+          <nav className="space-y-2">
+            <button className="flex items-center gap-3 text-primary font-semibold mb-4">
+              <span className=" bg-primaryLight p-2 rounded-md">
+                <FaUser className="w-5 h-5" />
+              </span>
+              Dashboard
+            </button>
+
+            <div className=' w-[210px] overflow-hidden '>
+              {menuItems.map((item, idx) => (
+                <MenuItem
+                  key={idx}
+                  icon={item.icon}
+                  label={item.label}
+                  badge={item.badge}
+                  path={item.path}
+                  active={item.active}
+                />
+              ))}
             </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex flex-col mt-4 px-4 space-y-2 text-gray-700">
-            <NavLink to="/" end className="flex items-center gap-3 p-2 rounded hover:bg-gray-200">
-              <FaUserCircle /> Dashboard
-            </NavLink>
-
-            <NavLink to="verification" className="flex items-center justify-between p-2 rounded hover:bg-gray-200">
-              <div className="flex items-center gap-3"><FaUserTie /> Consultant Verifications</div>
-              <span className="text-xs bg-yellow-500 text-white px-2 py-0.5 rounded-full">12</span>
-            </NavLink>
-
-            <NavLink to="moderation" className="flex items-center justify-between p-2 rounded hover:bg-gray-200">
-              <div className="flex items-center gap-3"><FaFlag /> Content Moderation</div>
-              <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">5</span>
-            </NavLink>
-
-            <NavLink to="analytics" className="flex items-center gap-3 p-2 rounded hover:bg-gray-200">
-              <FaChartBar /> Domain Analytics
-            </NavLink>
           </nav>
         </div>
 
-        {/* Profile & Logout */}
-        <div className="px-4 py-4 border-t">
-          <NavLink to="profile" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded text-gray-700">
-            <FaUserCircle /> Profile
-          </NavLink>
-          <NavLink to="/" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded text-red-600">
-            <FaSignOutAlt /> Logout
-          </NavLink>
+        <div className="flex flex-col ">
+          <div className=' flex gap-4'>
+            <Link to={ProfilePath}><FaUser className="w-6 h-6 text-primary" title='Profile' /></Link>
+            <Link to={NotificationPath}><FaBell className="w-6 h-6 text-gray-600" title='Notification' /></Link>
+          </div>
+          <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
+            <p className="text-sm">Need help?</p>
+            <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
+              Contact Support
+            </button>
+          </div>
         </div>
-
-        <p className="text-center text-xs text-gray-400 py-2">CyGen Security Portal v2.2</p>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto p-6">
+      <main className='w-full lg:h-screen lg:overflow-y-scroll p-8'>
         <Routes>
           <Route path="/" element={<DashboardOverview />} />
-          <Route path="profile" element={<SubAdminProfile />} />
-          <Route path="verification" element={<SubAdminVerification />} />
-          <Route path="moderation" element={<SubAdminModeration />} />
-          <Route path="analytics" element={<SubAdminAnalytics />} />
+          <Route path="/profile" element={<SubAdminProfile />} />
+          <Route path="/notification" element={<NotificationPage />} />
+          <Route path="/verification" element={<SubAdminVerification />} />
+          <Route path="/moderation" element={<SubAdminModeration />} />
+          <Route path="/analytics" element={<SubAdminAnalytics />} />
         </Routes>
+
       </main>
     </div>
   );
 };
-
 export default SubAdminDashboard;

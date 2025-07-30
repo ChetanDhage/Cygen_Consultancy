@@ -10,6 +10,7 @@ import AdminTransaction from './AdminTransaction';
 import AdminVerification from './AdminVerification';
 import AdminAnalysis from './AdminAnalysis';
 import Profile from '../components/common/Profile';
+import MenuItem from '../components/common/MenuItem';
 
 const ProfilePath = '/admin-dashboard/profile';
 const NotificationPath = '/admin-dashboard/notification';
@@ -27,37 +28,37 @@ const AdminDashboard = () => {
         { 
             icon: <FaCalendarAlt />, 
             label: 'Dashboard', 
-            path: "/", 
+            path: "/admin-dashboard/", 
             active: params === "" ? true : false 
         },
         { 
             icon: <FaUserFriends />, 
             label: 'Consultant', 
-            badge: 3, path: "/consultant", 
+            badge: 3, path: "/admin-dashboard/consultant", 
             active: params === "consultant" ? true : false 
         },
         { 
             icon: <FaUser/>, 
             label: 'Customer', 
-            badge: 3, path: "/customer", 
+            badge: 3, path: "/admin-dashboard/customer", 
             active: params === "customer" ? true : false 
         },
         { 
             icon: <FaCheckCircle />, 
             label: 'Verification', 
-            path: "/verification", 
+            path: "/admin-dashboard/verification", 
             active: params === "verification" ? true : false 
         },
         { 
             icon: <FaDollarSign />, 
             label: 'Trasaction', 
-            path: "/trasaction", 
+            path: "/admin-dashboard/trasaction", 
             active: params === "trasaction" ? true : false 
         },
         { 
             icon: <FaUserFriends />, 
             label: 'Analysis', 
-            path: "/analysis", 
+            path: "/admin-dashboard/analysis", 
             active: params === "analysis" ? true : false 
         },
     ];
@@ -123,25 +124,3 @@ const AdminDashboard = () => {
     );
 };
 export default AdminDashboard;
-
-// Reusable MenuItem component
-const MenuItem = ({ icon, label, badge, path, active }) => {
-    return (
-        <Link to={`/admin-dashboard${path}`}>
-            <div
-                className={`flex items-center justify-between p-2 my-2 rounded-lg cursor-pointer ${active ? 'bg-primaryLight font-semibold' : 'hover:bg-gray-100'
-                    }`}
-            >
-                <div className="flex items-center gap-3 text-sm">
-                    <div className="text-gray-600">{icon}</div>
-                    <span>{label}</span>
-                </div>
-                {badge && (
-                    <span className="bg-primary text-white text-sm px-2 rounded-full">
-                        {badge}
-                    </span>
-                )}
-            </div>
-        </Link>
-    );
-};

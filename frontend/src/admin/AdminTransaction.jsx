@@ -108,7 +108,7 @@ const AdminTransaction = () => {
                   </span>
                 </td>
                 <td className="flex gap-3">
-                  <AiOutlineEye className="text-blue-500 cursor-pointer" />
+                  <AiOutlineEye className="text-primary cursor-pointer" />
                   <FiCheck className="text-green-500 cursor-pointer" />
                   <FiX className="text-red-500 cursor-pointer" />
                 </td>
