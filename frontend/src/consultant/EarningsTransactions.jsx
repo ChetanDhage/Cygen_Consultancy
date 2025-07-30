@@ -70,7 +70,7 @@ const EarningsTransactions = () => {
                 <p className="text-gray-600 text-sm">Total Earnings</p>
                 <h3 className="text-2xl font-bold text-gray-600">$8,450</h3>
               </div>
-              <FaMoneyBillWave className="text-blue-500 text-2xl" />
+              <FaMoneyBillWave className="text-primary text-2xl" />
             </div>
           </div>
 

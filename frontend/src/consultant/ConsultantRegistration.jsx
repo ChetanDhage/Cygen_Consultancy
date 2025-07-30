@@ -128,7 +128,7 @@ const ConsultantRegistration = () => {
                 {file.type === "pdf" ? (
                   <FaFilePdf className="text-red-500 mr-2" />
                 ) : (
-                  <FaFileImage className="text-blue-500 mr-2" />
+                  <FaFileImage className="text-primary mr-2" />
                 )}
                 <span className="text-gray-500">{file.name}</span>
               </div>

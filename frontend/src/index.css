@@ -21,6 +21,7 @@ html {
 
 td{
   padding: 10px 0px;
+  font-size: 14px;
 }
 
 @layer components {

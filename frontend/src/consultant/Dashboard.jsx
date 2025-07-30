@@ -17,6 +17,7 @@ import EarningsTransactions from './EarningsTransactions';
 import ConsultantRegistration from './ConsultantRegistration';
 import ConsultantProfile from '../components/common/Profile';
 import NotificationPage from '../components/common/NotificationPage';
+import MenuItem from '../components/common/MenuItem';
 
 
 const ProfilePath = '/consultant-dashboard/profile';
@@ -32,11 +33,11 @@ const ConsultantDashboard = () => {
   }, [para]);
 
   const menuItems = [
-    { icon: <FaCalendarAlt />, label: 'Scheduled Sessions', path: "/", active: params === "" ? true : false},
-    { icon: <FaTasks />, label: 'Query Inbox', badge: 3, path: "/query-inbox", active: params === "query-inbox" ? true : false },
-    { icon: <FaUserFriends />, label: 'Session Data', path: "/session-data", active: params === "session-data" ? true : false},
-    { icon: <FaDollarSign />, label: 'Earnings', path: "/earning", active: params === "earning" ? true : false },
-    { icon: <FaCheckCircle />, label: 'Verification', path: "/verification", active: params === "verification" ? true : false },
+    { icon: <FaCalendarAlt />, label: 'Scheduled Sessions', path: "/consultant-dashboard/", active: params === "" ? true : false},
+    { icon: <FaTasks />, label: 'Query Inbox', badge: 3, path: "/consultant-dashboard/query-inbox", active: params === "query-inbox" ? true : false },
+    { icon: <FaUserFriends />, label: 'Session Data', path: "/consultant-dashboard/session-data", active: params === "session-data" ? true : false},
+    { icon: <FaDollarSign />, label: 'Earnings', path: "/consultant-dashboard/earning", active: params === "earning" ? true : false },
+    { icon: <FaCheckCircle />, label: 'Verification', path: "/consultant-dashboard/verification", active: params === "verification" ? true : false },
   ];
 
   return (
@@ -101,25 +102,3 @@ const ConsultantDashboard = () => {
 };
 
 export default ConsultantDashboard;
-
-// Reusable MenuItem component
-const MenuItem = ({ icon, label, badge, path, active}) => {
-  return (
-    <Link to={`/consultant-dashboard${path}`}>
-      <div
-        className={`flex items-center justify-between p-2 my-2 rounded-lg cursor-pointer ${active ? 'bg-primaryLight font-semibold' : 'hover:bg-gray-100'
-          }`}
-      >
-        <div className="flex items-center gap-3 text-sm">
-          <div className="text-gray-600">{icon}</div>
-          <span>{label}</span>
-        </div>
-        {badge && (
-          <span className="bg-primary text-white text-sm px-2 rounded-full">
-            {badge}
-          </span>
-        )}
-      </div>
-    </Link>
-  );
-};

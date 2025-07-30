@@ -72,7 +72,7 @@ const SubAdminProfile = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+                className="w-full mt-1 p-2 border rounded focus:outline-primary"
               />
             </div>
             <div>
@@ -82,7 +82,7 @@ const SubAdminProfile = () => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+                className="w-full mt-1 p-2 border rounded focus:outline-primary"
               />
             </div>
           </div>
@@ -94,7 +94,7 @@ const SubAdminProfile = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+              className="w-full mt-1 p-2 border rounded focus:outline-primary"
             />
           </div>
 
@@ -105,7 +105,7 @@ const SubAdminProfile = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+              className="w-full mt-1 p-2 border rounded focus:outline-primary"
             />
           </div>
 
@@ -116,7 +116,7 @@ const SubAdminProfile = () => {
               value={formData.bio}
               onChange={handleChange}
               rows={4}
-              className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+              className="w-full mt-1 p-2 border rounded focus:outline-primary"
             />
           </div>
 
@@ -140,7 +140,7 @@ const SubAdminProfile = () => {
                 name="currentPassword"
                 value={passwordData.currentPassword}
                 onChange={handlePasswordChange}
-                className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+                className="w-full mt-1 p-2 border rounded focus:outline-primary"
               />
             </div>
 
@@ -152,7 +152,7 @@ const SubAdminProfile = () => {
                   name="newPassword"
                   value={passwordData.newPassword}
                   onChange={handlePasswordChange}
-                  className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+                  className="w-full mt-1 p-2 border rounded focus:outline-primary"
                 />
               </div>
               <div>
@@ -162,7 +162,7 @@ const SubAdminProfile = () => {
                   name="confirmPassword"
                   value={passwordData.confirmPassword}
                   onChange={handlePasswordChange}
-                  className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
+                  className="w-full mt-1 p-2 border rounded focus:outline-primary"
                 />
               </div>
             </div>

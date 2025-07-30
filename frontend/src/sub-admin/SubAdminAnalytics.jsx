@@ -15,7 +15,7 @@ const SubAdminAnalytics = () => {
             <p className="text-sm text-gray-500 mb-1">Total Sessions</p>
             <h2 className="text-2xl font-bold text-gray-800">142</h2>
           </div>
-          <FaComments className="text-3xl text-blue-500" />
+          <FaComments className="text-3xl text-primary" />
         </div>
 
         {/* Avg Rating */}
