@@ -8,23 +8,23 @@ import {
 import { notFoundError } from "../utils/helpers.js";
 
 // Update consultant profile (including certifications)
+// Also updates contactNumber, which is required
 export const updateConsultantProfile = async (req, res, next) => {
   try {
     const consultant = await Consultant.findOne({ user: req.user._id });
-
     if (!consultant) {
       return notFoundError("Consultant profile not found", res);
     }
 
-    const { yearsOfExperience, specialization } = req.body;
+    const { yearsOfExperience, specialization, contactNumber } = req.body;
 
-    // Update fields
     if (yearsOfExperience) consultant.yearsOfExperience = yearsOfExperience;
     if (specialization) consultant.specialization = specialization;
+    if (contactNumber) consultant.contactNumber = contactNumber;
 
-    // Handle certifications
-    if (req.files?.certifications) {
-      for (const file of req.files.certifications) {
+    // Handle certifications - Multer assigns files to req.files
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
         const result = await uploadToCloudinary(file.path);
         consultant.certifications.push({
           name: file.originalname,
@@ -36,10 +36,9 @@ export const updateConsultantProfile = async (req, res, next) => {
 
     await consultant.save();
 
-    // Get updated consultant profile with user data
-    const updatedConsultant = await Consultant.findById(
-      consultant._id
-    ).populate("user", "name email contactNumber");
+    const updatedConsultant = await Consultant.findById(consultant._id)
+      .populate("user", "name email contactNumber")
+      .populate("verification");
 
     res.json({
       message: "Profile updated successfully",
@@ -60,16 +59,13 @@ export const removeCertification = async (req, res, next) => {
       return notFoundError("Consultant profile not found", res);
     }
 
-    // Find the certification
     const certification = consultant.certifications.id(certificationId);
     if (!certification) {
       return notFoundError("Certification not found", res);
     }
 
-    // Delete from Cloudinary
     await deleteFromCloudinary(certification.publicId);
 
-    // Remove from array
     consultant.certifications.pull(certificationId);
     await consultant.save();
 
