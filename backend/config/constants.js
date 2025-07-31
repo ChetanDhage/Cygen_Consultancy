@@ -3,6 +3,7 @@ export const USER_ROLES = {
   CUSTOMER: "customer",
   CONSULTANT: "consultant",
   ADMIN: "admin",
+  SUB_ADMIN: "sub-admin",
 };
 
 export const CONSULTANT_STATUS = {

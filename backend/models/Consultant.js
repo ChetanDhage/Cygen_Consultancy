@@ -1,6 +1,5 @@
-// models/Consultant.js
 import mongoose from "mongoose";
-import { CONSULTANT_STATUS, WORK_MODES } from "../config/constants.js";
+import { CONSULTANT_STATUS } from "../config/constants.js";
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -27,17 +26,41 @@ const consultantSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    designation: {
+      type: String,
+      required: true,
+    },
+    company: {
+      type: String,
+      required: true,
+    },
+    industry: {
+      type: String,
+      required: true,
+    },
+    skills: {
+      type: [String],
+      required: true,
+    },
     yearsOfExperience: {
       type: Number,
       required: true,
     },
-    contactNumber: {
+    about: {
       type: String,
       required: true,
     },
-    specialization: {
-      type: String,
+    languages: {
+      type: [String],
       required: true,
+    },
+    expectedFee: {
+      type: Number,
+      required: true,
+    },
+    resume: {
+      url: String,
+      publicId: String,
     },
     certifications: [certificationSchema],
     status: {

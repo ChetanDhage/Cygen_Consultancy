@@ -17,6 +17,7 @@ import queryRoutes from "./routes/query.routes.js";
 import documentRoutes from "./routes/document.routes.js";
 import adminRoutes from "./routes/admin.routes.js"; // Add admin routes
 import { updateDailyAnalytics } from "./utils/analytics.js"; // Import analytics update function
+import { cleanupUploads } from "./middleware/upload.js";
 
 // Configure environment variables
 dotenv.config();
@@ -33,6 +34,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
+app.use(cleanupUploads);
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -47,6 +49,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // API Routes
+
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/consultants", consultantRoutes);

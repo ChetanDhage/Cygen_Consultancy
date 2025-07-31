@@ -1,14 +1,9 @@
 import User from "../models/User.js";
 import Consultant from "../models/Consultant.js";
+import Verification from "../models/Verification.js";
 import generateToken from "../utils/generateToken.js";
-import {
-  sendVerificationEmail,
-  sendPasswordResetEmail,
-} from "../utils/email.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-} from "../config/cloudinary.js";
+import { sendVerificationEmail } from "../utils/email.js";
+import { uploadToCloudinary } from "../config/cloudinary.js";
 import crypto from "crypto";
 
 // @desc    Register a new user
@@ -17,21 +12,25 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
 
+    // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Create user
     const user = await User.create({
       name,
       email,
       password,
-      role: role || "customer",
+      role: role || "user",
     });
 
+    // Generate verification token
     const verificationToken = user.generateVerificationToken();
     await user.save();
 
+    // Send verification email
     await sendVerificationEmail(user, verificationToken, req);
 
     res.status(201).json({
@@ -46,12 +45,13 @@ export const register = async (req, res, next) => {
   }
 };
 
-// @desc    Register as consultant (multi-step)
+// @desc    Register as consultant
 // @route   POST /api/auth/register/consultant
 export const registerConsultant = async (req, res, next) => {
   try {
     // Step 1: Create user account
-    const { email, password, name, contactNumber } = req.body;
+    const { name, email, password, contactNumber, location, linkedInProfile } =
+      req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -64,55 +64,80 @@ export const registerConsultant = async (req, res, next) => {
       password,
       role: "consultant",
       contactNumber,
+      location,
+      linkedInProfile,
     });
 
-    // Step 2: Handle file uploads
+    // Upload profile photo if exists
     let profilePhoto = {};
     if (req.files?.profilePhoto) {
       const result = await uploadToCloudinary(req.files.profilePhoto[0].path);
-      profilePhoto = {
+      user.profilePhoto = {
         url: result.secure_url,
         publicId: result.public_id,
       };
-      user.profilePhoto = profilePhoto;
       await user.save();
     }
 
-    let resume = {};
+    // Step 2: Create consultant profile
+    const consultantData = {
+      user: user._id,
+      designation: req.body.designation,
+      company: req.body.company,
+      industry: req.body.industry,
+      skills: req.body.skills.split(",").map((skill) => skill.trim()),
+      yearsOfExperience: req.body.yearsOfExperience,
+      about: req.body.about,
+      languages: req.body.languages.split(",").map((lang) => lang.trim()),
+      expectedFee: req.body.expectedFee,
+    };
+
+    // Upload resume if exists
     if (req.files?.resume) {
       const result = await uploadToCloudinary(req.files.resume[0].path);
-      resume = {
+      consultantData.resume = {
         url: result.secure_url,
         publicId: result.public_id,
       };
     }
+
+    const consultant = await Consultant.create(consultantData);
 
     // Step 3: Process certifications
     const certifications = [];
     if (req.files?.certifications) {
-      for (const file of req.files.certifications) {
+      for (let i = 0; i < req.files.certifications.length; i++) {
+        const file = req.files.certifications[i];
         const result = await uploadToCloudinary(file.path);
+
+        // Get certification name from body
+        const certName =
+          req.body.certifications?.[i]?.name || file.originalname;
+
         certifications.push({
-          name: file.originalname,
+          name: certName,
           fileUrl: result.secure_url,
           publicId: result.public_id,
         });
       }
     }
 
-    // Step 4: Create consultant profile
-    const consultant = await Consultant.create({
-      user: user._id,
-      contactNumber,
-      ...req.body,
-      resume,
-      certifications,
+    // Create verification record
+    const verification = await Verification.create({
+      consultant: user._id,
+      documents: certifications,
       status: "pending",
     });
 
-    // Send verification email
+    // Associate verification with consultant
+    consultant.verification = verification._id;
+    await consultant.save();
+
+    // Generate verification token for email
     const verificationToken = user.generateVerificationToken();
     await user.save();
+
+    // Send verification email
     await sendVerificationEmail(user, verificationToken, req);
 
     res.status(201).json({
@@ -121,18 +146,6 @@ export const registerConsultant = async (req, res, next) => {
       consultantId: consultant._id,
     });
   } catch (error) {
-    // Clean up uploaded files if error occurs
-    if (req.files?.profilePhoto) {
-      await deleteFromCloudinary(req.files.profilePhoto[0].publicId);
-    }
-    if (req.files?.resume) {
-      await deleteFromCloudinary(req.files.resume[0].publicId);
-    }
-    if (req.files?.certifications) {
-      for (const file of req.files.certifications) {
-        await deleteFromCloudinary(file.publicId);
-      }
-    }
     next(error);
   }
 };
@@ -143,42 +156,37 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    const user = await User.findOne({ email }).select("+password");
 
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    if (!user.isVerified) {
-      return res.status(401).json({
-        message:
-          "Email not verified. Please check your email for verification link.",
-        userId: user._id,
-      });
-    }
-
-    // For consultants, check if their profile is approved
-    if (user.role === "consultant") {
-      const consultant = await Consultant.findOne({ user: user._id });
-      if (!consultant || consultant.status !== "approved") {
-        return res.status(403).json({
-          message: "Your consultant profile is under review or rejected",
+    if (user && (await user.matchPassword(password))) {
+      if (!user.isVerified) {
+        return res.status(401).json({
+          message: "Please verify your email first",
+          userId: user._id,
         });
       }
-    }
 
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token: generateToken(user._id),
-      profilePhoto: user.profilePhoto?.url,
-    });
+      // For consultants, check if their profile is approved
+      if (user.role === "consultant") {
+        const consultant = await Consultant.findOne({ user: user._id });
+        if (!consultant || consultant.status !== "approved") {
+          return res.status(403).json({
+            message: "Your consultant profile is under review",
+          });
+        }
+      }
+
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user._id),
+        profilePhoto: user.profilePhoto?.url,
+      });
+    } else {
+      res.status(401).json({ message: "Invalid email or password" });
+    }
   } catch (error) {
     next(error);
   }

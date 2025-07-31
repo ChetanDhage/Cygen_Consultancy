@@ -1,4 +1,3 @@
-// middleware/upload.js
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,19 +19,19 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    cb(null, `certification-${uniqueSuffix}${ext}`);
+    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  const filetypes = /jpeg|jpg|png|pdf/;
+  const filetypes = /jpe?g|png|pdf/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb(new Error("Only images (JPEG/JPG/PNG) and PDF documents are allowed"));
+    cb(new Error("Only images (JPEG, PNG) and PDF documents are allowed"));
   }
 };
 
@@ -41,7 +40,7 @@ const upload = multer({
   fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
-    files: 5, // Maximum 5 files
+    files: 10, // Maximum 10 files
   },
 });
 

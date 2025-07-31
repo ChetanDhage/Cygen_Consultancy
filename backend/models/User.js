@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,8 +23,16 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["customer", "consultant", "admin"],
-      default: "customer",
+      enum: ["user", "consultant", "admin", "sub-admin"],
+      default: "user",
+      required: true,
+    },
+    contactNumber: String,
+    location: String,
+    linkedInProfile: String,
+    profilePhoto: {
+      url: String,
+      publicId: String,
     },
     isVerified: {
       type: Boolean,
@@ -32,10 +41,6 @@ const userSchema = new mongoose.Schema(
     verificationToken: String,
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-    profilePhoto: {
-      url: String,
-      publicId: String,
-    },
   },
   {
     timestamps: true,
