@@ -82,6 +82,9 @@ export const registerConsultant = async (req, res, next) => {
     // Step 2: Create consultant profile
     const consultantData = {
       user: user._id,
+      name, email,
+      role: user.role,
+      password, contactNumber, location, linkedInProfile,
       designation: req.body.designation,
       company: req.body.company,
       industry: req.body.industry,
@@ -144,6 +147,7 @@ export const registerConsultant = async (req, res, next) => {
       message: "Consultant application submitted. Please verify your email.",
       userId: user._id,
       consultantId: consultant._id,
+      role: user.role,
     });
   } catch (error) {
     next(error);
@@ -158,22 +162,21 @@ export const login = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select("+password");
 
+    // For consultants, check if their profile is approved
+    if (user.role === "consultant") {
+      const consultant = await Consultant.findOne({ user: user._id });
+      if (!consultant || consultant.status !== "approved") {
+        return res.status(403).json({ message: "Your consultant profile is under review" });
+      }
+    }
+
+
     if (user && (await user.matchPassword(password))) {
       if (!user.isVerified) {
         return res.status(401).json({
           message: "Please verify your email first",
           userId: user._id,
         });
-      }
-
-      // For consultants, check if their profile is approved
-      if (user.role === "consultant") {
-        const consultant = await Consultant.findOne({ user: user._id });
-        if (!consultant || consultant.status !== "approved") {
-          return res.status(403).json({
-            message: "Your consultant profile is under review",
-          });
-        }
       }
 
       res.json({

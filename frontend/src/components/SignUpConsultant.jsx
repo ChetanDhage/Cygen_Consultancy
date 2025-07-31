@@ -4,6 +4,7 @@ import {
   FaUserTie, FaBriefcase, FaCertificate, FaArrowRight, FaArrowLeft,
   FaPlusCircle, FaCheckCircle
 } from 'react-icons/fa';
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 const StepTabs = ({ step }) => {
   const tabs = ["Personal Info", "Professional", "Certifications"];
@@ -53,11 +54,11 @@ const SignUpConsultant = () => {
     location: '',
     linkedin: '',
     role: 'consultant',
-    designation: '',
+    designation: '', 
     company: '',
     industry: '',
     skills: '',
-    yearofexp: '',
+    yearsOfExperience: '',
     about: '',
     languages: '',
     expectedFee: '',
@@ -77,6 +78,7 @@ const SignUpConsultant = () => {
   };
 
   const handleSubmit = async (e) => {
+    
   e.preventDefault();
   setLoading(true);
   setErrorMsg('');
@@ -102,7 +104,7 @@ const SignUpConsultant = () => {
     formDataObj.append('certificationNames', JSON.stringify(certifications.map(cert => cert.name)));
 
     const response = await axios.post(
-      'http://localhost:5000/api/auth/register/consultant',
+       `${API_URL}/api/auth/register/consultant`,
       formDataObj,
       {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -135,7 +137,7 @@ const SignUpConsultant = () => {
       company: '',
       industry: '',
       skills: '',
-      yearofexp: '',
+      yearsOfExperience: '',
       about: '',
       languages: '',
       expectedFee: '',
@@ -230,7 +232,7 @@ const SignUpConsultant = () => {
                 <input name="skills" value={formData.skills} onChange={handleChange} className="input-field" placeholder="Skills" />
                 <input name="languages" value={formData.languages} onChange={handleChange} className="input-field" placeholder="Languages Known" />
                 <input name="expectedFee" type="number" value={formData.expectedFee} onChange={handleChange} className="input-field" placeholder="Expected Fee ($/hr)" />
-                <input name="yearofexp" type="number" value={formData.yearofexp} onChange={handleChange} className="input-field" placeholder="Experience" />
+                <input name="yearsOfExperience" type="number" value={formData.yearsOfExperience} onChange={handleChange} className="input-field" placeholder="Experience" />
                 <textarea name="about" type="text" value={formData.about} onChange={handleChange} className="input-field" placeholder="about" />
 
               </div>

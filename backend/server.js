@@ -38,7 +38,7 @@ app.use(cleanupUploads);
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
   })
 );
@@ -136,5 +136,10 @@ process.on("uncaughtException", (err) => {
   console.error(`Error: ${err.message}`);
   server.close(() => process.exit(1));
 });
+
+app.get("/api/example", (req, res) => {
+  res.json({ message: "Backend is connected successfully!" });
+});
+
 
 export default app;

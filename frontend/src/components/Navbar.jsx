@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BsChatDotsFill, BsMoonFill, BsSunFill } from 'react-icons/bs';
+import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { HiX } from 'react-icons/hi';
 import { FiMenu } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
@@ -16,21 +16,36 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [theme, setTheme] = useState(false);
+
+  // ✅ Get initial theme from localStorage
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  // ✅ Apply theme on page load and whenever theme changes
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    if (theme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  // ✅ Detect scroll for shadow effect
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ✅ Toggle theme and save to localStorage
   const toggleTheme = () => {
-    setTheme(!theme);
-    document.documentElement.classList.toggle("dark");
+    const newTheme = !theme;
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
   };
 
   return (
@@ -56,7 +71,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex space-x-8">
+          <ul className="hidden lg:flex space-x-4">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <Link
