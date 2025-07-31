@@ -11,7 +11,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import SubAdminDashboard from './sub-admin/SubAdminDashboard'; 
 import SignupRoleSelection from './components/SignupRoleSelection';
 import SignUpConsultant from './components/SignUpConsultant';
-
+import UserDashboard from './user/Dashboard';
 const App = () => {
   return (
     <>
@@ -27,6 +27,7 @@ const App = () => {
         <Route path='/consultants' element={<Consultant />} />
         <Route path='/how-it-works' element={<HowItWorks />} />
         <Route path='/contact' element={<Contact />} />
+        <Route path='/user' element={<UserDashboard/>} />
         <Route path='/admin-dashboard/*' element={<AdminDashboard />} />
         <Route path='/consultant-dashboard/*' element={<ConsultantDashboard />} />
         <Route path='/subadmin-dashboard/*' element={<SubAdminDashboard />} />
