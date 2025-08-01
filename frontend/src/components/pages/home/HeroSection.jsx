@@ -51,9 +51,8 @@ const HeroSection = () => {
             className="space-y-8"
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-200/70 dark:bg-gray-800/50 rounded-full border border-gray-300 dark:border-gray-700 backdrop-blur-sm">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-              <span className="text-sm font-medium text-primary">
+            <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
                 CONSULTING PLATFORM
               </span>
             </div>
@@ -86,7 +85,7 @@ const HeroSection = () => {
                   />
                   <GiArtificialIntelligence className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary" />
                   <button className="bg-gradient-to-r from-primary to-primary text-white px-6 py-4 font-medium hover:from-primary hover:to-primary/90 transition-all flex items-center gap-2">
-                    <span>Find Expert</span>
+                    <span className=' text-nowrap'>Find Expert</span>
                     <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -115,12 +114,12 @@ const HeroSection = () => {
             className="space-y-8"
           >
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 lg:gap-4">
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
-                  whileHover={{ scale: 1.03 }}
-                  className="p-6 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl backdrop-blur-sm"
+                  whileHover={{ scale: 1.01 }}
+                  className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700  lg:rounded-xl backdrop-blur-sm"
                 >
                   <div className="text-3xl font-bold text-primary">{stat.value}</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{stat.label}</div>
@@ -129,18 +128,18 @@ const HeroSection = () => {
             </div>
 
             {/* Value Proposition Cards */}
-            <div className="space-y-4">
+            <div className="lg:space-y-4">
               {/* Immediate Access */}
               <motion.div
                 whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 rounded-xl flex items-start gap-4"
+                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 lg:rounded-xl flex items-start gap-4"
               >
                 <div className="flex-shrink-0 p-3 bg-primary/10 rounded-lg text-primary">
                   <BsLightningCharge className="text-xl" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Immediate Access</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
                     Connect with experts in minutes, not weeks. Our matching algorithm finds the perfect specialist for your specific need.
                   </p>
                 </div>
@@ -149,14 +148,14 @@ const HeroSection = () => {
               {/* Security */}
               <motion.div
                 whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-purple-500/20 rounded-xl flex items-start gap-4"
+                className="p-6 bg-gray-50 dark:bg-gray-800 border border-purple-500/20 lg:rounded-xl flex items-start gap-4"
               >
                 <div className="flex-shrink-0 p-3 bg-purple-500/10 rounded-lg text-purple-500">
                   <FaShieldAlt className="text-xl" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Enterprise-Grade Security</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
                     All engagements include NDAs, secure communication channels, and compliance with your security protocols.
                   </p>
                 </div>
@@ -165,14 +164,14 @@ const HeroSection = () => {
               {/* Vetted Expertise */}
               <motion.div
                 whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 rounded-xl flex items-start gap-4"
+                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 lg:rounded-xl flex items-start gap-4"
               >
                 <div className="flex-shrink-0 p-3 bg-primary/10 rounded-lg text-primary">
                   <BsCheck2Circle className="text-xl" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Vetted Expertise</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
                     Every specialist undergoes rigorous technical evaluation and industry experience verification.
                   </p>
                 </div>

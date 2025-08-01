@@ -32,20 +32,27 @@ const HowItWorks = () => {
   return (
     <section id='how-it-works' className="py-16 px-4 md:px-20 bg-white dark:bg-[#090d13]">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-600  dark:text-white">How <span className=' text-primary0'>CyGen</span> Works</h2>
-        <p className="text-gray-600 mt-2">Simple steps to connect with domain experts and solve your challenges</p>
+        <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
+          <span className="text-sm font-medium bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent uppercase">
+            Working Features
+          </span>
+        </div>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=''>CyGen</span> Works</h2>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
+        <p className=" text-sm text-gray-600 mt-2 ">Simple steps to connect with domain experts and solve your challenges</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:gap-6">
           {steps.map((step, i) => (
-            <div key={i} className="bg-white dark:bg-[#0b1225] rounded-xl shadow p-5 relative">
+            <div key={i} className="bg-white dark:bg-gray-900  border-gray-200 dark:border-gray-700 hover:border-primary border-r border-b lg:rounded-xl shadow p-5 relative">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${step.color} mb-4`}>
                 {step.number}
               </div>
-              <h3 className="font-semibold text-lg text-gray-600 dark:text-white">{step.title}</h3>
-              <p className="text-gray-600 text-sm mt-1">{step.desc}</p>
+              <h3 className="font-semibold text-lg text-gray-800 dark:text-white">{step.title}</h3>
+              <p className="text-gray-500 text-sm mt-1">{step.desc}</p>
             </div>
           ))}
         </div>

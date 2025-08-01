@@ -42,10 +42,10 @@ const Footer = () => {
 
       {/* CTA */}
       <div className="text-center py-16 px-6 max-w-6xl mx-auto relative z-10">
-        <div className="inline-block px-4 py-1 bg-primary/30 backdrop-blur-sm rounded-full mb-6 border border-primary/30">
-          <p className="dark:text-white text-black text-sm font-medium flex items-center">
-            <FaPaperPlane className="mr-2 " /> Join Our Community
-          </p>
+        <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-6 border border-primary/30 animate-bounce">
+          <span className="text-sm font-medium uppercase bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
+            Join Our Community
+          </span>
         </div>
         <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
           Ready to Solve Your Technical Challenges?
@@ -85,7 +85,7 @@ const Footer = () => {
               <div className="flex items-center gap-3 mb-6">
                 <img src={logo} alt="CyGen Logo" className="h-10 w-auto object-contain" />
               </div>
-              <p className="text-gray-400 mb-6 max-w-md">
+              <p className="text-gray-700 dark:text-gray-200 mb-6 max-w-md">
                 Connecting technical experts with those who need their knowledge, instantly and securely.
                 Our platform ensures top-tier solutions for complex technical challenges.
               </p>
@@ -95,11 +95,11 @@ const Footer = () => {
                     key={index}
                     className="w-10 h-10 rounded-full dark:bg-gray-800 flex items-center justify-center cursor-pointer hover:bg-primary transition-all duration-300 group border"
                   >
-                    <Icon className="text-gray-400 group-hover:text-white transition-colors" />
+                    <Icon className="text-gray-700 dark:text-gray-200 group-hover:text-white transition-colors" />
                   </div>
                 ))}
               </div>
-              <div className="flex items-center text-gray-400 hover:text-white transition-colors">
+              <div className="flex items-center text-gray-700 dark:text-gray-200 hover:text-white transition-colors">
                 <MdOutlineEmail className="mr-3 text-primary" />
                 <span>query@cygen.co.in</span>
               </div>
@@ -112,7 +112,7 @@ const Footer = () => {
                 {categories.map((category, index) => (
                   <li
                     key={index}
-                    className="flex items-center text-gray-400 hover:text-white cursor-pointer transition-colors group"
+                    className="flex items-center text-gray-700 dark:text-gray-200 hover:text-white cursor-pointer transition-colors group"
                     onMouseEnter={() => setActiveCategory(index)}
                     onMouseLeave={() => setActiveCategory(null)}
                   >
@@ -129,7 +129,7 @@ const Footer = () => {
             {/* Subscribe */}
             <div className="lg:col-span-2">
               <h4 className="font-bold text-xl text-white mb-6 pb-2 border-b border-gray-800">Stay Updated</h4>
-              <p className="text-gray-400 mb-6">
+              <p className="text-gray-700 dark:text-gray-200 mb-6">
                 Get the latest updates, news and technical insights delivered to your inbox
               </p>
               <form onSubmit={handleSubmit} className="mb-4">

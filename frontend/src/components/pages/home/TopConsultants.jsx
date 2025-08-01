@@ -59,33 +59,42 @@ const TopConsultants = () => {
   return (
     <section id='consultants' className=" py-12 px-4 md:px-16 dark:bg-[#090d13] ">
       <div className="mb-10 text-center">
-        <h2 className="text-3xl md:text-3xl font-bold text-gray-600 dark:text-white">Top Rated Consultants</h2>
+        <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
+          <span className="text-sm font-medium bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
+            Helpfull Consultant
+          </span>
+        </div>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
+        <h2 className="text-3xl md:text-3xl font-bold text-gray-800 dark:text-white">Top Rated Consultants</h2>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
         <p className="text-gray-600 mt-2">Experts available for immediate consultation</p>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="flex gap-6 overflow-x-auto lg:grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 px-4 py-4 scrollbar-hide">
         {consultants.map((consultant, index) => (
-          <div key={index} className=" relative bg-white/90 dark:bg-white/10 backdrop-blur-lg  border-gray-200 dark:border-gray-700 p-6 rounded-3xl shadow hover:shadow-md transition hover:border-primary border-r border-b duration-300 hover:scale-105 ">
-            
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300 rounded-2xl"></div>
+          <div
+            key={index}
+            className="min-w-[280px] sm:min-w-[300px] lg:min-w-0 relative group bg-white dark:bg-gray-900  border-4  border-b-primary border-t-primary border-l-0 border-r-0 shadow-md hover:shadow-lg transition duration-300 hover:scale-105 p-6"
+          >
 
-            {/* Avatar Placeholder */}
+            {/* Avatar */}
             <div className="w-16 h-16 bg-gray-200 rounded-full mb-4 mx-auto" />
-            <h3 className="font-semibold text-lg text-center text-gray-600 dark:text-white">{consultant.name}</h3>
+            <h3 className="font-semibold text-lg text-center text-gray-800 dark:text-white">
+              {consultant.name}
+            </h3>
 
             {/* Rating */}
             <div className="flex items-center justify-center gap-1 text-sm mt-1">
               {renderStars(consultant.rating)}
-              <span className="text-gray-500 dark:text-white ml-1">{consultant.rating}</span>
-              <span className="text-gray-400 dark:text-white ">({consultant.reviews})</span>
+              <span className="text-gray-500 dark:text-gray-300 ml-1">{consultant.rating}</span>
+              <span className="text-gray-400 dark:text-gray-400">({consultant.reviews})</span>
             </div>
 
-            {/* Tags */}
+            {/* Skills */}
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {consultant.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className={`text-xs  font-medium px-2.5 py-0.5  rounded-full ${consultant.color}`}
+                  className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${consultant.color}`}
                 >
                   {skill}
                 </span>
@@ -93,22 +102,23 @@ const TopConsultants = () => {
             </div>
 
             {/* Info */}
-            <div className="mt-4 text-sm text-gray-500 dark:text-white space-y-1 text-center">
+            <div className="mt-4 text-sm text-gray-500 dark:text-gray-300 space-y-1 text-center">
               <p><strong>Experience:</strong> {consultant.experience}</p>
               <p><strong>Fee:</strong> {consultant.fee}</p>
               <p><strong>Sessions:</strong> {consultant.sessions}</p>
             </div>
 
-            {/* Connect Button & Bookmark */}
-            <div className="mt-4 flex items-center justify-center m-auto">
-              <button className="bg-primary text-white w-1/2 py-2 rounded-full text-sm font-semibold hover:bg-primary">
+            {/* Action */}
+            <div className="mt-4 flex items-center justify-center">
+              <button className="bg-primary text-white w-1/2 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition">
                 Connect Now
               </button>
-              <BsBookmark className="ml-2 text-gray-500 cursor-pointer hover:text-primary" />
+              <BsBookmark className="ml-3 text-gray-500 cursor-pointer hover:text-primary" />
             </div>
           </div>
         ))}
       </div>
+
     </section>
   );
 };

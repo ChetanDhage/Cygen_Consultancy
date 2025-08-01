@@ -81,15 +81,23 @@ const CategorySection = () => {
   return (
     <section id='categories' className=" bg-primaryLight dark:bg-[#090d13] py-12 px-4 md:px-16">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-gray-600">Explore by Category</h2>
-        <p className="text-gray-600 mt-2">Find experts across various technical domains and industries</p>
+
+        <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
+          <span className="text-sm font-medium bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
+            Our Features
+          </span>
+        </div>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
+        <h2 className="text-3xl md:text-4xl font-bold dark:text-white text-gray-800">Explore by Category</h2>
+        <hr className=' my-4  border-1 border-primary animate-pulse' />
+        <p className="text-gray-600 mt-2 text-sm">Find experts across various technical domains and industries</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6">
         {categories.map((cat, index) => (
           <div
             key={index}
-            className="relative group p-6 rounded-3xl shadow-md bg-white/90 dark:bg-white/10 backdrop-blur-lg  border-gray-200 dark:border-gray-700 hover:border-primary border-r border-b transition-all duration-300 hover:scale-105 overflow-hidden"
+            className="relative group p-6 lg:rounded-3xl shadow-md bg-white dark:bg-gray-900  backdrop-blur-lg  border-gray-200 dark:border-gray-700 hover:border-primary border-r border-b transition-all duration-300  overflow-hidden"
           >
             {/* Gradient Overlay on Hover */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300 rounded-2xl"></div>

@@ -35,11 +35,11 @@ const Navbar = () => {
   }, [theme]);
 
   // ✅ Detect scroll for shadow effect
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // useEffect(() => {
+  //   const handleScroll = () => setScrolled(window.scrollY > 10);
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
 
   // ✅ Toggle theme and save to localStorage
   const toggleTheme = () => {
