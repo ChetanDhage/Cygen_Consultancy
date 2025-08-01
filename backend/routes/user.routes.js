@@ -1,22 +1,31 @@
-  import express from "express";
-  import {
-    getUserProfile,
-    updateUserProfile,
-    getConsultants,
-    getConsultantById,
-  } from "../controllers/user.controller.js";
-  import {protect} from "../middleware/auth.js";
-  import admin from "../middleware/admin.js";
+import express from "express";
+import {
+  getUserProfile,
+  updateUserProfile,
+  getConsultants,
+  getConsultantById,
+  getConsultantsByDomain,
+} from "../controllers/user.controller.js";
+import { protect } from "../middleware/auth.js";
+import admin from "../middleware/admin.js";
+import subAdmin from "../middleware/subAdmin.js";
 
-  const router = express.Router();
+const router = express.Router();
 
-  router
-    .route("/profile")
-    .get(protect, getUserProfile)
-    .put(protect, updateUserProfile);
+// Public routes (none in this case)
 
-  router.route("/consultants").get(getConsultants);
+// Protected routes
+router.use(protect);
 
-  router.route("/consultants/:id").get(getConsultantById);
+router.route("/profile").get(getUserProfile).put(updateUserProfile);
 
-  export default router;
+router.route("/consultants").get(getConsultants);
+
+router.route("/consultants/:id").get(getConsultantById);
+
+// Sub-admin specific route
+router
+  .route("/consultants/domain/:domain")
+  .get(subAdmin, getConsultantsByDomain);
+
+export default router;
