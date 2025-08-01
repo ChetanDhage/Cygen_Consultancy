@@ -25,6 +25,9 @@ export const protect = asyncHandler(async (req, res, next) => {
     res.status(401);
     throw new Error("Not authorized, no token");
   }
+  req.user = await User.findById(decoded.id).select(
+    "-password -verificationToken -resetPasswordToken -resetPasswordExpire"
+  );
 });
 
 // Role-based middleware

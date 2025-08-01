@@ -34,6 +34,21 @@ const userSchema = new mongoose.Schema(
       url: String,
       publicId: String,
     },
+    domain: {
+      type: String,
+      enum: [
+        "Cloud Security",
+        "Network Security",
+        "AI Threat Analysis",
+        "Data Protection",
+      ],
+    },
+    bio: String,
+    status: {
+      type: String,
+      enum: ["active", "suspended"],
+      default: "active",
+    },
     isVerified: {
       type: Boolean,
       default: false,

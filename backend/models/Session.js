@@ -22,7 +22,7 @@ const sessionSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["scheduled", "completed", "cancelled"],
+      enum: ["scheduled", "completed", "cancelled", "flagged", "escalated"], // Added new statuses
       default: "scheduled",
     },
     type: {
@@ -53,6 +53,39 @@ const sessionSchema = new mongoose.Schema(
         ref: "Session",
       },
     ],
+    // New fields for moderation
+    domain: {
+      type: String,
+      enum: [
+        "Cloud Security",
+        "Network Security",
+        "AI Threat Analysis",
+        "Data Protection",
+      ],
+    },
+    flaggedReason: String,
+    flaggedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    flaggedAt: Date,
+    messages: [
+      {
+        sender: {
+          type: String,
+          enum: ["consultant", "customer"],
+        },
+        content: String,
+        timestamp: Date,
+        flagged: Boolean,
+      },
+    ],
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+    },
+    feedback: String,
   },
   { timestamps: true }
 );
