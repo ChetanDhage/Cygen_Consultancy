@@ -32,7 +32,7 @@ const Footer = () => {
   ];
 
   return (
-    <div id="contact" className="dark:bg-gradient-to-br dark:from-gray-900 dark:to-black text-white relative overflow-hidden">
+    <div id="contact" className="dark:bg-gradient-to-br bg-white/80 dark:from-gray-900 dark:to-black text-white relative overflow-hidden">
       {/* Background Blobs */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="absolute top-10 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>
@@ -107,7 +107,7 @@ const Footer = () => {
 
             {/* Categories */}
             <div>
-              <h4 className="font-bold text-xl text-white mb-6 pb-2 border-b border-gray-800">Categories</h4>
+              <h4 className="font-bold text-xl text-gray-700 dark:text-gray-200 mb-6 pb-2 border-b border-gray-800">Categories</h4>
               <ul className="space-y-4">
                 {categories.map((category, index) => (
                   <li
@@ -128,7 +128,7 @@ const Footer = () => {
 
             {/* Subscribe */}
             <div className="lg:col-span-2">
-              <h4 className="font-bold text-xl text-white mb-6 pb-2 border-b border-gray-800">Stay Updated</h4>
+              <h4 className="font-bold text-xl text-gray-700 dark:text-gray-200 mb-6 pb-2 border-b border-gray-800">Stay Updated</h4>
               <p className="text-gray-700 dark:text-gray-200 mb-6">
                 Get the latest updates, news and technical insights delivered to your inbox
               </p>

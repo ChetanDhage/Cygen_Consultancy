@@ -170,9 +170,10 @@ const SignUpConsultant = () => {
     );
   }
 
+
   return (
     <div className="w-full mx-auto px-4 py-12 dark:bg-[#090d13]">
-      <div className="max-w-5xl m-auto">
+      <div className="max-w-5xl m-auto bg-white dark:bg-[#0b1225] dark:text-gray-100 shadow-xl">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-secondary to-primary flex items-center justify-center shadow-lg">
@@ -192,7 +193,7 @@ const SignUpConsultant = () => {
           <div className="text-red-500 text-center mb-4 font-semibold">{errorMsg}</div>
         )}
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-10 bg-white dark:bg-[#0b1225] dark:text-gray-100 rounded-xl shadow-xl">
+        <form onSubmit={handleSubmit} className="p-6 md:p-10 ">
           {/* Step 1 */}
           {step === 0 && (
             <div>

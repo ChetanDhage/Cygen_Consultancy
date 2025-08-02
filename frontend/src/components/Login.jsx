@@ -37,8 +37,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#090d13] px-4">
-      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] border border-blue-500 p-8 rounded-3xl shadow-lg my-4">
+    <div className="min-h-screen flex items-center justify-center  px-4">
+      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-lg my-4">
         <div className="flex flex-col items-center">
           <div className="bg-gradient-to-r from-secondary to-primary p-3 rounded-full mb-4">
             <FaUserTie className="text-white text-3xl" />

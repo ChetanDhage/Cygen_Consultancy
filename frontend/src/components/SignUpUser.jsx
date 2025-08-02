@@ -150,15 +150,15 @@ const SignUpUser = () => {
   // ✅ Success UI
   if (submitted) {
     return (
-      <div className="text-center p-8 max-w-2xl mx-auto mt-10 rounded-xl shadow-md dark:bg-slate-800">
-        <div className="flex justify-center mb-6">
+      <div className="text-center p-8 max-w-2xl mx-auto mt-10  shadow-md dark:bg-slate-800 bg-white  dark:text-gray-100">
+        <div className="flex justify-center mb-6 ">
           <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center ">
             <FaCheckCircle className="text-white text-5xl" />
           </div>
         </div>
         <h2 className="text-3xl font-bold mb-4 dark:text-white">Application Submitted!</h2>
         <p className="text-lg mb-6 dark:text-white">
-          Thank you for applying to become a consultant. We'll contact you soon.
+          Thank you for choosing our platform. We'll contact you soon.
         </p>
         <button
           onClick={resetForm}
@@ -170,9 +170,10 @@ const SignUpUser = () => {
     );
   }
 
+
   return (
-    <div className="w-full mx-auto px-4 py-12 dark:bg-[#090d13]">
-      <div className="max-w-5xl m-auto">
+    <div className="w-full mx-auto px-4 py-12 ">
+      <div className="max-w-5xl m-auto bg-white dark:bg-[#0b1225] dark:text-gray-100 shadow-xl">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-secondary to-primary flex items-center justify-center shadow-lg">
@@ -180,7 +181,7 @@ const SignUpUser = () => {
             </div>
           </div>
           <h1 className="text-black dark:text-white text-3xl md:text-4xl font-bold mb-3">
-            Consultant SignUp Portal
+            User SignUp Portal
           </h1>
           <div className="mt-8 max-w-xl mx-auto">
             <StepTabs step={step} />
@@ -192,7 +193,7 @@ const SignUpUser = () => {
           <div className="text-red-500 text-center mb-4 font-semibold">{errorMsg}</div>
         )}
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-10 bg-white dark:bg-[#0b1225] dark:text-gray-100 rounded-xl shadow-xl">
+        <form onSubmit={handleSubmit} className="p-6 md:p-10 ">
           {/* Step 1 */}
           {step === 0 && (
             <div>
@@ -252,7 +253,7 @@ const SignUpUser = () => {
             <div>
               <h2 className="text-2xl font-bold mb-8">Certifications & Documents</h2>
               {certifications.map((cert, i) => (
-                <div key={i} className="bg-gray-50 p-6 rounded-xl mb-6 border border-gray-100">
+                <div key={i} className="bg-gray-50 p-6  mb-6 border border-gray-100">
                   <h3 className="font-medium text-lg mb-5">Certification #{i + 1}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <input
@@ -283,7 +284,7 @@ const SignUpUser = () => {
                   <FaPlusCircle className="mr-2" /> Add Another Certification
                 </button>
               </div>
-              <div className="p-6 rounded-xl mb-8 border border-primary">
+              <div className="p-6  mb-8 border border-primary">
                 <label className="flex items-start">
                   <input type="checkbox" className="mt-1 mr-3 h-5 w-5" required />
                   <span>I agree to the Terms of Service and Privacy Policy.</span>

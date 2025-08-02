@@ -57,7 +57,7 @@ const renderStars = (rating) => {
 
 const TopConsultants = () => {
   return (
-    <section id='consultants' className=" relative py-12 px-4 md:px-16 dark:bg-[#090d13] ">
+    <section id='consultants' className=" relative py-12 px-4 md:px-16 dark:bg-[#090d13] bg-white/80">
        {/* Background elements */}
       <div className="absolute inset-0 z-0 opacity-10">
         <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>
@@ -78,7 +78,7 @@ const TopConsultants = () => {
         {consultants.map((consultant, index) => (
           <div
             key={index}
-            className="min-w-[280px] sm:min-w-[300px] lg:min-w-0 relative group rounded-3xl bg-white dark:bg-gray-900  border-8  border-b-primary border-t-primary/90 border-l-0 border-r-0 shadow-md hover:shadow-2xl transition duration-300 hover:scale-105 py-6 "
+            className="min-w-[280px] sm:min-w-[300px] lg:min-w-0 relative group rounded-3xl bg-white dark:bg-gray-900/80  border border-b-primary border-t-primary/90 border-l-0 border-r-0 shadow-md hover:shadow-2xl transition duration-300 hover:scale-105 py-6 "
           >
 
             {/* Avatar */}
