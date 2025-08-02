@@ -9,7 +9,7 @@ import Contact from './components/pages/web/Contact';
 import ConsultantDashboard from './consultant/Dashboard';
 import AdminDashboard from './admin/AdminDashboard';
 import SubAdminDashboard from './sub-admin/SubAdminDashboard'; 
-import SignupRoleSelection from './components/SignupRoleSelection';
+import RoleSelection from './components/RoleSelection';
 import SignUpConsultant from './components/SignUpConsultant';
 import UserDashboard from './user/Dashboard';
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         
-        <Route path='/signup' element={<SignupRoleSelection />} />
+        <Route path='/signup' element={<RoleSelection />} />
         <Route path='/consultant' element={<SignUpConsultant />} />
 
         <Route path='/about' element={<About />} />

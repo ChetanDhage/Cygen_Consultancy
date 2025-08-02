@@ -4,6 +4,9 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FiCheck, FiX } from "react-icons/fi";
 
 const AdminConsultant = () => {
+
+  
+
   const [filter, setFilter] = useState("All");
   const data = [
     { name: "Rajesh Kumar", email: "rajesh@example.com", specialization: "Network Security", Experience: 3, rating: "2 days ago",fee:"1000", status: "Pending" },

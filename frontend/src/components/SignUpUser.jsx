@@ -39,7 +39,7 @@ const ProgressBar = ({ step }) => {
   );
 };
 
-const SignUpConsultant = () => {
+const SignUpUser = () => {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -305,4 +305,4 @@ const SignUpConsultant = () => {
   );
 };
 
-export default SignUpConsultant;
+export default SignUpUser;

@@ -39,7 +39,12 @@ const renderStars = (rating) => {
 
 const Testimonials = () => {
   return (
-    <section className="bg-[#f4f8fd] dark:bg-[#090d13] py-16 px-4 md:px-20">
+    <section className=" relative bg-[#f4f8fd] dark:bg-[#090d13] py-16 px-4 md:px-20">
+       {/* Background elements */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-[15%] w-80 h-80 bg-purple-500 rounded-full blur-3xl"></div>
+      </div>
       <div className="text-center mb-10">
         <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
           <span className="text-sm font-medium uppercase bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">

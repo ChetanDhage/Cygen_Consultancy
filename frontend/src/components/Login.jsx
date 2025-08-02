@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { FaUserTie } from 'react-icons/fa';
 import axios from 'axios';
-const API_URL = import.meta.env.VITE_BACKEND_URL;
-console.log(API_URL)
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+console.log(BASE_URL)
 
 const Login = () => {
   const [email, setEmail] = useState('user@gmail.com');
@@ -17,7 +17,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-         `${API_URL}/api/auth/login`,
+         `${BASE_URL}/BASE/auth/login`,
         { email, password: pwd },
         {
           headers: { 'Content-Type': 'application/json' }, // ✅ Correct header
@@ -38,7 +38,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#090d13] px-4">
-      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] border border-blue-500 p-8 rounded-xl shadow-lg my-4">
+      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] border border-blue-500 p-8 rounded-3xl shadow-lg my-4">
         <div className="flex flex-col items-center">
           <div className="bg-gradient-to-r from-secondary to-primary p-3 rounded-full mb-4">
             <FaUserTie className="text-white text-3xl" />
@@ -67,7 +67,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full rounded-3xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:text-white dark:bg-slate-900"
+              className="w-full rounded-3xl px-4 py-2 focus:outline-none focus:ring-2 border border-gray-400 focus:ring-primary dark:text-white dark:bg-slate-900"
             />
           </div>
 
@@ -86,7 +86,7 @@ const Login = () => {
               onChange={(e) => setPwd(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full rounded-3xl dark:text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900"
+              className="w-full rounded-3xl dark:text-white border border-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900"
             />
           </div>
 

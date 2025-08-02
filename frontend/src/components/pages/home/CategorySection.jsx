@@ -79,7 +79,12 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <section id='categories' className=" bg-primaryLight dark:bg-[#090d13] py-12 px-4 md:px-16">
+    <section id='categories' className=" relative  dark:bg-[#090d13] py-12 px-4 md:px-16">
+       {/* Background elements */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-[15%] w-80 h-80 bg-purple-500 rounded-full blur-3xl"></div>
+      </div>
       <div className="text-center mb-10">
 
         <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
@@ -97,10 +102,10 @@ const CategorySection = () => {
         {categories.map((cat, index) => (
           <div
             key={index}
-            className="relative group p-6 lg:rounded-3xl shadow-md bg-white dark:bg-gray-900  backdrop-blur-lg  border-gray-200 dark:border-gray-700 hover:border-primary border-r border-b transition-all duration-300  overflow-hidden"
+            className="relative group p-6 lg:rounded-3xl shadow-md bg-white dark:bg-gray-900  backdrop-blur-lg  border-gray-200 dark:border-gray-900 hover:border-primary border-r border-b transition-all duration-300  overflow-hidden"
           >
             {/* Gradient Overlay on Hover */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300 rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/10 opacity-0 group-hover:opacity-100 transition duration-300   lg:rounded-2xl"></div>
 
             {/* Icon */}
             <div className="flex items-center justify-center w-14 h-14 rounded-full mb-5 shadow border border-gray-200 dark:border-gray-700">
@@ -118,7 +123,7 @@ const CategorySection = () => {
             </p>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2">
+            <div className=" hidden lg:flex flex-wrap gap-2 ">
               {cat.tags.map((tag, idx) => (
                 <span
                   key={idx}
