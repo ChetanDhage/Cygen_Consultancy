@@ -35,7 +35,7 @@ const About = () => {
           <p className="text-md text-gray-600 dark:text-gray-300 mb-8">
             CyGen bridges the gap between technical challenges and expert solutions, making specialized knowledge accessible to everyone.
           </p>
-          <a href="how-it-works.html" className="inline-block px-6 py-3 bg-primary rounded-lg text-white font-medium hover:bg-secondary transition">How It Works</a>
+          <a href="how-it-works.html" className="inline-block px-6 py-3 bg-primary rounded-lg text-white font-medium hover:bg-primarylight transition">How It Works</a>
         </div>
       </section>
 

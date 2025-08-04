@@ -24,7 +24,7 @@ const Contact = () => {
   };
 
   return (
-    <div className=' dark:dark:bg-[#090d13]'>
+    <div className=' dark:bg-[#090d13] bg-white/90'>
       
       <Navbar/>
       <section className="py-16 bg-gradient-to-r from-primaryLight to-indigo-50 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">

@@ -57,7 +57,12 @@ const renderStars = (rating) => {
 
 const TopConsultants = () => {
   return (
-    <section id='consultants' className=" py-12 px-4 md:px-16 dark:bg-[#090d13] ">
+    <section id='consultants' className=" relative py-12 px-4 md:px-16 dark:bg-[#090d13] bg-white/80">
+       {/* Background elements */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-[15%] w-80 h-80 bg-purple-500 rounded-full blur-3xl"></div>
+      </div>
       <div className="mb-10 text-center">
         <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-full mb-2 border border-primary/30">
           <span className="text-sm font-medium bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
@@ -73,7 +78,7 @@ const TopConsultants = () => {
         {consultants.map((consultant, index) => (
           <div
             key={index}
-            className="min-w-[280px] sm:min-w-[300px] lg:min-w-0 relative group bg-white dark:bg-gray-900  border-4  border-b-primary border-t-primary border-l-0 border-r-0 shadow-md hover:shadow-lg transition duration-300 hover:scale-105 p-6"
+            className="min-w-[280px] sm:min-w-[300px] lg:min-w-0 relative group rounded-3xl bg-white dark:bg-gray-900/80  border border-b-primary border-t-primary/90 border-l-0 border-r-0 shadow-md hover:shadow-2xl transition duration-300 hover:scale-105 py-6 "
           >
 
             {/* Avatar */}

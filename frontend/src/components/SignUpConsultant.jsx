@@ -4,7 +4,7 @@ import {
   FaUserTie, FaBriefcase, FaCertificate, FaArrowRight, FaArrowLeft,
   FaPlusCircle, FaCheckCircle
 } from 'react-icons/fa';
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const StepTabs = ({ step }) => {
   const tabs = ["Personal Info", "Professional", "Certifications"];
@@ -33,7 +33,7 @@ const ProgressBar = ({ step }) => {
   return (
     <div className="bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
       <div
-        className={`bg-gradient-to-r from-secondary to-primary ${widths[step]} h-full transition-all duration-500`}
+        className={`bg-gradient-to-r from-primarylight to-primary ${widths[step]} h-full transition-all duration-500`}
       ></div>
     </div>
   );
@@ -104,7 +104,7 @@ const SignUpConsultant = () => {
     formDataObj.append('certificationNames', JSON.stringify(certifications.map(cert => cert.name)));
 
     const response = await axios.post(
-       `${API_URL}/api/auth/register/consultant`,
+       `${BASE_URL}/BASE/auth/register/consultant`,
       formDataObj,
       {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -170,12 +170,13 @@ const SignUpConsultant = () => {
     );
   }
 
+
   return (
     <div className="w-full mx-auto px-4 py-12 dark:bg-[#090d13]">
-      <div className="max-w-5xl m-auto">
+      <div className="max-w-5xl m-auto bg-white dark:bg-[#0b1225] dark:text-gray-100 shadow-xl">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-secondary to-primary flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-primarylight to-primary flex items-center justify-center shadow-lg">
               <FaUserTie className="text-white text-3xl" />
             </div>
           </div>
@@ -192,7 +193,7 @@ const SignUpConsultant = () => {
           <div className="text-red-500 text-center mb-4 font-semibold">{errorMsg}</div>
         )}
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-10 bg-white dark:bg-[#0b1225] dark:text-gray-100 rounded-xl shadow-xl">
+        <form onSubmit={handleSubmit} className="p-6 md:p-10 ">
           {/* Step 1 */}
           {step === 0 && (
             <div>

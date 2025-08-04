@@ -6,6 +6,12 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  background-image: url('./assets/image.png');
+  background-image: url('./assets/image.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .hero-section-img {
@@ -19,7 +25,7 @@ html {
   scroll-behavior: smooth;
 }
 
-td{
+td {
   padding: 10px 0px;
   font-size: 14px;
 }
@@ -29,18 +35,24 @@ td{
     @apply w-full px-4 py-3 rounded-lg shadow-sm bg-gray-100 text-gray-600 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600;
   }
 }
+
 /* Add to your global styles or Tailwind config */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 @keyframes marquee {
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }

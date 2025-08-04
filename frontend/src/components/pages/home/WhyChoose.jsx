@@ -42,7 +42,7 @@ const WhyChoose = () => {
   }, []);
 
   return (
-    <section id='about' className="relative py-20 px-4 md:px-8 overflow-hidden dark:bg-gradient-to-br dark:from-[#0a0f1d] dark:to-[#0c1429] dark:text-white">
+    <section id='about' className="relative py-20 px-4 md:px-8 overflow-hidden bg-white/80 dark:bg-gradient-to-br dark:from-[#0a0f1d] dark:to-[#0c1429] dark:text-white">
       {/* Background elements */}
       <div className="absolute inset-0 z-0 opacity-10">
         <div className="absolute top-20 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>

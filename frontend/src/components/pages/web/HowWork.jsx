@@ -133,7 +133,7 @@ const HowWork = () => {
         </div>
       </div>
 
-      <div className="dark:bg-[#090d13] py-10 px-6">
+      <div className="dark:bg-[#090d13] bg-white/90 py-10 px-6">
         <h2 className="text-3xl font-bold text-center dark:text-white text-black">Simple Steps to Connect</h2>
         <p className="text-center dark:text-white text-black mt-2 mb-10">Follow these easy steps to get expert help for your technical challenges</p>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -153,7 +153,7 @@ const HowWork = () => {
           ))}
         </div>
       </div>
-      <div className="p-6 dark:bg-[#090d13]">
+      <div className="p-6 dark:bg-[#090d13] bg-white/90">
         <h2 className="text-3xl font-bold text-black dark:text-white text-center mb-8">
           Platform Features
         </h2>
@@ -189,7 +189,7 @@ const HowWork = () => {
           ))}
         </div>
       </div>
-      <div className="dark:bg-[#090d13] p-6">
+      <div className="dark:bg-[#090d13] bg-white/90 p-6">
         <h1 className="text-3xl font-bold text-center text-black dark:text-white mb-2">
           Frequently Asked Questions
         </h1>
