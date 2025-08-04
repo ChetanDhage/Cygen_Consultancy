@@ -38,10 +38,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
-      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-lg my-4">
+      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-2xl my-4">
         <div className="flex flex-col items-center">
-          <div className="bg-gradient-to-r from-secondary to-primary p-3 rounded-full mb-4">
-            <FaUserTie className="text-white text-3xl" />
+          <div className="bg-gradient-to-r from-primarylight to-primary p-3 rounded-full mb-4">
+            <FaUserTie className="dark:text-white text-gray-600 text-3xl" />
           </div>
           <h2 className="text-2xl font-semibold text-gray-600 dark:text-white mb-1">Sign In to CyGen</h2>
           <p className="text-sm text-gray-500 text-center">
@@ -67,7 +67,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full rounded-3xl px-4 py-2 focus:outline-none focus:ring-2 border border-gray-400 focus:ring-primary dark:text-white dark:bg-slate-900"
+              className="w-full rounded-3xl px-4 py-2 focus:outline-none focus:ring-2 border text-gray-500 border-gray-400 focus:ring-primary dark:text-white dark:bg-slate-500"
             />
           </div>
 
@@ -86,7 +86,7 @@ const Login = () => {
               onChange={(e) => setPwd(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full rounded-3xl dark:text-white border border-gray-400 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-900"
+              className="w-full rounded-3xl dark:text-white border border-gray-400 px-4 py-2 text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-slate-500"
             />
           </div>
 

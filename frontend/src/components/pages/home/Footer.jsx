@@ -32,7 +32,7 @@ const Footer = () => {
   ];
 
   return (
-    <div id="contact" className="dark:bg-gradient-to-br bg-white/80 dark:from-gray-900 dark:to-black text-white relative overflow-hidden">
+    <div id="contact" className="dark:bg-gradient-to-br  bg-white/90 dark:from-gray-900 dark:to-black text-white relative overflow-hidden">
       {/* Background Blobs */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="absolute top-10 left-[10%] w-64 h-64 bg-primary rounded-full blur-3xl"></div>

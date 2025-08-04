@@ -43,7 +43,8 @@ const Consultant = () => {
     <>
       <Navbar/>
       {/* Section Top */}
-      <div className='bg-white dark:bg-[#090d13] w-full h-full'>
+      <div className=' w-full dark:bg-[#090d13] bg-white/90'>
+        <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">
           <div className="max-w-2xl">
             <h2 className="text-4xl font-bold mb-4  text-black  dark:text-white">Find the <span className="text-primary">Right Expert</span> for Your Needs </h2>
@@ -62,7 +63,7 @@ const Consultant = () => {
       </div>
 
 
-      <div className="dark:bg-[#090d13]  p-6 min-h-screen">
+      <div className="  p-6 min-h-screen w-10/12  m-auto">
         <h1 className="text-3xl font-bold dark:text-white text-black mb-6 ">Available Consultants</h1>
         <p className="dark:text-white text-black mb-4">128 experts found</p>
 
@@ -126,6 +127,7 @@ const Consultant = () => {
             </div>
           ))}
         </div>
+      </div>
       </div>
       <Footer />
     </>
