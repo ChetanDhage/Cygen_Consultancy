@@ -57,9 +57,49 @@ export const updateUserProfile = async (req, res, next) => {
 
 // @desc    Get all consultants (admin only)
 // @route   GET /api/users/consultants
+// Get all consultants with filtering
 export const getConsultants = async (req, res, next) => {
   try {
-    const consultants = await Consultant.find({ status: "approved" })
+    const { domain, minExperience, maxExperience, minFee, maxFee, minRating, search } = req.query;
+    
+    const filter = { status: "approved" };
+    
+    // Domain filter
+    if (domain) {
+      filter.skills = domain;
+    }
+    
+    // Experience filter
+    if (minExperience || maxExperience) {
+      filter.yearsOfExperience = {};
+      if (minExperience) filter.yearsOfExperience.$gte = minExperience;
+      if (maxExperience) filter.yearsOfExperience.$lte = maxExperience;
+    }
+    
+    // Fee filter
+    if (minFee || maxFee) {
+      filter.expectedFee = {};
+      if (minFee) filter.expectedFee.$gte = minFee;
+      if (maxFee) filter.expectedFee.$lte = maxFee;
+    }
+    
+    // Rating filter
+    if (minRating) {
+      filter.rating = { $gte: minRating };
+    }
+    
+    // Search filter
+    if (search) {
+      const searchRegex = new RegExp(search, 'i');
+      filter.$or = [
+        { name: searchRegex },
+        { skills: searchRegex },
+        { company: searchRegex },
+        { designation: searchRegex },
+      ];
+    }
+
+    const consultants = await Consultant.find(filter)
       .populate("user", "name email profilePhoto")
       .select("-certifications -resume");
 
@@ -69,8 +109,7 @@ export const getConsultants = async (req, res, next) => {
   }
 };
 
-// @desc    Get consultant by ID
-// @route   GET /api/users/consultants/:id
+// Get consultant by ID
 export const getConsultantById = async (req, res, next) => {
   try {
     const consultant = await Consultant.findById(req.params.id)

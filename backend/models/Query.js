@@ -1,36 +1,43 @@
 import mongoose from "mongoose";
+import { QUERY_STATUS, SESSION_TYPES } from "../config/constants.js";
 
 const querySchema = new mongoose.Schema(
   {
-    customer: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     consultant: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Consultant",
+      required: true,
     },
-    subject: {
+    queryText: {
       type: String,
       required: true,
     },
-    content: {
+    files: [
+      {
+        name: String,
+        url: String,
+        publicId: String,
+      },
+    ],
+    communicationMethod: {
       type: String,
+      enum: SESSION_TYPES,
+      required: true,
+    },
+    fee: {
+      type: Number,
       required: true,
     },
     status: {
       type: String,
-      enum: ["new", "accepted", "rejected", "completed"],
-      default: "new",
+      enum: Object.values(QUERY_STATUS),
+      default: QUERY_STATUS.PENDING,
     },
-    feeProposed: Number,
-    documents: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Document",
-      },
-    ],
     session: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Session",

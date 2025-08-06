@@ -1,6 +1,7 @@
 // constants.js
+
 export const USER_ROLES = {
-  CUSTOMER: "customer",
+  User: "user",
   CONSULTANT: "consultant",
   ADMIN: "admin",
   SUB_ADMIN: "sub-admin",
@@ -8,8 +9,24 @@ export const USER_ROLES = {
 
 export const CONSULTANT_STATUS = {
   PENDING: "pending",
-  APPROVED: "approved",
+  VERIFIED: "verified",
   REJECTED: "rejected",
+  SUSPENDED: "suspended", // Optional: extend as needed
+};
+
+export const CONSULTATION_STATUS = {
+  PENDING: "pending",
+  REVIEWING: "reviewing",
+  ACCEPTED: "accepted",
+  REJECTED: "rejected",
+  COMPLETED: "completed",
+};
+
+export const QUERY_STATUS = {
+  PENDING: "pending",
+  ACCEPTED: "accepted",
+  REJECTED: "rejected",
+  COMPLETED: "completed",
 };
 
 export const VERIFICATION_STATUS = {
@@ -36,13 +53,6 @@ export const SESSION_STATUS = {
   ACTIVE: "active",
   COMPLETED: "completed",
   CANCELLED: "cancelled",
-};
-
-export const QUERY_STATUS = {
-  NEW: "new",
-  ACCEPTED: "accepted",
-  REJECTED: "rejected",
-  COMPLETED: "completed",
 };
 
 export const CATEGORIES = [
@@ -82,28 +92,24 @@ export const CATEGORIES = [
   "Quantum Algorithms",
 ];
 
-// Analytics time ranges
 export const ANALYTICS_RANGES = {
   WEEK: "7d",
   MONTH: "30d",
   QUARTER: "90d",
 };
 
-// File types for uploads
 export const FILE_TYPES = {
   IMAGE: /jpeg|jpg|png/,
   DOCUMENT: /pdf|doc|docx/,
   ALL: /jpeg|jpg|png|pdf|doc|docx/,
 };
 
-// User status for admin dashboard
 export const USER_STATUS = {
   ACTIVE: "active",
   INACTIVE: "inactive",
   SUSPENDED: "suspended",
 };
 
-// Notification types
 export const NOTIFICATION_TYPES = {
   SYSTEM: "system",
   SESSION: "session",
