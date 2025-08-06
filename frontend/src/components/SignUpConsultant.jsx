@@ -177,7 +177,7 @@ const SignUpConsultant = () => {
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-primarylight to-primary flex items-center justify-center shadow-lg">
-              <FaUserTie className="text-white text-3xl" />
+              <FaUserTie className="text-primary text-3xl" />
             </div>
           </div>
           <h1 className="text-black dark:text-white text-3xl md:text-4xl font-bold mb-3">

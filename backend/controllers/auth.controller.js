@@ -170,6 +170,13 @@ export const login = async (req, res, next) => {
       }
     }
 
+    if (user.role === "user") {
+      const consultant = await Consultant.findOne({ user: user._id });
+      if (!consultant || consultant.status !== "approved") {
+        return res.status(403).json({ message: "Your consultant profile is under review" });
+      }
+    }
+
 
     if (user && (await user.matchPassword(password))) {
       if (!user.isVerified) {

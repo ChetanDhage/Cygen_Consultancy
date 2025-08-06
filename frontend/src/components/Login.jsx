@@ -17,7 +17,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-         `${BASE_URL}/BASE/auth/login`,
+         `${BASE_URL}/api/auth/login`,
         { email, password: pwd },
         {
           headers: { 'Content-Type': 'application/json' }, // ✅ Correct header

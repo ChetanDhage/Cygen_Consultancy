@@ -18,6 +18,7 @@ import documentRoutes from "./routes/document.routes.js";
 import adminRoutes from "./routes/admin.routes.js"; // Add admin routes
 import { updateDailyAnalytics } from "./utils/analytics.js"; // Import analytics update function
 import { cleanupUploads } from "./middleware/upload.js";
+import customerRouter from './routes/customer.routes.js';
 
 // Configure environment variables
 dotenv.config();
@@ -58,6 +59,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/queries", queryRoutes);
 app.use("/api/documents", documentRoutes);
 app.use("/api/admin", adminRoutes); // Admin routes
+app.use("/api/customer",customerRouter );
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

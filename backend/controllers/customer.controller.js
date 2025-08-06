@@ -1,9 +1,9 @@
-import ConsultationRequest from "../models/ConsultationRequest.js";
+import Customer from "../models/Customer.js";
 import { uploadToCloudinary } from "../config/cloudinary.js";
 import User from "../models/User.js";
 
 // Create consultation request
-export const createConsultationRequest = async (req, res, next) => {
+export const createCustomer = async (req, res, next) => {
   try {
     const {
       firstName,
@@ -11,25 +11,31 @@ export const createConsultationRequest = async (req, res, next) => {
       country,
       countryCode,
       email,
+      password,
       phone,
-      timezone,
+      linkedInProfile,
       companyName,
       companyDetails,
       serviceArea,
       requirements,
-      urgentRequest,
+      urgentRequest
     } = req.body;
 
-    // Find or create user
-    let user = null;
-    if (req.user) {
-      user = req.user._id;
-    } else {
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        user = existingUser._id;
-      }
-    }
+    const userExists = await User.findOne({ email });
+        if (userExists) {
+          return res.status(400).json({ message: "Email already in use" });
+        }
+    
+        const user = await User.create({
+          name:firstName,
+          email,
+          password,
+          role: "user",
+          contactNumber:phone,
+          location:country,
+          linkedInProfile,
+        });
+
 
     // Process file uploads
     const files = [];
@@ -44,15 +50,16 @@ export const createConsultationRequest = async (req, res, next) => {
       }
     }
 
-    const request = await ConsultationRequest.create({
+    const request = await Customer.create({
       user,
       firstName,
       lastName,
       country,
       countryCode,
       email,
+      password,
       phone,
-      timezone,
+      linkedInProfile,
       companyName,
       companyDetails,
       serviceArea,
@@ -62,7 +69,7 @@ export const createConsultationRequest = async (req, res, next) => {
     });
 
     res.status(201).json({
-      message: "Consultation request submitted successfully",
+      message: "Customer profile submitted successfully",
       requestId: request._id,
     });
   } catch (error) {

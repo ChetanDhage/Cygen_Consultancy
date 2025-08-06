@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { CONSULTATION_STATUS } from "../config/constants.js";
 
-const consultationRequestSchema = new mongoose.Schema(
+const customerSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -31,10 +31,8 @@ const consultationRequestSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    timezone: {
-      type: String,
-      required: true,
-    },
+
+     linkedInProfile: { type: String },
     companyName: String,
     companyDetails: String,
     serviceArea: {
@@ -67,4 +65,4 @@ const consultationRequestSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("ConsultationRequest", consultationRequestSchema);
+export default mongoose.model("CustomerSchema", customerSchema);
