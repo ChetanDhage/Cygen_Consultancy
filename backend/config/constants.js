@@ -31,7 +31,7 @@ export const QUERY_STATUS = {
 
 export const VERIFICATION_STATUS = {
   PENDING: "pending",
-  VERIFIED: "verified",
+  APPROVED: "approved",
   REJECTED: "rejected",
 };
 
