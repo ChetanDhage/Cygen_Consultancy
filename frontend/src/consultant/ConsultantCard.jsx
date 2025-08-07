@@ -1,9 +1,10 @@
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-const ConsultantCard = ({key, consultantdata, ActiveQueryButton }) => {
+const ConsultantCard = ({ key, consultantdata, ActiveQueryButton }) => {
   const consultant_id = key;
+  console.log(consultantdata);
   return (
     <div id={consultant_id} className="border rounded-lg p-4 shadow hover:shadow-lg transition duration-300">
       <img
@@ -13,25 +14,27 @@ const ConsultantCard = ({key, consultantdata, ActiveQueryButton }) => {
       />
       <div className="mt-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Sarah Johnson</h3>
-          <span className="text-primary font-bold">$150/hr</span>
+          <h3 className="text-lg font-semibold">{consultantdata.name}</h3>
+          <span className="text-primary font-bold">{consultantdata.expectedFee}₹/hr</span>
         </div>
-        <p className="text-sm text-gray-600 mb-1">Business Strategy Consultant</p>
+        <p className="text-sm text-gray-600 mb-1">{consultantdata.designation}</p>
         <span className="text-green-600 text-xs font-medium">● Available Now</span>
         <p className="text-sm text-gray-500 mt-2">
-          10+ years experience helping businesses scale with data-driven strategies.
+          {consultantdata.yearsOfExperience}+ years experience helping businesses scale with data-driven strategies.
         </p>
 
         <div className="mt-3 flex justify-between">
-          <Link to={`/user-dashboard/profile/${consultant_id}`}>
-          <button className="text-primary border px-3 py-1 rounded hover:bg-blue-50">
-            View Profile
-          </button>
+          <Link to={`/user-dashboard/profile/${consultantdata.
+            _id}`}>
+            <button className="text-primary border px-3 py-1 rounded hover:bg-blue-50">
+              View Profile
+            </button>
           </Link>
-           <Link to={`/user-dashboard/query${consultant_id}`}>
-          <button className="bg-primary text-white px-3 py-1 rounded hover:bg-blue-700">
-            Book Session
-          </button>
+          <Link to={`/user-dashboard/query/${consultantdata.
+            _id}`}>
+            <button className="bg-primary text-white px-3 py-1 rounded hover:bg-blue-700">
+              Book Session
+            </button>
           </Link>
         </div>
       </div>

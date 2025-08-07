@@ -10,10 +10,17 @@ import upload from "../middleware/upload.js";
 const router = express.Router();
 
 // Apply authentication and consultant role middleware
-router.use(protect, consultant);
+// router.use(protect, consultant);
 
 // Get consultant profile
 router.get("/profile", getConsultantProfile);
+
+
+
+// Get consultant profile by ID
+router.get("/profile/:consultant_id", getConsultantProfile);
+
+
 
 // Update consultant profile
 router.put(

@@ -84,8 +84,8 @@ const userDashboard = () => {
         <Routes>
           <Route path='/' element={<UserHome/>} />
           <Route path='/session' element={<UserHome/>} />
-          <Route path='/query/*' element={<SubmitQueryForm/>} />
-          <Route path='/profile/*' element={<Profile/>} />
+          <Route path='/query/:consultant_id' element={<SubmitQueryForm/>} />
+          <Route path='/profile/:consultant_id' element={<Profile/>} />
         </Routes>
 
       </main>

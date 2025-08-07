@@ -105,19 +105,15 @@ export const updateConsultantProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Get consultant profile
-// @route   GET /api/consultants/profile
-export const getConsultantProfile = async (req, res, next) => {
+// @route   GET /api/consultants/:id
+export const getConsultantById = async (req, res, next) => {
   try {
-    const consultant = await Consultant.findOne({ user: req.user._id })
-      .populate(
-        "user",
-        "name email contactNumber location linkedInProfile profilePhoto"
-      )
+    const consultant = await Consultant.findById(req.params.id)
+      .populate("Consultant", "name email contactNumber location linkedInProfile profilePhoto") // ✅ corrected
       .populate("verification");
 
     if (!consultant) {
-      return notFoundError("Consultant profile not found", res);
+      return notFoundError("Consultant not found", res);
     }
 
     res.json(consultant);
@@ -125,6 +121,36 @@ export const getConsultantProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+// @desc    Get consultant profile
+// @route   GET /api/consultants/profile
+export const getConsultantProfile = async (req, res, next) => {
+  try {
+    const { consultant_id } = req.params;
+    console.log("Consultant ID from params:", consultant_id);
+
+    const consultant = await Consultant.findById(consultant_id)
+      .populate("user", "name email contactNumber location linkedInProfile profilePhoto")
+      .populate("verification");
+
+    if (!consultant) {
+      return res.status(404).json({ message: "Consultant not found" });
+    }
+
+    // 👇 Log and return the consultant
+    console.log("Consultant found:", consultant);
+    res.status(200).json(consultant); // ✅ make sure you respond with data
+  } catch (error) {
+    console.error("Error fetching consultant:", error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+
+
+
 
 // @desc    Remove certification
 // @route   DELETE /api/consultants/certifications/:id

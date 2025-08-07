@@ -1,12 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaComments, FaPhone, FaVideo, FaCloudUploadAlt } from 'react-icons/fa'
+import { useParams } from 'react-router-dom';
+import { fetchConsultantProfile } from '../api/consultant';
 
 const SubmitQueryForm = () => {
-  const [selectedMethod, setSelectedMethod] = useState('Chat')
 
-  const handleCommunicationSelect = (method) => {
-    setSelectedMethod(method)
-  }
+  const [consultantData, setConsultantData] = useState(null);
+    const para = useParams();
+    const consultantId = para.consultant_id;
+  
+    useEffect(() => {
+      const fetchConsultant = async () => {
+        try {
+          const response = await fetchConsultantProfile(consultantId);
+          if (response) {
+            setConsultantData(response);
+            console.log("API Response:", response);
+          }
+        } catch (error) {
+          console.error("Error fetching consultant:", error);
+        }
+      };
+  
+      fetchConsultant();
+    }, [consultantId]);
+  
+    if (!consultantData) {
+      return <div className="p-6 text-center text-gray-500">Loading consultant profile...</div>;
+    }
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-md mt-8">
@@ -20,10 +41,21 @@ const SubmitQueryForm = () => {
           className="w-12 h-12 rounded-full object-cover"
         />
         <div className="flex-1">
-          <p className="font-medium">Sarah Johnson</p>
-          <p className="text-sm text-gray-600">Business Strategy Consultant</p>
+          <p className="font-medium">{consultantData?.name}</p>
+          <p className="text-sm text-gray-600">{consultantData?.designation}</p>
         </div>
-        <p className="text-primary font-semibold">$150/hr</p>
+        <p className="text-primary font-semibold">{`₹ ${consultantData?.expectedFee}/hr`}</p>
+      </div>
+
+      <div className="mb-6">
+        <label className="block font-medium text-sm mb-2">
+          Subject
+        </label>
+        <textarea
+          rows="2"
+          className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary"
+          placeholder="Please provide summary about your business challenge or question..."
+        />
       </div>
 
       {/* Query Textarea */}
@@ -50,33 +82,7 @@ const SubmitQueryForm = () => {
         </div>
       </div>
 
-      {/* Communication Preference */}
-      <div className="mb-6">
-        <label className="block font-medium text-sm mb-2">
-          Preferred Communication
-        </label>
-        <div className="flex gap-3">
-          {[
-            { label: 'Chat', icon: <FaComments /> },
-            { label: 'Call', icon: <FaPhone /> },
-            { label: 'Video', icon: <FaVideo /> }
-          ].map(({ label, icon }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => handleCommunicationSelect(label)}
-              className={`flex-1 flex flex-col items-center justify-center border rounded-lg py-3 px-2 transition ${
-                selectedMethod === label
-                  ? 'border-primary bg-blue-50 text-primary'
-                  : 'border-gray-300 text-gray-500 hover:border-primary'
-              }`}
-            >
-              <div className="text-xl mb-1">{icon}</div>
-              <span className="text-sm font-medium">{label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* Submit */}
       <button

@@ -1,124 +1,149 @@
-import React from 'react'
-import { FaStar } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-
+import React, { useEffect, useState } from 'react';
+import { FaStar } from 'react-icons/fa';
+import { Link, useParams } from 'react-router-dom';
+import { fetchConsultantProfile } from '../../api/consultant';
 
 const ConsultantProfile = () => {
-
   const usertype = "user";
+  const [consultantData, setConsultantData] = useState(null);
+  const para = useParams();
+  const consultantId = para.consultant_id;
 
-  const consultant = {
-    name: 'Sarah Johnson',
-    title: 'Business Strategy Consultant',
-    tags: ['Strategy', 'Leadership', 'Growth'],
-    bio: `I'm a seasoned business strategist with over 12 years of experience helping companies from startups to Fortune 500 organizations. My expertise lies in developing data-driven strategies that drive sustainable growth and competitive advantage. Passionate about empowering leaders and fostering innovative thinking.`,
-    availability: [
-      'Today: 2:00 PM - 5:00 PM',
-      'Tomorrow: 10:00 AM - 1:00 PM',
-      'Fri: 4:00 PM - 7:00 PM'
-    ],
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80', // Replace with your actual image path
-    reviews: [
-      {
-        text: `"Sarah's strategic advice helped us pivot during a challenging time. Highly recommended!"`,
-        rating: 5,
-        author: 'John D., CEO of StartupX'
-      },
-      {
-        text: `"Very insightful and professional. She helped us clarify our growth roadmap."`,
-        rating: 4,
-        author: 'Maria K., Head of Operations'
+  useEffect(() => {
+    const fetchConsultant = async () => {
+      try {
+        const response = await fetchConsultantProfile(consultantId);
+        if (response) {
+          setConsultantData(response);
+          console.log("API Response:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching consultant:", error);
       }
-    ]
+    };
+
+    fetchConsultant();
+  }, [consultantId]);
+
+  if (!consultantData) {
+    return <div className="p-6 text-center text-gray-500">Loading consultant profile...</div>;
   }
 
   return (
-    <div className=' p-6'>
-      <div className="mx-auto p-6 bg-white rounded-2xl shadow-md mt-6">
-        <h1 className="text-2xl font-semibold mb-4">Consultant Profile</h1>
-        <hr className=' border border-primary mb-6' />
-        <div className="flex flex-col md:flex-row gap-6 items-start">
-          {/* Avatar */}
-          <div className="flex-shrink-0">
+    <div className="p-4 md:p-6 bg-gray-50 min-h-screen">
+      <div className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md">
+        <h1 className="text-3xl font-bold text-primary">Consultant Profile</h1>
+        <hr className="my-4 border-primary" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="flex justify-center">
             <img
-              src={consultant.image}
+              src={consultantData?.user?.profilePhoto || 'https://via.placeholder.com/150'}
               alt="Consultant"
-              className="w-32 h-32 rounded-full border-4 border-primary object-cover p-1"
+              className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-primary object-cover shadow"
             />
           </div>
 
-          {/* Info */}
-          <div className="flex-1">
-            <h2 className="text-xl font-bold">{consultant.name}</h2>
-            <p className="text-gray-600">{consultant.title}</p>
+          <div className="md:col-span-2">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold">{consultantData?.user?.name}</h2>
+              <p className="text-gray-600">{consultantData?.designation}</p>
+              <p className="text-gray-500">{consultantData?.company}</p>
+            </div>
 
-            <div className="flex flex-wrap gap-2 mt-2">
-              {consultant.tags.map(tag => (
-                <span
-                  key={tag}
-                  className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-500"
-                >
-                  {tag}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <ProfileInfo label="Email" value={consultantData?.email} />
+              <ProfileInfo label="Contact" value={consultantData?.contactNumber} />
+              <ProfileInfo label="Location" value={consultantData?.location} />
+              <ProfileInfo label="Industry" value={consultantData?.industry} />
+              <ProfileInfo label="Fee Expectation" value={`₹ ${consultantData?.expectedFee}`} />
+              <ProfileInfo label="Rating" value={consultantData?.rating || 0} />
+            </div>
+          </div>
+        </div>
+
+        {/* Skills */}
+        {consultantData?.skills?.length > 0 && (
+          <Section title="Skills">
+            <div className="flex flex-wrap gap-2">
+              {consultantData.skills.map((skill, idx) => (
+                <span key={idx} className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-600">
+                  {skill}
                 </span>
               ))}
             </div>
+          </Section>
+        )}
 
-            {/* Bio */}
-            <div className="mt-6">
-              <h3 className="font-semibold text-lg mb-1">About Me</h3>
-              <hr className=' border border-primary mb-2' />
-              <p className="text-gray-500 text-sm">{consultant.bio}</p>
+        {/* About */}
+        <Section title="About Me">
+          <p className="text-sm text-gray-700">{consultantData?.about || "No information provided."}</p>
+        </Section>
+
+        {/* Languages */}
+        {consultantData?.languages?.length > 0 && (
+          <Section title="Languages">
+            <div className="flex flex-wrap gap-2">
+              {consultantData.languages.map((lang, idx) => (
+                <span
+                  key={idx}
+                  className="bg-primaryLight text-primary px-4 py-1 rounded-full text-sm"
+                >
+                  {lang}
+                </span>
+              ))}
             </div>
-
-            {/* Availability */}
-            <div className="mt-6">
-              <h3 className="font-semibold text-lg mb-2">Availability</h3>
-              <div className="flex flex-wrap gap-2">
-
-                {consultant.availability.map(slot => (
-                  <span
-                    key={slot}
-                    className="bg-primaryLight text-primary px-4 py-1 rounded-full text-sm"
-                  >
-                    {slot}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+          </Section>
+        )}
 
         {/* Reviews */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Client Reviews</h3>
-          <div className="space-y-4">
-            {consultant.reviews.map((review, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 rounded-lg p-4 border border-gray-200"
-              >
-                <p className="italic text-sm text-gray-600 mb-2">{review.text}</p>
-                <div className="flex items-center gap-2">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500" />
-                  ))}
+        {consultantData?.reviews?.length > 0 && (
+          <Section title="Client Reviews">
+            <div className="space-y-4">
+              {consultantData.reviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                >
+                  <p className="italic text-sm text-gray-600 mb-2">{review.text}</p>
+                  <div className="flex items-center gap-1">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <FaStar key={i} className="text-yellow-500" />
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">— {review.author}</p>
                 </div>
-                <p className="text-xs text-gray-600 mt-1">— {review.author}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {usertype === "user" && (
+          <div className="mt-8">
+            <Link to={`/user-dashboard/query/${consultantId}`}>
+              <button className="w-full md:w-auto px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">
+                Book a Session
+              </button>
+            </Link>
           </div>
-        </div>
-        {
-          usertype === "user" && 
-          <Link to={`/user-dashboard/query${''}`}>
-            <button className=" w-full px-4 py-2 bg-primary text-white  rounded hover:bg-blue-700 my-4">
-              Book Session
-            </button>
-          </Link>
-        }
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ConsultantProfile
+const ProfileInfo = ({ label, value }) => (
+  <div>
+    <p className="text-xs text-gray-500">{label}</p>
+    <p className="text-sm font-medium text-gray-800">{value || 'N/A'}</p>
+  </div>
+);
+
+const Section = ({ title, children }) => (
+  <div className="mt-8">
+    <h3 className="text-lg font-semibold mb-2 text-primary">{title}</h3>
+    <hr className="mb-3 border-primary" />
+    {children}
+  </div>
+);
+
+export default ConsultantProfile;

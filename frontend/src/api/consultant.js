@@ -5,13 +5,21 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const fetchAllConsultant = async () => {
   const response = await axios.get(`${BASE_URL}/api/admin/verified-consultant`);
   return response;
-  console.log(response);
 };
 
+// ✅ Get Consultant Profile by ID
+export const fetchConsultantById = async (consultant_id) => {
+  const response = await axios.get(`${BASE_URL}/api/consultants/profile/${consultantId}`);
+  console.log("Raw API Response:", response);
 
-// ✅ Get Consultant Profile
-export const fetchConsultantProfile = async () => {
-  const response = await axios.get(`${BASE_URL}/api/consultants/profile`);
+  const consultantData = response.data?.data; 
+  console.log("Fetched Consultant Profile:", consultantData);
+  return response.data;
+};
+
+export const fetchConsultantProfile = async (consultant_id) => {
+  console.log("Fetching profile for:", consultant_id);
+  const response = await axios.get(`${BASE_URL}/api/consultants/profile/${consultant_id}`);
   return response.data;
 };
 
