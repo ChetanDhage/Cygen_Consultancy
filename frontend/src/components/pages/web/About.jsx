@@ -33,7 +33,7 @@ const About = () => {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-4xl font-bold mb-6 text-dark dark:text-white">Innovating Security, Protecting Success</h1>
           <p className="text-md text-gray-600 dark:text-gray-300 mb-8">
-            CyGen bridges the gap between technical challenges and expert solutions, making specialized knowledge accessible to everyone.
+            Worklify bridges the gap between technical challenges and expert solutions, making specialized knowledge accessible to everyone.
           </p>
           <a href="how-it-works.html" className="inline-block px-6 py-3 bg-primary rounded-lg text-white font-medium hover:bg-primarylight transition">How It Works</a>
         </div>
@@ -45,9 +45,9 @@ const About = () => {
           <div className="md:w-1/2">
             <img src={FounderImage} alt="Surjit Singh Konwar" className="w-full h-full object-cover" /></div>
           <div className="md:w-1/2">
-            <h2 className="text-3xl font-bold text-dark dark:text-white mb-6">About CyGen</h2>
+            <h2 className="text-3xl font-bold text-dark dark:text-white mb-6">About Worklify</h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              At CyGen, we believe that technical challenges shouldn't slow down innovation. Our mission is to democratize access to specialized technical knowledge by connecting organizations and individuals with vetted experts across all domains of technology. </p>
+              At Worklify, we believe that technical challenges shouldn't slow down innovation. Our mission is to democratize access to specialized technical knowledge by connecting organizations and individuals with vetted experts across all domains of technology. </p>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               we've grown from a small team of engineers to a global network of thousands of experts, helping clients solve complex technical problems efficiently and effectively.
             </p>
@@ -78,14 +78,14 @@ const About = () => {
       <section className="py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-dark dark:text-white mb-4">Meet Our Founder</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-16">Guiding CyGen with global experience and expertise</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-16">Guiding Worklify with global experience and expertise</p>
           <div className="flex justify-center">
             <div className="team-card bg-white dark:bg-[#0f172a] p-6 rounded-xl w-full max-w-md">
               <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4 overflow-hidden">
                 <img src={FounderImage}  alt="Surjit Singh Konwar" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-xl font-bold text-center mb-1">Surjit Singh Konwar</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-center mb-4">Founder at CyGen.co.in</p>
+              <p className="text-gray-600 dark:text-gray-300 text-center mb-4">Founder at Worklify.co.in</p>
               <p className="text-gray-600 dark:text-gray-300 text-xs text-center mb-2">18+ years experience as Cybersecurity Consultant, Architect, and Advisor globally.</p>
               <p className="text-gray-500 dark:text-gray-300 text-sm text-center">EMBA in IT & DA, Cloud and Cyber Security Leader Advisor, Cyber Security Principal Architect, CISM, CEH, AWS, Azure, GCP, Cisco, DevOps, PCNSE, CCSK, PSPO.</p>
               <div className="flex justify-center gap-3 mt-4">

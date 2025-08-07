@@ -1,7 +1,12 @@
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+
 
 const ConsultantProfile = () => {
+
+  const usertype = "user";
+
   const consultant = {
     name: 'Sarah Johnson',
     title: 'Business Strategy Consultant',
@@ -38,7 +43,7 @@ const ConsultantProfile = () => {
             <img
               src={consultant.image}
               alt="Consultant"
-              className="w-32 h-32 rounded-full border-4 border-primary object-cover"
+              className="w-32 h-32 rounded-full border-4 border-primary object-cover p-1"
             />
           </div>
 
@@ -69,10 +74,11 @@ const ConsultantProfile = () => {
             <div className="mt-6">
               <h3 className="font-semibold text-lg mb-2">Availability</h3>
               <div className="flex flex-wrap gap-2">
+
                 {consultant.availability.map(slot => (
                   <span
                     key={slot}
-                    className="bg-green-100 text-primary px-4 py-1 rounded-full text-sm"
+                    className="bg-primaryLight text-primary px-4 py-1 rounded-full text-sm"
                   >
                     {slot}
                   </span>
@@ -102,6 +108,14 @@ const ConsultantProfile = () => {
             ))}
           </div>
         </div>
+        {
+          usertype === "user" && 
+          <Link to={`/user-dashboard/query${''}`}>
+            <button className=" w-full px-4 py-2 bg-primary text-white  rounded hover:bg-blue-700 my-4">
+              Book Session
+            </button>
+          </Link>
+        }
       </div>
     </div>
   )

@@ -68,7 +68,7 @@ const AdminDashboard = () => {
             {/* Sidebar */}
             <aside className="lg:flex hidden w-64 bg-white shadow-md p-6 flex-col justify-between min-h-screen">
                 <div>
-                    <h1 className="text-2xl font-bold text-primary mb-8">Cygen</h1>
+                    <h1 className="text-2xl font-bold text-primary mb-8">Worklify</h1>
                     <nav className="space-y-2">
                         <button className="flex items-center gap-3 text-primary font-semibold mb-4">
                             <span className=" bg-primaryLight p-2 rounded-md">

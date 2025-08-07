@@ -51,7 +51,7 @@ const Footer = () => {
           Ready to Solve Your Technical Challenges?
         </h2>
         <p className="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
-          Join thousands of professionals who use CyGen to connect with domain experts in real-time
+          Join thousands of professionals who use Worklify to connect with domain experts in real-time
         </p>
 
         <div className="flex justify-center gap-6 flex-wrap">
@@ -83,7 +83,7 @@ const Footer = () => {
             {/* Logo & Info */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <img src={logo} alt="CyGen Logo" className="h-10 w-auto object-contain" />
+                <img src={logo} alt="Worklify Logo" className="h-10 w-auto object-contain" />
               </div>
               <p className="text-gray-700 dark:text-gray-200 mb-6 max-w-md">
                 Connecting technical experts with those who need their knowledge, instantly and securely.
@@ -101,7 +101,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center text-gray-700 dark:text-gray-200 hover:text-white transition-colors">
                 <MdOutlineEmail className="mr-3 text-primary" />
-                <span>query@cygen.co.in</span>
+                <span>query@Worklify.co.in</span>
               </div>
             </div>
 
@@ -157,7 +157,7 @@ const Footer = () => {
           {/* Bottom Footer */}
           <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-500 text-sm mb-4 md:mb-0">
-              © 2025 CyGen. All rights reserved.
+              © 2025 Worklify. All rights reserved.
             </div>
             <div className="flex space-x-6 flex-wrap justify-center text-sm">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Sitemap'].map((item, index) => (

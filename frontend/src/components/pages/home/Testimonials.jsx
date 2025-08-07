@@ -5,13 +5,13 @@ const testimonials = [
   {
     name: 'Rajesh Kumar',
     title: 'CTO at TechNova',
-    text: 'CyGen helped us resolve a critical network security issue in under 2 hours. The expert we connected with was incredibly knowledgeable.',
+    text: 'Worklify helped us resolve a critical network security issue in under 2 hours. The expert we connected with was incredibly knowledgeable.',
     rating: 5
   },
   {
     name: 'Priya Desai',
     title: 'Startup Founder',
-    text: "As a consultant on CyGen, I've been able to share my expertise with clients worldwide while maintaining a flexible schedule.",
+    text: "As a consultant on Worklify, I've been able to share my expertise with clients worldwide while maintaining a flexible schedule.",
     rating: 4.5
   },
   {

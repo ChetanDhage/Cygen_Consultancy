@@ -1,6 +1,14 @@
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
+// ✅ Get Consultant 
+export const fetchAllConsultant = async () => {
+  const response = await axios.get(`${BASE_URL}/api/admin/verified-consultant`);
+  return response;
+  console.log(response);
+};
+
+
 // ✅ Get Consultant Profile
 export const fetchConsultantProfile = async () => {
   const response = await axios.get(`${BASE_URL}/api/consultants/profile`);

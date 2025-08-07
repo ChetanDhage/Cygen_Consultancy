@@ -43,7 +43,7 @@ const HowItWorks = () => {
           </span>
         </div>
         <hr className=' my-4  border-1 border-primary animate-pulse' />
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=''>CyGen</span> Works</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800  dark:text-white">How <span className=''>Worklify</span> Works</h2>
         <hr className=' my-4  border-1 border-primary animate-pulse' />
         <p className=" text-sm text-gray-600 mt-2 ">Simple steps to connect with domain experts and solve your challenges</p>
       </div>

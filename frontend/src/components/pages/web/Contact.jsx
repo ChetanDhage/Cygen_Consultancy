@@ -29,7 +29,7 @@ const Contact = () => {
       <Navbar/>
       <section className="py-16 bg-gradient-to-r from-primaryLight to-indigo-50 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-4xl font-bold mb-6 text-dark dark:text-white">Contact CyGen</h1>
+          <h1 className="text-4xl md:text-4xl font-bold mb-6 text-dark dark:text-white">Contact Worklify</h1>
           <p className="text-md text-gray-600 dark:text-gray-300 mb-8">
             We'd love to hear from you! Reach out with questions, feedback, or partnership inquiries.          </p>
         </div>
@@ -130,7 +130,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg mb-1">Email Us</h3>
-                    <p className="text-gray-400">query@cygen.co.in</p>
+                    <p className="text-gray-400">query@Worklify.co.in</p>
                   </div>
                 </div>
                 

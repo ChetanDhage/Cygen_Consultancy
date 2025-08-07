@@ -58,7 +58,7 @@ const WhyChoose = () => {
           </div>
            <hr className=' my-4  border-1 border-primary animate-pulse' />
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
-            Why Choose <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">CyGen</span>?
+            Why Choose <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">Worklify</span>?
           </h2>
            <hr className=' my-4  border-1 border-primary animate-pulse' />
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">

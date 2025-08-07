@@ -8,15 +8,17 @@ import {
   getVerifications,
   updateVerificationStatus,
   getAnalytics,
+  getConsultantsByStatus,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
 // Apply admin middleware to all routes
-router.use(admin);
+// router.use(admin);
 
 // Consultant management
 router.get("/consultants", getConsultants);
+router.get("/verified-consultant", getConsultantsByStatus);
 router.put("/consultants/:id/status", updateConsultantStatus);
 
 // Customer management

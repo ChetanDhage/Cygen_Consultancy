@@ -19,12 +19,12 @@ export const sendVerificationEmail = async (user, token, req) => {
   )}/api/auth/verify/${token}`;
 
   const mailOptions = {
-    from: `"CyGen Support" <${process.env.EMAIL_USER}>`,
+    from: `"Worklify Support" <${process.env.EMAIL_USER}>`,
     to: user.email,
     subject: "Verify Your Email Address",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #2563eb;">Welcome to CyGen!</h2>
+        <h2 style="color: #2563eb;">Welcome to Worklify!</h2>
         <p>Thank you for registering as a ${user.role}.</p>
         <p>Please click the button below to verify your email address:</p>
         <a href="${verificationUrl}" 
@@ -32,7 +32,7 @@ export const sendVerificationEmail = async (user, token, req) => {
           Verify Email
         </a>
         <p>If you didn't create an account with us, please ignore this email.</p>
-        <p style="margin-top: 30px; color: #6b7280;">CyGen Team</p>
+        <p style="margin-top: 30px; color: #6b7280;">Worklify Team</p>
       </div>
     `,
   };
@@ -46,13 +46,13 @@ export const sendPasswordResetEmail = async (user, token, req) => {
   )}/api/auth/reset-password/${token}`;
 
   const mailOptions = {
-    from: `"CyGen Support" <${process.env.EMAIL_USER}>`,
+    from: `"Worklify Support" <${process.env.EMAIL_USER}>`,
     to: user.email,
     subject: "Password Reset Request",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #2563eb;">Password Reset</h2>
-        <p>You requested a password reset for your CyGen account.</p>
+        <p>You requested a password reset for your Worklify account.</p>
         <p>Click the button below to reset your password:</p>
         <a href="${resetUrl}" 
            style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">
@@ -60,7 +60,7 @@ export const sendPasswordResetEmail = async (user, token, req) => {
         </a>
         <p>This link will expire in 30 minutes.</p>
         <p>If you didn't request this, please ignore this email.</p>
-        <p style="margin-top: 30px; color: #6b7280;">CyGen Team</p>
+        <p style="margin-top: 30px; color: #6b7280;">Worklify Team</p>
       </div>
     `,
   };
@@ -70,7 +70,7 @@ export const sendPasswordResetEmail = async (user, token, req) => {
 
 export const sendConsultantApprovalEmail = async (user) => {
   const mailOptions = {
-    from: `"CyGen Support" <${process.env.EMAIL_USER}>`,
+    from: `"Worklify Support" <${process.env.EMAIL_USER}>`,
     to: user.email,
     subject: "Your Consultant Profile Has Been Approved",
     html: `
@@ -82,7 +82,7 @@ export const sendConsultantApprovalEmail = async (user) => {
            style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0;">
           Go to Dashboard
         </a>
-        <p style="margin-top: 30px; color: #6b7280;">CyGen Team</p>
+        <p style="margin-top: 30px; color: #6b7280;">Worklify Team</p>
       </div>
     `,
   };

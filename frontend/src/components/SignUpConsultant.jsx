@@ -104,7 +104,7 @@ const SignUpConsultant = () => {
     formDataObj.append('certificationNames', JSON.stringify(certifications.map(cert => cert.name)));
 
     const response = await axios.post(
-       `${BASE_URL}/BASE/auth/register/consultant`,
+       `${BASE_URL}/api/auth/register/consultant`,
       formDataObj,
       {
         headers: { 'Content-Type': 'multipart/form-data' },

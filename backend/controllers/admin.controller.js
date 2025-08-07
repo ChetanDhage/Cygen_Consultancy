@@ -27,7 +27,7 @@ export const getConsultants = async (req, res) => {
     }
 
     const consultants = await Consultant.find(filter)
-      .populate("user", "name email profilePhoto")
+      .populate("consultant", "name email profilePhoto")
       .sort({ createdAt: -1 });
 
     res.json(consultants);
@@ -35,6 +35,22 @@ export const getConsultants = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getConsultantsByStatus = async ( req, res) => {
+
+   try {
+    const consultants = await Consultant.find({ status: 'approved' });
+
+    if (!consultants.length) {
+      return res.status(404).json({ message: `No consultants with status: approved` });
+    }
+
+    res.status(200).json(consultants);
+  } catch (error) {
+    console.error('Error fetching consultants by status:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
 
 // Update consultant status
 export const updateConsultantStatus = async (req, res) => {

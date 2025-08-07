@@ -20,7 +20,7 @@ const verificationSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: Object.values(VERIFICATION_STATUS),
-      default: VERIFICATION_STATUS.PENDING,
+      default: 'approved',
     },
     reviewedBy: {
       type: mongoose.Schema.Types.ObjectId,

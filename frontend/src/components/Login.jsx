@@ -43,7 +43,7 @@ const Login = () => {
           <div className="bg-gradient-to-r from-primarylight to-primary p-3 rounded-full mb-4">
             <FaUserTie className="dark:text-white text-gray-600 text-3xl" />
           </div>
-          <h2 className="text-2xl font-semibold text-gray-600 dark:text-white mb-1">Sign In to CyGen</h2>
+          <h2 className="text-2xl font-semibold text-gray-600 dark:text-white mb-1">Sign In to Worklify</h2>
           <p className="text-sm text-gray-500 text-center">
             Access your expert consultations and resources
           </p>

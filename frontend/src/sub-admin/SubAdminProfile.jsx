@@ -5,7 +5,7 @@ const SubAdminProfile = () => {
   const [formData, setFormData] = useState({
     firstName: 'Sub-admin',
     lastName: 'User',
-    email: 'subadmin@cygen.co.in',
+    email: 'subadmin@Worklify.co.in',
     phone: '+1 (555) 123-4567',
     bio: 'Network security specialist with 5+ years of experience...',
   });

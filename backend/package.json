@@ -1,7 +1,7 @@
 {
-  "name": "cygen-backend",
+  "name": "Worklify-backend",
   "version": "1.0.0",
-  "description": "Backend for CyGen Consultant Platform",
+  "description": "Backend for Worklify Consultant Platform",
   "main": "server.js",
   "type": "module",
   "scripts": {

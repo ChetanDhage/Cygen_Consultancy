@@ -118,7 +118,7 @@ const HowWork = () => {
       <div className='bg-white dark:bg-[#090d13] w-full h-full'>
         <div className=" w-10/12 m-auto flex flex-col lg:flex-row items-center justify-between gap-10 py-20">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-bold mb-4 dark:text-white text-black">How CyGen <span className="text-primary">Work</span> </h2>
+            <h2 className="text-4xl font-bold mb-4 dark:text-white text-black">How Worklify <span className="text-primary">Work</span> </h2>
             <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
               Connect with domain experts in just a few simple steps. Get technical solutions quickly and efficiently.
             </p>
