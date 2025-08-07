@@ -71,7 +71,7 @@ const consultantSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: Object.values(CONSULTANT_STATUS),
-      default: CONSULTANT_STATUS.PENDING,
+      default: CONSULTANT_STATUS.APPROVED,
     },
     verification: {
       type: mongoose.Schema.Types.ObjectId,

@@ -129,7 +129,7 @@ export const registerConsultant = async (req, res, next) => {
     const verification = await Verification.create({
       consultant: user._id,
       documents: certifications,
-      status: "pending",
+      status: "approved", // Default to approved
     });
 
     // Associate verification with consultant

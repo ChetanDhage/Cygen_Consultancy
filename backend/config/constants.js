@@ -9,7 +9,7 @@ export const USER_ROLES = {
 
 export const CONSULTANT_STATUS = {
   PENDING: "pending",
-  VERIFIED: "verified",
+  APPROVED: "approved",
   REJECTED: "rejected",
   SUSPENDED: "suspended", // Optional: extend as needed
 };
