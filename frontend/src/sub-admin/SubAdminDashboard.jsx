@@ -9,6 +9,7 @@ import SubAdminAnalytics from './SubAdminAnalytics';
 import DashboardOverview from './DashboardOverview';
 import MenuItem from '../components/common/MenuItem';
 import NotificationPage from '../components/common/NotificationPage';
+import ProtectedRoute from '../api/ProtectedRoute';
 
 const ProfilePath = '/subadmin-dashboard/profile';
 const NotificationPath = '/subadmin-dashboard/notification';
@@ -95,12 +96,15 @@ const SubAdminDashboard = () => {
       {/* Main Content */}
       <main className='w-full lg:h-screen lg:overflow-y-scroll p-8'>
         <Routes>
+          <Route element={<ProtectedRoute allowedRoles={["subadmin"]} />}>
+          
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/profile" element={<SubAdminProfile />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/verification" element={<SubAdminVerification />} />
           <Route path="/moderation" element={<SubAdminModeration />} />
           <Route path="/analytics" element={<SubAdminAnalytics />} />
+        </Route>
         </Routes>
 
       </main>

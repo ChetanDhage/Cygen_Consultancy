@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { HiX } from 'react-icons/hi';
 import { FiMenu } from 'react-icons/fi';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
+import { logout, selectCurrentUserRole } from '../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const navLinks = [
   { path: '/', label: 'Home' },
@@ -34,14 +36,6 @@ const Navbar = () => {
     }
   }, [theme]);
 
-  // ✅ Detect scroll for shadow effect
-  // useEffect(() => {
-  //   const handleScroll = () => setScrolled(window.scrollY > 10);
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
-  // ✅ Toggle theme and save to localStorage
   const toggleTheme = () => {
     const newTheme = !theme;
     setTheme(newTheme);
@@ -50,9 +44,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`w-full dark:bg-[#090d13] bg-white sticky top-0 z-50 ${
-        scrolled ? 'shadow-lg dark:shadow-gray-900/50' : ''
-      } transition-all duration-300`}
+      className={`w-full dark:bg-[#090d13] bg-white sticky top-0 z-50 ${scrolled ? 'shadow-lg dark:shadow-gray-900/50' : ''
+        } transition-all duration-300`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -76,11 +69,10 @@ const Navbar = () => {
               <li key={link.label}>
                 <Link
                   to={link.path}
-                  className={`relative px-3 py-2 text-sm font-medium ${
-                    location.pathname === link.path
-                      ? 'text-primary dark:text-primary'
-                      : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary'
-                  } transition-colors duration-300`}
+                  className={`relative px-3 py-2 text-sm font-medium ${location.pathname === link.path
+                    ? 'text-primary dark:text-primary'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary'
+                    } transition-colors duration-300`}
                 >
                   {link.label}
                   {location.pathname === link.path && (
@@ -101,19 +93,8 @@ const Navbar = () => {
               {theme ? <BsSunFill /> : <BsMoonFill />}
             </button>
 
-            <Link
-              to="/login"
-              className="px-4 py-2 rounded-md text-sm font-medium text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
-            >
-              Sign In
-            </Link>
+            <CheckUserExists />
 
-            <Link
-              to="/signup"
-              className="px-4 py-2 rounded-md text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
-            >
-              Sign Up
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -164,11 +145,10 @@ const Navbar = () => {
                   <li key={link.label} onClick={() => setIsOpen(false)}>
                     <Link
                       to={link.path}
-                      className={`block px-4 py-3 rounded-lg text-sm font-medium ${
-                        location.pathname === link.path
-                          ? 'bg-primary/10 text-primary'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                      } transition-colors`}
+                      className={`block px-4 py-3 rounded-lg text-sm font-medium ${location.pathname === link.path
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        } transition-colors`}
                     >
                       {link.label}
                     </Link>
@@ -177,21 +157,7 @@ const Navbar = () => {
               </ul>
 
               <div className="mt-8 space-y-4">
-                <Link
-                  to="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="block w-full px-4 py-3 text-center rounded-md text-sm font-medium text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
-                >
-                  Sign In
-                </Link>
-
-                <Link
-                  to="/signup"
-                  onClick={() => setIsOpen(false)}
-                  className="block w-full px-4 py-3 text-center rounded-md text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md"
-                >
-                  Sign Up
-                </Link>
+                <CheckUserExists />
               </div>
             </div>
           </div>
@@ -202,3 +168,56 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const CheckUserExists = () => {
+  const userRole = useSelector(selectCurrentUserRole);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(`Current user role: ${userRole}`);
+  }, [userRole]);
+
+  const handleLogout = () => {
+    dispatch(logout()); // clear user in Redux
+    navigate("/login"); // redirect to login
+  };
+
+  if (!userRole) {
+    return (
+      <>
+        <Link
+          to="/login"
+          className="px-4 py-2 rounded-md text-sm font-medium text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
+        >
+          Login
+        </Link>
+
+        <Link
+          to="/signup"
+          className="px-4 py-2 rounded-md text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+        >
+          Sign Up
+        </Link>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Link
+        to={`/${userRole}-dashboard`}
+        className="px-4 py-2 rounded-md text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+      >
+        Dashboard
+      </Link>
+
+      <button
+        onClick={handleLogout}
+        className="px-4 py-2 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
+      >
+        Logout
+      </button>
+    </>
+  );
+};

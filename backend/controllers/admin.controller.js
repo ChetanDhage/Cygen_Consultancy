@@ -47,7 +47,7 @@ export const getConsultantsByStatus = async ( req, res) => {
 
     res.status(200).json(consultants);
   } catch (error) {
-    console.error('Error fetching consultants by status:', error);
+    // console.error('Error fetching consultants by status:', error);
     res.status(500).json({ message: 'Server error' });
   }
 }

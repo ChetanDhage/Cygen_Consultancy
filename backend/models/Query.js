@@ -24,11 +24,7 @@ const querySchema = new mongoose.Schema(
         publicId: String,
       },
     ],
-    communicationMethod: {
-      type: String,
-      enum: SESSION_TYPES,
-      required: true,
-    },
+
     fee: {
       type: Number,
       required: true,

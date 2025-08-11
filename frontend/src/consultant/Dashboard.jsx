@@ -18,10 +18,11 @@ import ConsultantRegistration from './ConsultantRegistration';
 import ConsultantProfile from '../components/common/Profile';
 import NotificationPage from '../components/common/NotificationPage';
 import MenuItem from '../components/common/MenuItem';
+import ProtectedRoute from '../api/ProtectedRoute';
 
 
 const ProfilePath = '/consultant-dashboard/profile';
-const NotificationPath='/consultant-dashboard/notification';
+const NotificationPath = '/consultant-dashboard/notification';
 
 const ConsultantDashboard = () => {
 
@@ -33,9 +34,9 @@ const ConsultantDashboard = () => {
   }, [para]);
 
   const menuItems = [
-    { icon: <FaCalendarAlt />, label: 'Scheduled Sessions', path: "/consultant-dashboard/", active: params === "" ? true : false},
+    { icon: <FaCalendarAlt />, label: 'Scheduled Sessions', path: "/consultant-dashboard/", active: params === "" ? true : false },
     { icon: <FaTasks />, label: 'Query Inbox', badge: 3, path: "/consultant-dashboard/query-inbox", active: params === "query-inbox" ? true : false },
-    { icon: <FaUserFriends />, label: 'Session Data', path: "/consultant-dashboard/session-data", active: params === "session-data" ? true : false},
+    { icon: <FaUserFriends />, label: 'Session Data', path: "/consultant-dashboard/session-data", active: params === "session-data" ? true : false },
     { icon: <FaDollarSign />, label: 'Earnings', path: "/consultant-dashboard/earning", active: params === "earning" ? true : false },
     { icon: <FaCheckCircle />, label: 'Verification', path: "/consultant-dashboard/verification", active: params === "verification" ? true : false },
   ];
@@ -86,14 +87,15 @@ const ConsultantDashboard = () => {
       {/* Main Content */}
       <main className='w-full lg:h-screen lg:overflow-y-scroll'>
         <Routes>
-
-          <Route path='/' element={<ConsultantHome />} />
-          <Route path='/query-inbox' element={<QueryInbox />} />
-          <Route path='/session-data' element={<SessionDetails />} />
-          <Route path='/earning' element={<EarningsTransactions />} />
-          <Route path='/profile' element={<ConsultantProfile />} />
-          <Route path='/verification' element={<ConsultantRegistration />} />
-          <Route path='/notification' element={<NotificationPage />} />
+          <Route element={<ProtectedRoute allowedRoles={["consultant"]} />}>
+            <Route path='/' element={<ConsultantHome />} />
+            <Route path='/query-inbox' element={<QueryInbox />} />
+            <Route path='/session-data' element={<SessionDetails />} />
+            <Route path='/earning' element={<EarningsTransactions />} />
+            <Route path='/profile' element={<ConsultantProfile />} />
+            <Route path='/verification' element={<ConsultantRegistration />} />
+            <Route path='/notification' element={<NotificationPage />} />
+          </Route>
         </Routes>
 
       </main>

@@ -24,11 +24,11 @@ export const getConsultantQueries = async (req, res, next) => {
   }
 };
 
-// Create new query
+// controllers/query.controller.js
 export const createQuery = async (req, res, next) => {
   try {
-    const { consultantId, queryText, communicationMethod } = req.body;
-    const userId = req.user._id;
+    const { consultantId, querySub, queryText } = req.body;
+    const userId = req.user._id; // comes from protect middleware
 
     // Get consultant fee
     const consultant = await Consultant.findById(consultantId);
@@ -38,8 +38,8 @@ export const createQuery = async (req, res, next) => {
 
     // Process file uploads
     const files = [];
-    if (req.files?.supportDocs) {
-      for (const file of req.files.supportDocs) {
+    if (req.files?.length) {
+      for (const file of req.files) {
         const result = await uploadToCloudinary(file.path);
         files.push({
           name: file.originalname,
@@ -49,12 +49,13 @@ export const createQuery = async (req, res, next) => {
       }
     }
 
+    // Create the query
     const query = await Query.create({
       user: userId,
       consultant: consultantId,
+      querySub,
       queryText,
       files,
-      communicationMethod,
       fee: consultant.expectedFee,
     });
 
@@ -68,6 +69,7 @@ export const createQuery = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Update query status
 export const updateQueryStatus = async (req, res, next) => {

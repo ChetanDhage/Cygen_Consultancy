@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Link, useParams } from 'react-router-dom';
-import {FaBell,FaUser,FaCalendarAlt,FaDollarSign,FaCheckCircle,FaUserFriends} from 'react-icons/fa';
+import { FaBell, FaUser, FaCalendarAlt, FaDollarSign, FaCheckCircle, FaUserFriends } from 'react-icons/fa';
 
 import NotificationPage from '../components/common/NotificationPage';
 import AdminHome from './AdminHome';
@@ -11,6 +11,7 @@ import AdminVerification from './AdminVerification';
 import AdminAnalysis from './AdminAnalysis';
 import Profile from '../components/common/Profile';
 import MenuItem from '../components/common/MenuItem';
+import ProtectedRoute from '../api/ProtectedRoute';
 
 const ProfilePath = '/admin-dashboard/profile';
 const NotificationPath = '/admin-dashboard/notification';
@@ -25,41 +26,41 @@ const AdminDashboard = () => {
     }, [para]);
 
     const menuItems = [
-        { 
-            icon: <FaCalendarAlt />, 
-            label: 'Dashboard', 
-            path: "/admin-dashboard/", 
-            active: params === "" ? true : false 
+        {
+            icon: <FaCalendarAlt />,
+            label: 'Dashboard',
+            path: "/admin-dashboard/",
+            active: params === "" ? true : false
         },
-        { 
-            icon: <FaUserFriends />, 
-            label: 'Consultant', 
-            badge: 3, path: "/admin-dashboard/consultant", 
-            active: params === "consultant" ? true : false 
+        {
+            icon: <FaUserFriends />,
+            label: 'Consultant',
+            badge: 3, path: "/admin-dashboard/consultant",
+            active: params === "consultant" ? true : false
         },
-        { 
-            icon: <FaUser/>, 
-            label: 'Customer', 
-            badge: 3, path: "/admin-dashboard/customer", 
-            active: params === "customer" ? true : false 
+        {
+            icon: <FaUser />,
+            label: 'Customer',
+            badge: 3, path: "/admin-dashboard/customer",
+            active: params === "customer" ? true : false
         },
-        { 
-            icon: <FaCheckCircle />, 
-            label: 'Verification', 
-            path: "/admin-dashboard/verification", 
-            active: params === "verification" ? true : false 
+        {
+            icon: <FaCheckCircle />,
+            label: 'Verification',
+            path: "/admin-dashboard/verification",
+            active: params === "verification" ? true : false
         },
-        { 
-            icon: <FaDollarSign />, 
-            label: 'Trasaction', 
-            path: "/admin-dashboard/trasaction", 
-            active: params === "trasaction" ? true : false 
+        {
+            icon: <FaDollarSign />,
+            label: 'Trasaction',
+            path: "/admin-dashboard/trasaction",
+            active: params === "trasaction" ? true : false
         },
-        { 
-            icon: <FaUserFriends />, 
-            label: 'Analysis', 
-            path: "/admin-dashboard/analysis", 
-            active: params === "analysis" ? true : false 
+        {
+            icon: <FaUserFriends />,
+            label: 'Analysis',
+            path: "/admin-dashboard/analysis",
+            active: params === "analysis" ? true : false
         },
     ];
 
@@ -109,14 +110,17 @@ const AdminDashboard = () => {
             {/* Main Content */}
             <main className='w-full lg:h-screen lg:overflow-y-scroll'>
                 <Routes>
-                    <Route path='/' element={<AdminHome />} />
-                    <Route path='/consultant' element={<AdminConsultant/>} />
-                    <Route path='/customer' element={<AdminCustomer />} />
-                    <Route path='/verification' element={<AdminVerification />} />
-                    <Route path='/trasaction' element={<AdminTransaction/>} />
-                    <Route path='/analysis' element={<AdminAnalysis />} />
-                    <Route path='/profile' element={<Profile />} />
-                    <Route path='/notification' element={<NotificationPage />} /> 
+                    <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+
+                        <Route path='/' element={<AdminHome />} />
+                        <Route path='/consultant' element={<AdminConsultant />} />
+                        <Route path='/customer' element={<AdminCustomer />} />
+                        <Route path='/verification' element={<AdminVerification />} />
+                        <Route path='/trasaction' element={<AdminTransaction />} />
+                        <Route path='/analysis' element={<AdminAnalysis />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/notification' element={<NotificationPage />} />
+                    </Route>
                 </Routes>
 
             </main>

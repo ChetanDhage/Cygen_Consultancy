@@ -1,3 +1,4 @@
+// authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 // Load state from localStorage
@@ -40,19 +41,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    // ✅ Login with API data
     login(state, action) {
-      const { email, password } = action.payload;
-
-      // Normally, you'd call an API here. For now, accept any non-empty credentials:
-      if (email && password) {
-        state.loggedInUser = { email };
-        state.token = `token-${Date.now()}`; // dummy token
-        state.isAuthenticated = true;
-        state.error = null;
-      } else {
-        state.error = "Email and password are required!";
-      }
-
+      const { email, name, profilePhoto, role, token, _id } = action.payload;
+      state.loggedInUser = { email, name, profilePhoto, role, _id };
+      state.token = token;
+      state.isAuthenticated = true;
+      state.error = null;
       saveState(state);
     },
 
@@ -60,12 +55,17 @@ const authSlice = createSlice({
       state.loggedInUser = null;
       state.token = null;
       state.isAuthenticated = false;
+      state.error = null;
       saveState(state);
+    },
+
+    setError(state, action) {
+      state.error = action.payload;
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setError } = authSlice.actions;
 export const authReducer = authSlice.reducer;
 
 // ✅ Selectors
@@ -73,3 +73,4 @@ export const selectCurrentUser = (state) => state.auth.loggedInUser;
 export const selectCurrentToken = (state) => state.auth.token;
 export const isAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectAuthError = (state) => state.auth.error;
+export const selectCurrentUserRole = (state) => state.auth.loggedInUser?.role || null;
