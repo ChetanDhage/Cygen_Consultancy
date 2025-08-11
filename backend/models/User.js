@@ -32,13 +32,11 @@ const userSchema = new mongoose.Schema(
     linkedInProfile: String,
     profilePhoto: {
       url: String,
-      publicId: String,
     },
     isVerified: {
       type: Boolean,
-      default: false,
+      default: true, // Auto-verify all users
     },
-    verificationToken: String,
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },
@@ -47,7 +45,6 @@ const userSchema = new mongoose.Schema(
     toJSON: {
       transform: function (doc, ret) {
         delete ret.password;
-        delete ret.verificationToken;
         delete ret.resetPasswordToken;
         delete ret.resetPasswordExpire;
         return ret;
@@ -70,20 +67,10 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Generate verification token
-userSchema.methods.generateVerificationToken = function () {
-  const token = crypto.randomBytes(20).toString("hex");
-  this.verificationToken = token;
-  return token;
-};
-
 // Generate password reset token
 userSchema.methods.generatePasswordResetToken = function () {
   const token = crypto.randomBytes(20).toString("hex");
-  this.resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(token)
-    .digest("hex");
+  this.resetPasswordToken = token;
   this.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 30 minutes
   return token;
 };

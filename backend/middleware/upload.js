@@ -44,20 +44,4 @@ const upload = multer({
   },
 });
 
-// Cleanup uploaded files after request is complete
-export const cleanupUploads = (req, res, next) => {
-  res.on("finish", () => {
-    if (req.files) {
-      Object.values(req.files).forEach((files) => {
-        files.forEach((file) => {
-          fs.unlink(file.path, (err) => {
-            if (err) console.error("Error cleaning up file:", err);
-          });
-        });
-      });
-    }
-  });
-  next();
-};
-
 export default upload;

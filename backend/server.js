@@ -17,7 +17,7 @@ import queryRoutes from "./routes/query.routes.js";
 import documentRoutes from "./routes/document.routes.js";
 import adminRoutes from "./routes/admin.routes.js"; // Add admin routes
 import { updateDailyAnalytics } from "./utils/analytics.js"; // Import analytics update function
-import { cleanupUploads } from "./middleware/upload.js";
+//import { cleanupUploads } from "./middleware/upload.js";
 import customerRouter from './routes/customer.routes.js';
 
 // Configure environment variables
@@ -35,8 +35,9 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-app.use(cleanupUploads);
+//app.use(cleanupUploads);
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads")); // Serve static files
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",

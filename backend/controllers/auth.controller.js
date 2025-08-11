@@ -2,9 +2,8 @@ import User from "../models/User.js";
 import Consultant from "../models/Consultant.js";
 import Verification from "../models/Verification.js";
 import generateToken from "../utils/generateToken.js";
-import { sendVerificationEmail } from "../utils/email.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
 import crypto from "crypto";
+import path from "path";
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -26,12 +25,9 @@ export const register = async (req, res, next) => {
       role: role || "user",
     });
 
-    // Generate verification token
-    const verificationToken = user.generateVerificationToken();
+    // Auto-verify users since we're not sending emails
+    user.isVerified = true;
     await user.save();
-
-    // Send verification email
-    await sendVerificationEmail(user, verificationToken, req);
 
     res.status(201).json({
       _id: user._id,
@@ -66,15 +62,13 @@ export const registerConsultant = async (req, res, next) => {
       contactNumber,
       location,
       linkedInProfile,
+      isVerified: true, // Auto-verify
     });
 
     // Upload profile photo if exists
-    let profilePhoto = {};
     if (req.files?.profilePhoto) {
-      const result = await uploadToCloudinary(req.files.profilePhoto[0].path);
       user.profilePhoto = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.profilePhoto[0].filename}`,
       };
       await user.save();
     }
@@ -82,9 +76,12 @@ export const registerConsultant = async (req, res, next) => {
     // Step 2: Create consultant profile
     const consultantData = {
       user: user._id,
-      name, email,
+      name,
+      email,
       role: user.role,
-      password, contactNumber, location, linkedInProfile,
+      contactNumber,
+      location,
+      linkedInProfile,
       designation: req.body.designation,
       company: req.body.company,
       industry: req.body.industry,
@@ -97,10 +94,8 @@ export const registerConsultant = async (req, res, next) => {
 
     // Upload resume if exists
     if (req.files?.resume) {
-      const result = await uploadToCloudinary(req.files.resume[0].path);
       consultantData.resume = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.resume[0].filename}`,
       };
     }
 
@@ -111,7 +106,6 @@ export const registerConsultant = async (req, res, next) => {
     if (req.files?.certifications) {
       for (let i = 0; i < req.files.certifications.length; i++) {
         const file = req.files.certifications[i];
-        const result = await uploadToCloudinary(file.path);
 
         // Get certification name from body
         const certName =
@@ -119,8 +113,7 @@ export const registerConsultant = async (req, res, next) => {
 
         certifications.push({
           name: certName,
-          fileUrl: result.secure_url,
-          publicId: result.public_id,
+          fileUrl: `/uploads/${file.filename}`,
         });
       }
     }
@@ -136,15 +129,8 @@ export const registerConsultant = async (req, res, next) => {
     consultant.verification = verification._id;
     await consultant.save();
 
-    // Generate verification token for email
-    const verificationToken = user.generateVerificationToken();
-    await user.save();
-
-    // Send verification email
-    await sendVerificationEmail(user, verificationToken, req);
-
     res.status(201).json({
-      message: "Consultant application submitted. Please verify your email.",
+      message: "Consultant registration successful",
       userId: user._id,
       consultantId: consultant._id,
       role: user.role,
@@ -166,23 +152,13 @@ export const login = async (req, res, next) => {
     if (user.role === "consultant") {
       const consultant = await Consultant.findOne({ user: user._id });
       if (!consultant || consultant.status !== "approved") {
-        return res.status(403).json({ message: "Your consultant profile is under review" });
+        return res
+          .status(403)
+          .json({ message: "Your consultant profile is under review" });
       }
     }
-
-    if (user.role === "user") {
-        return res.status(403).json({ message: "login Succcessful" });
-    }
-
 
     if (user && (await user.matchPassword(password))) {
-      if (!user.isVerified) {
-        return res.status(401).json({
-          message: "Please verify your email first",
-          userId: user._id,
-        });
-      }
-
       res.json({
         _id: user._id,
         name: user.name,
@@ -199,51 +175,18 @@ export const login = async (req, res, next) => {
   }
 };
 
-// @desc    Verify email
+// @desc    Verify email (no longer needed with auto-verify)
 // @route   GET /api/auth/verify/:token
 export const verifyEmail = async (req, res, next) => {
-  try {
-    const { token } = req.params;
-
-    const user = await User.findOne({
-      verificationToken: token,
-      isVerified: false,
-    });
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
-    }
-
-    user.isVerified = true;
-    user.verificationToken = undefined;
-    await user.save();
-
-    res.json({ message: "Email verified successfully" });
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json({ message: "Email verification is no longer required" });
 };
 
-// @desc    Forgot password
+// @desc    Forgot password (simplified)
 // @route   POST /api/auth/forgot-password
 export const forgotPassword = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const resetToken = user.generatePasswordResetToken();
-    await user.save();
-
-    await sendPasswordResetEmail(user, resetToken, req);
-
-    res.json({ message: "Password reset email sent" });
-  } catch (error) {
-    next(error);
-  }
+  res
+    .status(200)
+    .json({ message: "Please contact support for password reset" });
 };
 
 // @desc    Reset password
@@ -253,10 +196,8 @@ export const resetPassword = async (req, res, next) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-
     const user = await User.findOne({
-      resetPasswordToken: hashedToken,
+      resetPasswordToken: token,
       resetPasswordExpire: { $gt: Date.now() },
     });
 
