@@ -4,39 +4,47 @@ import Session from "../models/Session.js";
 import { notFoundError } from "../utils/helpers.js";
 import { uploadToCloudinary } from "../config/cloudinary.js";
 
-// Get consultant queries
+// Get consultant queries with pagination and status filtering
 export const getConsultantQueries = async (req, res, next) => {
   try {
-    const { status } = req.query;
+    const { status, page = 1, limit = 10 } = req.query;
     const filter = { consultant: req.user.consultantProfile };
 
-    if (status) {
+    if (status && status !== "all") {
       filter.status = status;
     }
 
+    const startIndex = (page - 1) * limit;
+    const total = await Query.countDocuments(filter);
+
     const queries = await Query.find(filter)
       .populate("user", "name email")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(limit);
 
-    res.json(queries);
+    res.json({
+      queries,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
+      totalQueries: total,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-// controllers/query.controller.js
+// Create query with WebSocket notification
 export const createQuery = async (req, res, next) => {
   try {
     const { consultantId, querySub, queryText } = req.body;
-    const userId = req.user._id; // comes from protect middleware
+    const userId = req.user._id;
 
-    // Get consultant fee
     const consultant = await Consultant.findById(consultantId);
     if (!consultant) {
       return res.status(404).json({ message: "Consultant not found" });
     }
 
-    // Process file uploads
     const files = [];
     if (req.files?.length) {
       for (const file of req.files) {
@@ -49,7 +57,6 @@ export const createQuery = async (req, res, next) => {
       }
     }
 
-    // Create the query
     const query = await Query.create({
       user: userId,
       consultant: consultantId,
@@ -58,6 +65,10 @@ export const createQuery = async (req, res, next) => {
       files,
       fee: consultant.expectedFee,
     });
+
+    // Emit new query event to consultant's room
+    const io = req.app.get("socketio");
+    io.to(`consultant_${consultantId}`).emit("new-query", query);
 
     res.status(201).json({
       message: "Query submitted successfully",
@@ -70,8 +81,7 @@ export const createQuery = async (req, res, next) => {
   }
 };
 
-
-// Update query status
+// Update query status with WebSocket notification
 export const updateQueryStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -100,11 +110,34 @@ export const updateQueryStatus = async (req, res, next) => {
       });
 
       await session.save();
-
       query.session = session._id;
     }
 
-    await query.save();
+    const updatedQuery = await query.save();
+
+    // Emit status update to consultant's room
+    const io = req.app.get("socketio");
+    io.to(`consultant_${query.consultant._id}`).emit(
+      "update-query",
+      updatedQuery
+    );
+
+    res.json(updatedQuery);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get single query by ID
+export const getQueryById = async (req, res, next) => {
+  try {
+    const query = await Query.findById(req.params.id)
+      .populate("user", "name email")
+      .populate("consultant", "expectedFee");
+
+    if (!query) {
+      return notFoundError("Query not found", res);
+    }
 
     res.json(query);
   } catch (error) {

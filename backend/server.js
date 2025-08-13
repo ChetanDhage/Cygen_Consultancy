@@ -1,4 +1,6 @@
 import express from "express";
+import http from "http";
+import { initWebSocket } from "./websocket.js";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
@@ -20,6 +22,7 @@ import { updateDailyAnalytics } from "./utils/analytics.js"; // Import analytics
 //import { cleanupUploads } from "./middleware/upload.js";
 import customerRouter from './routes/customer.routes.js';
 
+
 // Configure environment variables
 dotenv.config();
 
@@ -29,6 +32,9 @@ const __dirname = path.dirname(__filename);
 
 // Initialize Express app
 const app = express();
+const server = http.createServer(app); // Create HTTP server
+const io = initWebSocket(server);     // Attach WebSocket to it
+app.set('socketio', io);              // Make io accessible in routes
 
 // Connect to MongoDB
 connectDB();
@@ -97,7 +103,7 @@ app.use(errorHandler);
 
 // Server configuration
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 
   // Schedule daily analytics update (runs at 11:59 PM every day)
