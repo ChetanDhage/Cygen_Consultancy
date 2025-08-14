@@ -4,18 +4,13 @@ import Session from "../models/Session.js";
 import { notFoundError } from "../utils/helpers.js";
 
 // Get consultant queries with pagination and status filtering
-
-// ✅ Get consultant queries by consultant ID
 export const getConsultantQueries = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 10 } = req.query;
+    const { status, page = 1, limit = 10, consultantId } = req.query;
 
-    // Use consultantProfile ID from authenticated user
-    const filter = { consultant: req.user.consultantProfile };
-
-    if (status && status !== "all") {
-      filter.status = status;
-    }
+    const filter = {};
+    if (consultantId) filter.consultant = consultantId;
+    if (status && status !== "all") filter.status = status;
 
     const startIndex = (page - 1) * limit;
     const total = await Query.countDocuments(filter);
@@ -24,9 +19,10 @@ export const getConsultantQueries = async (req, res, next) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(limit);
+      .limit(parseInt(limit));
 
     res.json({
+      success: true,
       queries,
       currentPage: Number(page),
       totalPages: Math.ceil(total / limit),
@@ -45,7 +41,10 @@ export const createQuery = async (req, res, next) => {
 
     const consultant = await Consultant.findById(consultantId);
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
     const files = [];
@@ -72,10 +71,13 @@ export const createQuery = async (req, res, next) => {
     io.to(`consultant_${consultantId}`).emit("new-query", query);
 
     res.status(201).json({
+      success: true,
       message: "Query submitted successfully",
-      queryId: query._id,
-      paymentRequired: true,
-      amount: consultant.expectedFee,
+      data: {
+        queryId: query._id,
+        paymentRequired: true,
+        amount: consultant.expectedFee,
+      },
     });
   } catch (error) {
     next(error);
@@ -114,6 +116,7 @@ export const updateQueryStatus = async (req, res, next) => {
       await session.save();
       query.session = session._id;
     }
+
     const updatedQuery = await query.save();
 
     // Emit status update to consultant's room
@@ -123,7 +126,10 @@ export const updateQueryStatus = async (req, res, next) => {
       updatedQuery
     );
 
-    res.json(updatedQuery);
+    res.json({
+      success: true,
+      data: updatedQuery,
+    });
   } catch (error) {
     next(error);
   }
@@ -140,7 +146,10 @@ export const getQueryById = async (req, res, next) => {
       return notFoundError("Query not found", res);
     }
 
-    res.json(query);
+    res.json({
+      success: true,
+      data: query,
+    });
   } catch (error) {
     next(error);
   }

@@ -22,7 +22,10 @@ export const createCustomer = async (req, res, next) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: "Email already in use" });
+      return res.status(400).json({
+        success: false,
+        message: "Email already in use",
+      });
     }
 
     const user = await User.create({
@@ -65,8 +68,12 @@ export const createCustomer = async (req, res, next) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "Customer profile submitted successfully",
-      requestId: request._id,
+      data: {
+        requestId: request._id,
+        userId: user._id,
+      },
     });
   } catch (error) {
     next(error);

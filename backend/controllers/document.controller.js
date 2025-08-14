@@ -9,7 +9,10 @@ import { notFoundError } from "../utils/helpers.js";
 export const uploadDocument = async (req, res, next) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+      });
     }
 
     const document = new Document({
@@ -23,7 +26,10 @@ export const uploadDocument = async (req, res, next) => {
 
     await document.save();
 
-    res.status(201).json(document);
+    res.status(201).json({
+      success: true,
+      data: document,
+    });
   } catch (error) {
     next(error);
   }
@@ -34,7 +40,11 @@ export const uploadDocument = async (req, res, next) => {
 export const getDocuments = async (req, res, next) => {
   try {
     const documents = await Document.find({ user: req.user._id });
-    res.json(documents);
+    res.json({
+      success: true,
+      count: documents.length,
+      data: documents,
+    });
   } catch (error) {
     next(error);
   }
@@ -57,9 +67,11 @@ export const downloadDocument = async (req, res, next) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     const filePath = path.join(__dirname, "../..", document.fileUrl);
+
     if (!fs.existsSync(filePath)) {
       return notFoundError("File not found on server", res);
     }
+
     res.download(filePath, document.name);
   } catch (error) {
     next(error);
@@ -88,11 +100,15 @@ export const deleteDocument = async (req, res, next) => {
       "uploads",
       document.publicId
     );
+
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
 
-    res.json({ message: "Document deleted successfully" });
+    res.json({
+      success: true,
+      message: "Document deleted successfully",
+    });
   } catch (error) {
     next(error);
   }

@@ -77,14 +77,16 @@ export const updateConsultantProfile = async (req, res, next) => {
     const updatedConsultant = await consultant.save();
 
     res.json({
+      success: true,
       message: "Profile updated successfully",
-      consultant: updatedConsultant,
+      data: updatedConsultant,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc    Get consultant by ID
 // @route   GET /api/consultants/:id
 export const getConsultantById = async (req, res, next) => {
   try {
@@ -99,18 +101,27 @@ export const getConsultantById = async (req, res, next) => {
       return notFoundError("Consultant not found", res);
     }
 
-    res.json(consultant);
+    res.json({
+      success: true,
+      data: consultant,
+    });
   } catch (error) {
     next(error);
   }
 };
 
 // @desc    Get consultant profile
-// @route   GET /api/consultants/profile
+// @route   GET /api/consultants/profile/:consultant_id
 export const getConsultantProfile = async (req, res, next) => {
   try {
     const { consultant_id } = req.params;
-    console.log("Consultant ID from params:", consultant_id);
+
+    if (!consultant_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Consultant ID is required",
+      });
+    }
 
     const consultant = await Consultant.findById(consultant_id)
       .populate(
@@ -120,15 +131,18 @@ export const getConsultantProfile = async (req, res, next) => {
       .populate("verification");
 
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
-    // 👇 Log and return the consultant
-    console.log("Consultant found:", consultant);
-    res.status(200).json(consultant); // ✅ make sure you respond with data
+    res.status(200).json({
+      success: true,
+      data: consultant,
+    });
   } catch (error) {
-    console.error("Error fetching consultant:", error);
-    res.status(500).json({ message: "Server error", error });
+    next(error);
   }
 };
 
@@ -154,13 +168,14 @@ export const removeCertification = async (req, res, next) => {
       return notFoundError("Certification not found", res);
     }
 
-    const certification = consultant.verification.documents[certIndex];
-
     // Remove from array
     consultant.verification.documents.splice(certIndex, 1);
     await consultant.verification.save();
 
-    res.json({ message: "Certification removed successfully" });
+    res.json({
+      success: true,
+      message: "Certification removed successfully",
+    });
   } catch (error) {
     next(error);
   }

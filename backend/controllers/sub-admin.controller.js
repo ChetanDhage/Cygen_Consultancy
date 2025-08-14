@@ -31,9 +31,16 @@ export const getConsultants = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(100); // Limit results for sub-admin scope
 
-    res.json(consultants);
+    res.json({
+      success: true,
+      count: consultants.length,
+      data: consultants,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -46,14 +53,22 @@ export const getConsultantsByStatus = async (req, res) => {
       .limit(50);
 
     if (!consultants.length) {
-      return res
-        .status(404)
-        .json({ message: `No consultants with status: ${status}` });
+      return res.status(404).json({
+        success: false,
+        message: `No consultants with status: ${status}`,
+      });
     }
 
-    res.status(200).json(consultants);
+    res.status(200).json({
+      success: true,
+      count: consultants.length,
+      data: consultants,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -71,13 +86,19 @@ export const updateConsultantStatus = async (req, res) => {
         CONSULTANT_STATUS.REJECTED,
       ].includes(status)
     ) {
-      return res.status(400).json({ message: "Invalid status for sub-admin" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status for sub-admin",
+      });
     }
 
     const consultant = await Consultant.findById(id).populate("user");
 
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
     consultant.status = status;
@@ -103,9 +124,16 @@ export const updateConsultantStatus = async (req, res) => {
       );
     }
 
-    res.json(consultant);
+    res.json({
+      success: true,
+      message: "Consultant status updated successfully",
+      data: consultant,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -131,16 +159,23 @@ export const getVerifications = async (req, res) => {
         path: "consultant",
         select: "name email",
         populate: {
-          path: "consultantProfile",
-          select: "specialization",
+          path: "user",
+          select: "name email",
         },
       })
       .sort({ createdAt: -1 })
       .limit(100);
 
-    res.json(verifications);
+    res.json({
+      success: true,
+      count: verifications.length,
+      data: verifications,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -158,13 +193,19 @@ export const updateVerificationStatus = async (req, res) => {
         VERIFICATION_STATUS.REJECTED,
       ].includes(status)
     ) {
-      return res.status(400).json({ message: "Invalid status for sub-admin" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status for sub-admin",
+      });
     }
 
     const verification = await Verification.findById(id).populate("consultant");
 
     if (!verification) {
-      return res.status(404).json({ message: "Verification not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Verification not found",
+      });
     }
 
     verification.status = status;
@@ -190,9 +231,16 @@ export const updateVerificationStatus = async (req, res) => {
       );
     }
 
-    res.json(verification);
+    res.json({
+      success: true,
+      message: "Verification status updated successfully",
+      data: verification,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -260,9 +308,15 @@ export const getBasicAnalytics = async (req, res) => {
       },
     };
 
-    res.json(analyticsData);
+    res.json({
+      success: true,
+      data: analyticsData,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -270,9 +324,15 @@ export const getBasicAnalytics = async (req, res) => {
 export const getSubAdminProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
-    res.json(user);
+    res.json({
+      success: true,
+      data: user,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -284,7 +344,10 @@ export const updateSubAdminProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     // Only allow updating certain fields
@@ -295,9 +358,16 @@ export const updateSubAdminProfile = async (req, res) => {
     await user.save();
 
     const updatedUser = await User.findById(user._id).select("-password");
-    res.json(updatedUser);
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedUser,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -319,11 +389,17 @@ export const getModerationQueue = async (req, res) => {
       .limit(50);
 
     res.json({
-      pendingConsultants,
-      pendingVerifications,
-      totalPending: pendingConsultants.length + pendingVerifications.length,
+      success: true,
+      data: {
+        pendingConsultants,
+        pendingVerifications,
+        totalPending: pendingConsultants.length + pendingVerifications.length,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };

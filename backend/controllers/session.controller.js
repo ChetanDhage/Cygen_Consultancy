@@ -13,10 +13,14 @@ export const getConsultantSessions = async (req, res, next) => {
     }
 
     const sessions = await Session.find(filter)
-      .populate("customer", "name email designation company") // Added designation and company
+      .populate("customer", "name email designation company")
       .sort({ date: -1 });
 
-    res.json(sessions);
+    res.json({
+      success: true,
+      count: sessions.length,
+      data: sessions,
+    });
   } catch (error) {
     next(error);
   }
@@ -26,10 +30,10 @@ export const getConsultantSessions = async (req, res, next) => {
 export const getSessionDetails = async (req, res, next) => {
   try {
     const session = await Session.findById(req.params.id)
-      .populate("customer", "name email designation company") // Added designation and company
+      .populate("customer", "name email designation company")
       .populate({
         path: "query",
-        select: "querySub queryText files", // Populate query details
+        select: "querySub queryText files",
         populate: {
           path: "user",
           select: "name",
@@ -41,7 +45,10 @@ export const getSessionDetails = async (req, res, next) => {
       return notFoundError("Session not found", res);
     }
 
-    res.json(session);
+    res.json({
+      success: true,
+      data: session,
+    });
   } catch (error) {
     next(error);
   }
@@ -65,7 +72,7 @@ export const createFollowUpSession = async (req, res, next) => {
       type,
       fee,
       status: "scheduled",
-      parentSession: parentSessionId, // Track parent session
+      parentSession: parentSessionId,
     });
 
     await followUpSession.save();
@@ -73,7 +80,10 @@ export const createFollowUpSession = async (req, res, next) => {
     parentSession.followUpSessions.push(followUpSession._id);
     await parentSession.save();
 
-    res.status(201).json(followUpSession);
+    res.status(201).json({
+      success: true,
+      data: followUpSession,
+    });
   } catch (error) {
     next(error);
   }
@@ -98,7 +108,10 @@ export const addSessionDocument = async (req, res, next) => {
       await session.save();
     }
 
-    res.json(session);
+    res.json({
+      success: true,
+      data: session,
+    });
   } catch (error) {
     next(error);
   }

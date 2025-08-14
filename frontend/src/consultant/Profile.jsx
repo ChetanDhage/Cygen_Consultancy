@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../redux/authSlice';
 
 const Profile = () => {
-  const usertype = "user";
+  const usertype = useSelector(selectCurrentUser).role; // Assuming usertype is stored in the current user state
   const [consultantData, setConsultantData] = useState(null);
   const consultantId = useSelector(selectCurrentUser)._id; // Assuming you want to fetch the profile of the current user
 

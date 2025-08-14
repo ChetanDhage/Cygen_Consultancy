@@ -30,9 +30,16 @@ export const getConsultants = async (req, res) => {
       .populate("user", "name email profilePhoto")
       .sort({ createdAt: -1 });
 
-    res.json(consultants);
+    res.json({
+      success: true,
+      count: consultants.length,
+      data: consultants,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -41,15 +48,22 @@ export const getConsultantsByStatus = async (req, res) => {
     const consultants = await Consultant.find({ status: "approved" });
 
     if (!consultants.length) {
-      return res
-        .status(404)
-        .json({ message: `No consultants with status: approved` });
+      return res.status(404).json({
+        success: false,
+        message: `No consultants with status: approved`,
+      });
     }
 
-    res.status(200).json(consultants);
+    res.status(200).json({
+      success: true,
+      count: consultants.length,
+      data: consultants,
+    });
   } catch (error) {
-    // console.error('Error fetching consultants by status:', error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -62,7 +76,10 @@ export const updateConsultantStatus = async (req, res) => {
     const consultant = await Consultant.findById(id).populate("user");
 
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
     consultant.status = status;
@@ -81,9 +98,16 @@ export const updateConsultantStatus = async (req, res) => {
       );
     }
 
-    res.json(consultant);
+    res.json({
+      success: true,
+      message: "Consultant status updated successfully",
+      data: consultant,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -91,7 +115,7 @@ export const updateConsultantStatus = async (req, res) => {
 export const getCustomers = async (req, res) => {
   try {
     const { status, search } = req.query;
-    const filter = { role: "customer" };
+    const filter = { role: "user" };
 
     if (status && status !== "All") {
       filter.status = status;
@@ -108,9 +132,16 @@ export const getCustomers = async (req, res) => {
       .select("-password")
       .sort({ createdAt: -1 });
 
-    res.json(customers);
+    res.json({
+      success: true,
+      count: customers.length,
+      data: customers,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -138,9 +169,16 @@ export const getTransactions = async (req, res) => {
       .populate("session")
       .sort({ createdAt: -1 });
 
-    res.json(transactions);
+    res.json({
+      success: true,
+      count: transactions.length,
+      data: transactions,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -166,15 +204,22 @@ export const getVerifications = async (req, res) => {
         path: "consultant",
         select: "name email",
         populate: {
-          path: "consultantProfile",
-          select: "specialization",
+          path: "user",
+          select: "name email",
         },
       })
       .sort({ createdAt: -1 });
 
-    res.json(verifications);
+    res.json({
+      success: true,
+      count: verifications.length,
+      data: verifications,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -187,7 +232,10 @@ export const updateVerificationStatus = async (req, res) => {
     const verification = await Verification.findById(id).populate("consultant");
 
     if (!verification) {
-      return res.status(404).json({ message: "Verification not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Verification not found",
+      });
     }
 
     verification.status = status;
@@ -209,9 +257,16 @@ export const updateVerificationStatus = async (req, res) => {
       );
     }
 
-    res.json(verification);
+    res.json({
+      success: true,
+      message: "Verification status updated successfully",
+      data: verification,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -275,10 +330,16 @@ export const getAnalytics = async (req, res) => {
     }
 
     res.json({
-      summary,
-      analytics: analyticsData,
+      success: true,
+      data: {
+        summary,
+        analytics: analyticsData,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
