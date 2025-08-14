@@ -1,39 +1,35 @@
+// Protect routes
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
+import Consultant from "../models/Consultant.js"; // ✅ Import your model
 
-// Protect routes
 const protect = async (req, res, next) => {
   try {
     let token;
 
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
     }
 
     if (!token) {
-      return res.status(401).json({
-        message: "Not authorized, no token provided",
-      });
+      return res.status(401).json({ message: "Not authorized, no token provided" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Find user and attach consultant profile if exists
+    // ✅ Attach user from token
     req.user = await User.findById(decoded.id).select("-password");
 
     if (!req.user) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Attach consultant profile ID if user is a consultant
+    // ✅ If consultant, attach consultantProfile ID
     if (req.user.role === "consultant") {
-      const consultant = await consultant.findOne({ user: req.user._id });
-      if (consultant) {
-        req.user.consultantProfile = consultant._id;
+      const consultantProfile = await Consultant.findOne({ user: req.user._id });
+      if (consultantProfile) {
+        req.user.consultantProfile = consultantProfile._id;
       }
     }
 

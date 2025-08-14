@@ -152,41 +152,49 @@ export const login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // For consultants, check if their profile is approved
+    // Validate password
+    if (!(await user.matchPassword(password))) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Consultant login case
     if (user.role === "consultant") {
       const consultant = await Consultant.findOne({ user: user._id });
-      if (!consultant || consultant.status !== "approved") {
+
+      if (!consultant) {
+        return res.status(404).json({ message: "Consultant profile not found" });
+      }
+
+      if (consultant.status !== "approved") {
         return res
           .status(403)
           .json({ message: "Your consultant profile is under review" });
       }
-    }
 
-    if (await user.matchPassword(password)) {
-      // Get consultant profile ID for consultants
-      let consultantProfile = null;
-      if (user.role === "consultant") {
-        const consultant = await Consultant.findOne({ user: user._id });
-        if (consultant) consultantProfile = consultant._id;
-      }
-
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
+      // Respond with consultant profile details
+      return res.json({
+        _id: consultant._id,
+        name: consultant.name,
+        email: consultant.email,
         role: user.role,
-        consultantProfile, // Include consultant ID here
-        token: generateToken(user._id),
-        profilePhoto: user.profilePhoto?.url,
+        token: generateToken(user._id), // token tied to user
+        profilePhoto: consultant.profilePhoto?.url,
       });
-    } else {
-      res.status(401).json({ message: "Invalid email or password" });
     }
+
+    // Normal user login case
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+      profilePhoto: user.profilePhoto?.url,
+    });
   } catch (error) {
     next(error);
   }
 };
-
 // @desc    Verify email (no longer needed with auto-verify)
 // @route   GET /api/auth/verify/:token
 export const verifyEmail = async (req, res, next) => {

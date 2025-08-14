@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch, FaFileExcel, FaFilePdf } from 'react-icons/fa';
+import { FaFileExcel, FaFilePdf } from 'react-icons/fa';
 import io from 'socket.io-client';
 import { getConsultantQuries } from '../api/consultant';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
+
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const QueryInbox = () => {
@@ -18,47 +19,23 @@ const QueryInbox = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [socket, setSocket] = useState(null);
 
-
   const token = useSelector(selectCurrentToken);
-  const consultantId = useSelector(selectCurrentUser);
+  const consultant = useSelector(selectCurrentUser); // Full user object
+  const consultantId = consultant?._id; // Adjust depending on your state shape
 
-  console.log(consultantId)
-  
- useEffect(() => {
-  const fetchQueries = async () => {
+  // Fetch queries from API
+  const fetchQueries = async (page = 1, status = 'all') => {
     try {
       const response = await getConsultantQuries({
         consultantId,
         token,
-        status: "pending", // or "all"
-        page: 1,
-        limit: 10
+        status: status === 'all' ? undefined : status.toLowerCase(),
+        page,
+        limit: pagination.limit
       });
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error fetching queries:", error);
-    }
-  };
 
-  if (consultantId && token) {
-    fetchQueries();
-  }
-}, [consultantId, token]);
+      const data = response.data;
 
-
-
-  
-  // Fetch queries from API
-  const fetchQueries = async (page = 1, status = 'all') => {
-    try {
-      const response = await fetch(
-        `/api/queries?status=${status}&page=${page}&limit=${pagination.limit}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        }
-      );
-      const data = await response.json();
-      
       setQueries(data.queries);
       setPagination({
         page: data.currentPage,
@@ -66,8 +43,7 @@ const QueryInbox = () => {
         totalQueries: data.totalQueries,
         limit: pagination.limit
       });
-      
-      // Set first query as selected by default
+
       if (data.queries.length > 0 && !selectedQuery) {
         setSelectedQuery(data.queries[0]);
       }
@@ -76,33 +52,30 @@ const QueryInbox = () => {
     }
   };
 
-  // Initialize WebSocket connection
+  // Initial load
   useEffect(() => {
-    const newSocket = io(BASE_URL, {
-      transports: ['websocket'],
-    });
-    
-    setSocket(newSocket);
+    if (consultantId && token) {
+      fetchQueries();
+    }
+  }, [consultantId, token]);
 
-    // Clean up on unmount
+  // WebSocket connection
+  useEffect(() => {
+    const newSocket = io(BASE_URL, { transports: ['websocket'] });
+    setSocket(newSocket);
     return () => newSocket.close();
   }, []);
 
-  // Set up WebSocket listeners
+  // WebSocket listeners
   useEffect(() => {
     if (!socket) return;
 
-    // Join consultant-specific room
-    const consultantId = localStorage.getItem('consultantId');
     if (consultantId) {
       socket.emit('join-consultant', consultantId);
     }
 
-    // Handle new query event
     socket.on('new-query', (newQuery) => {
       setQueries(prev => [newQuery, ...prev]);
-      
-      // Update pagination totals
       setPagination(prev => ({
         ...prev,
         totalQueries: prev.totalQueries + 1,
@@ -110,13 +83,10 @@ const QueryInbox = () => {
       }));
     });
 
-    // Handle query update event
     socket.on('update-query', (updatedQuery) => {
-      setQueries(prev => prev.map(query => 
-        query._id === updatedQuery._id ? updatedQuery : query
-      ));
-      
-      // Update selected query if it's the one being viewed
+      setQueries(prev =>
+        prev.map(query => query._id === updatedQuery._id ? updatedQuery : query)
+      );
       if (selectedQuery && selectedQuery._id === updatedQuery._id) {
         setSelectedQuery(updatedQuery);
       }
@@ -126,53 +96,40 @@ const QueryInbox = () => {
       socket.off('new-query');
       socket.off('update-query');
     };
-  }, [socket, selectedQuery]);
+  }, [socket, consultantId, selectedQuery]);
 
-  // Initial fetch
-  useEffect(() => {
-    fetchQueries();
-  }, []);
-
-  // Handle query selection
-  const handleQuerySelect = (query) => {
-    setSelectedQuery(query);
-  };
-
-  // Handle status filter change
+  // Handlers
+  const handleQuerySelect = (query) => setSelectedQuery(query);
   const handleStatusFilter = (status) => {
     setStatusFilter(status);
     fetchQueries(1, status);
   };
-
-  // Handle page change
-  const handlePageChange = (newPage) => {
-    fetchQueries(newPage, statusFilter);
-  };
+  const handlePageChange = (newPage) => fetchQueries(newPage, statusFilter);
 
   return (
     <main>
       <header className="bg-white px-6 pb-2 w-full flex justify-between items-center">
-          <h2 className="text-xl font-bold">Query Inbox</h2>
+        <h2 className="text-xl font-bold">Query Inbox</h2>
       </header>
-      
+
       <div className="flex p-6 gap-6">
         {/* Left Panel */}
         <div className="w-1/3 bg-white rounded-xl shadow p-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold">Upcoming Queries </h2>
+            <h2 className="text-lg font-bold">Upcoming Queries</h2>
             <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">
               {pagination.totalQueries}
             </span>
           </div>
-          
+
           {/* Status Filter */}
           <div className="flex mb-4 space-x-2">
             {['all', 'New', 'Accepted', 'Pending', 'Rejected'].map(status => (
               <button
                 key={status}
                 className={`text-xs px-2 py-1 rounded-full ${
-                  statusFilter === status 
-                    ? 'bg-primary text-white' 
+                  statusFilter === status
+                    ? 'bg-primary text-white'
                     : 'bg-gray-200 text-gray-700'
                 }`}
                 onClick={() => handleStatusFilter(status)}
@@ -181,22 +138,26 @@ const QueryInbox = () => {
               </button>
             ))}
           </div>
-          
+
           {/* Queries List */}
           {queries.map((query) => (
             <div
               key={query._id}
-              className={`flex items-center justify-between p-3 rounded-lg cursor-pointer ${
-                selectedQuery?._id === query._id 
-                  ? 'bg-blue-50 border border-primary' 
+              className={`flex flex-col p-3 rounded-2xl cursor-pointer my-2 ${
+                selectedQuery?._id === query._id
+                  ? 'bg-blue-50 border border-primary'
                   : 'hover:bg-gray-100'
               }`}
               onClick={() => handleQuerySelect(query)}
             >
-              {/* ... existing query item UI ... */}
+              <h4 className="font-semibold text-sm">{query.querySub}</h4>
+              <p className="text-xs text-gray-500 truncate">{query.queryText}</p>
+              <span className="text-xs mt-1 text-gray-400">
+                {new Date(query.createdAt).toLocaleString()}
+              </span>
             </div>
           ))}
-          
+
           {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
@@ -206,11 +167,9 @@ const QueryInbox = () => {
             >
               Previous
             </button>
-            
             <span>
               Page {pagination.page} of {pagination.totalPages}
             </span>
-            
             <button
               disabled={pagination.page === pagination.totalPages}
               onClick={() => handlePageChange(pagination.page + 1)}
@@ -220,55 +179,78 @@ const QueryInbox = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Right Panel */}
         {selectedQuery && (
-                    <div className="border rounded-lg p-5">
-                        <div className="flex justify-between gap-2 mb-2">
+          <div className="border rounded-lg p-5 flex-1 bg-white shadow">
+            <div className="flex justify-between gap-2 mb-2">
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Subject: {selectedQuery.querySub}
+                </h3>
+                <br />
+                <div className="flex gap-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary bg-primaryLight">
+                    {selectedQuery.user?.name
+                      ? selectedQuery.user.name
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                      : 'U'}
+                  </div>
+                  <div>
+                    <p className="text-md text-gray-600">{selectedQuery.user?.name}</p>
+                    <p className="text-xs text-gray-600">{selectedQuery.user?.email}</p>
+                  </div>
+                </div>
+              </div>
+              <span className="text-sm text-primary bg-blue-100 px-2 py-1 rounded-full w-fit h-fit">
+                {selectedQuery.status}
+              </span>
+            </div>
 
-                            <div>
-                                <h3 className="text-lg font-semibold">Subject: Financial planning for startup</h3>
-                                <br />
-                                <div className=' flex gap-2'>
-                                    <div className='w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary  bg-primaryLight'>
-                                        AR
-                                    </div>
-                                    <div>
-                                        <p className="text-md text-gray-600">Alex Reynolds</p>
-                                        <p className="text-xs text-gray-600">CEO, TechStart Inc.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <span className="text-sm  text-primary bg-blue-100 px-2 py-1 rounded-full w-fit h-fit">New</span>
-                        </div>
-                        <p className="text-sm text-gray-500 mb-4">
-                            I'm launching a new SaaS startup and need help with financial planning. Specifically, I need
-                            assistance with creating a 3-year financial projection, setting up a budget for the first year,
-                            and advice on funding options. We're pre-revenue and have 6 months of runway. Would appreciate
-                            your expertise in creating a solid financial foundation.
-                        </p>
+            <p className="text-sm text-gray-500 mb-4">{selectedQuery.queryText}</p>
 
-                        <h4 className="font-semibold text-sm mb-2">Attached Documents</h4>
-                        <div className="flex gap-2 mb-4">
-                            <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded">
-                                <FaFileExcel className="text-green-600" />
-                                <span className="text-sm">Financials.xlsx</span>
-                            </div>
-                            <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded">
-                                <FaFilePdf className="text-red-500" />
-                                <span className="text-sm">Business_Plan.pdf</span>
-                            </div>
-                        </div>
+            <h4 className="font-semibold text-sm mb-2">Attached Documents</h4>
+            <div className="flex gap-2 mb-4">
+              {selectedQuery.files?.length > 0 ? (
+                selectedQuery.files.map((file) => (
+                  <a
+                    key={file._id}
+                    href={file.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded"
+                  >
+                    {file.name.endsWith('.pdf') ? (
+                      <FaFilePdf className="text-red-500" />
+                    ) : (
+                      <FaFileExcel className="text-green-600" />
+                    )}
+                    <span className="text-sm">{file.name}</span>
+                  </a>
+                ))
+              ) : (
+                <p className="text-xs text-gray-400">No attachments</p>
+              )}
+            </div>
 
-                        <p className="text-sm text-gray-600 mb-4">
-                            Proposed Fee: <span className="font-semibold text-black">$250</span> for 90-minute session
-                        </p>
+            <p className="text-sm text-gray-600 mb-4">
+              Proposed Fee:{' '}
+              <span className="font-semibold text-black">
+                ${selectedQuery.fee}
+              </span>
+            </p>
 
-                        <div className="flex gap-4">
-                            <button className="border border-gray-300 px-4 py-2 rounded text-gray-600">Reject</button>
-                            <button className="bg-primary text-white px-4 py-2 rounded">Accept Query</button>
-                        </div>
-                    </div>
+            <div className="flex gap-4">
+              <button className="border border-gray-300 px-4 py-2 rounded text-gray-600">
+                Reject
+              </button>
+              <button className="bg-primary text-white px-4 py-2 rounded">
+                Accept Query
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </main>
@@ -276,3 +258,4 @@ const QueryInbox = () => {
 };
 
 export default QueryInbox;
+

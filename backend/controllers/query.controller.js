@@ -9,14 +9,11 @@ import { uploadToCloudinary } from "../config/cloudinary.js";
 // ✅ Get consultant queries by consultant ID
 export const getConsultantQueries = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 10 } = req.query;
+    const { status, page = 1, limit = 10, consultantId } = req.query;
 
-    // Use consultantProfile ID from authenticated user
-    const filter = { consultant: req.user.consultantProfile };
-
-    if (status && status !== "all") {
-      filter.status = status;
-    }
+    const filter = {};
+    if (consultantId) filter.consultant = consultantId;
+    if (status && status !== "all") filter.status = status;
 
     const startIndex = (page - 1) * limit;
     const total = await Query.countDocuments(filter);
@@ -35,6 +32,7 @@ export const getConsultantQueries = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+    console.log("Error fetching consultant queries:", error);
   }
 };
 
@@ -132,8 +130,8 @@ export const updateQueryStatus = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  
-  
+
+
 };
 
 // Get single query by ID
