@@ -5,10 +5,17 @@ import { notFoundError } from "../utils/helpers.js";
 import { uploadToCloudinary } from "../config/cloudinary.js";
 
 // Get consultant queries with pagination and status filtering
+
+// ✅ Get consultant queries by consultant ID
 export const getConsultantQueries = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 10 } = req.query;
-    const filter = { consultant: req.user.consultantProfile };
+    const { consultantId, status, page = 1, limit = 10 } = req.query;
+
+    if (!consultantId) {
+      return res.status(400).json({ message: "Consultant ID is required" });
+    }
+
+    const filter = { consultant: consultantId };
 
     if (status && status !== "all") {
       filter.status = status;
@@ -21,7 +28,7 @@ export const getConsultantQueries = async (req, res, next) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(limit);
+      .limit(Number(limit));
 
     res.json({
       queries,
@@ -33,6 +40,8 @@ export const getConsultantQueries = async (req, res, next) => {
     next(error);
   }
 };
+
+
 
 // Create query with WebSocket notification
 export const createQuery = async (req, res, next) => {

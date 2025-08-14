@@ -47,11 +47,8 @@ const EarningsTransactions = () => {
 
   return (
     <main>
-      <header className=" bg-white p-6 w-full flex justify-between items-center mb-2 ">
-        <div>
+      <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center mb-2 ">
           <h2 className="text-xl font-bold">Earnings Transactions</h2>
-          <p className="text-sm text-gray-600">Welcome back, John</p>
-        </div>
       </header>
       <div className=" p-6  bg-gray-100">
         <div className=" p-6 bg-white rounded-lg">

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const ConsultantCard = ({ key, consultantdata, ActiveQueryButton }) => {
   const consultant_id = key;
-  console.log(consultantdata);
+  // console.log(consultantdata);
   return (
     <div id={consultant_id} className=" relative border rounded-lg p-4 shadow hover:shadow-lg transition duration-300">
       <img

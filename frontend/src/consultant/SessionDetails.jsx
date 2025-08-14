@@ -4,13 +4,12 @@ import { FaCalendarAlt, FaClock, FaVideo, FaMoneyBillWave, FaFileWord, FaFilePdf
 const SessionDetails = () => {
   return (
     <main>
-      <header className=" bg-white p-6 w-full flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-bold">Query Inbox</h2>
-          <p className="text-sm text-gray-600">Welcome back, John</p>
-        </div>
+      <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center">
+          <h2 className="text-xl font-bold">Session Data</h2>
       </header>
       <div className=" w-full flex gap-4 mx-auto p-6 bg-gray-100 rounded-lg shadow-md ">
+
+
         <div className=" bg-white p-6 rounded-lg ">
           <div className=" my-4">
             <h3 className="text-lg font-semibold text-gray-600">Subject: Financial planning for startup</h3>

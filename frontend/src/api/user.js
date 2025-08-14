@@ -9,3 +9,12 @@ export const sendQuery = async ({ formData, token }) => {
     },
   });
 };
+
+
+export const getUserProfile = async ({ userId, token }) => {
+  return axios.get(`${BASE_URL}/api/users/profile/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

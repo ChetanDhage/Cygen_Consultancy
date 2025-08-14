@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { FaUserTie, FaFlag, FaChartBar, FaCalendarAlt, FaCheckCircle, FaUser, FaBell } from 'react-icons/fa';
 
 import SubAdminProfile from './SubAdminProfile';
@@ -10,6 +10,8 @@ import DashboardOverview from './DashboardOverview';
 import MenuItem from '../components/common/MenuItem';
 import NotificationPage from '../components/common/NotificationPage';
 import ProtectedRoute from '../api/ProtectedRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import {  logout, selectCurrentUserRole } from '../redux/authSlice';
 
 const ProfilePath = '/subadmin-dashboard/profile';
 const NotificationPath = '/subadmin-dashboard/notification';
@@ -50,6 +52,16 @@ const SubAdminDashboard = () => {
     },
   ];
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const checkCurrentUserRole = useSelector(selectCurrentUserRole);
+  
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex overscroll-auto">
       {/* Sidebar */}
@@ -57,12 +69,12 @@ const SubAdminDashboard = () => {
         <div>
           <h1 className="text-2xl font-bold text-primary mb-8">Worklify</h1>
           <nav className="space-y-2">
-            <button className="flex items-center gap-3 text-primary font-semibold mb-4">
+            {/* <button className="flex items-center gap-3 text-primary font-semibold mb-4">
               <span className=" bg-primaryLight p-2 rounded-md">
                 <FaUser className="w-5 h-5" />
               </span>
               Dashboard
-            </button>
+            </button> */}
 
             <div className=' w-[210px] overflow-hidden '>
               {menuItems.map((item, idx) => (
@@ -80,6 +92,16 @@ const SubAdminDashboard = () => {
         </div>
 
         <div className="flex flex-col ">
+         {
+            checkCurrentUserRole==='subadmin' &&
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 mb-4 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
+            >
+              Logout
+            </button>
+          }
+
           <div className=' flex gap-4'>
             <Link to={ProfilePath}><FaUser className="w-6 h-6 text-primary" title='Profile' /></Link>
             <Link to={NotificationPath}><FaBell className="w-6 h-6 text-gray-600" title='Notification' /></Link>

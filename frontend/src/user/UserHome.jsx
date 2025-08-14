@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import ConsultantCard from '../consultant/ConsultantCard';
 import { fetchAllConsultant } from '../api/consultant';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../redux/authSlice';
 
 const UserHome = () => {
   const [consultants, setConsultants] = useState([]);
@@ -107,9 +109,12 @@ const UserHome = () => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
+  const userName = useSelector(selectCurrentUser);
+  const userGreeting = userName ? userName.name : 'Guest';
+
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-2">Hello, Alex Morgan!</h1>
+      <h1 className="text-2xl font-semibold mb-2">Hello, {userGreeting}!</h1>
       <p className="text-gray-600 mb-4">Find the perfect consultant for your needs</p>
 
       {/* Search Input */}

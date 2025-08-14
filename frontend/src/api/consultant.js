@@ -12,13 +12,13 @@ export const fetchConsultantById = async (consultant_id) => {
   const response = await axios.get(`${BASE_URL}/api/consultants/profile/${consultantId}`);
   console.log("Raw API Response:", response);
 
-  const consultantData = response.data?.data; 
+  const consultantData = response.data?.data;
   console.log("Fetched Consultant Profile:", consultantData);
   return response.data;
 };
 
 export const fetchConsultantProfile = async (consultant_id) => {
-  console.log("Fetching profile for:", consultant_id);
+  // console.log("Fetching profile for:", consultant_id);
   const response = await axios.get(`${BASE_URL}/api/consultants/profile/${consultant_id}`);
   return response.data;
 };
@@ -37,4 +37,19 @@ export const updateConsultantProfile = async (formData) => {
 export const removeCertification = async (id) => {
   const response = await axios.delete(`${BASE_URL}/api/consultants/certifications/${id}`);
   return response.data;
+};
+
+//get consultant quries
+export const getConsultantQuries = async ({ consultantId, token, status = "all", page = 1, limit = 10 }) => {
+  return axios.get(`${BASE_URL}/api/queries`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      consultantId,
+      status,
+      page,
+      limit
+    }
+  });
 };

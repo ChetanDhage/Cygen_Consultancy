@@ -11,7 +11,7 @@ const navLinks = [
   { path: '/', label: 'Home' },
   { path: '/about', label: 'About Us' },
   { path: '/category', label: 'Categories' },
-  { path: '/consultants', label: 'Consultants' },
+  // { path: '/consultants', label: 'Consultants' },
   { path: '/how-it-works', label: 'How It Works' },
   { path: '/contact', label: 'Contact Us' },
 ];
@@ -85,13 +85,13 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            <button
+            {/* <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
               aria-label="Toggle theme"
             >
               {theme ? <BsSunFill /> : <BsMoonFill />}
-            </button>
+            </button> */}
 
             <CheckUserExists />
 
@@ -99,13 +99,14 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-4">
-            <button
+            
+            {/* <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               aria-label="Toggle theme"
             >
               {theme ? <BsSunFill /> : <BsMoonFill />}
-            </button>
+            </button> */}
 
             <button
               onClick={() => setIsOpen(true)}

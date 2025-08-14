@@ -13,6 +13,11 @@ const querySchema = new mongoose.Schema(
       ref: "Consultant",
       required: true,
     },
+
+    querySub: {
+      type: String,
+      required: true,
+    },
     queryText: {
       type: String,
       required: true,
