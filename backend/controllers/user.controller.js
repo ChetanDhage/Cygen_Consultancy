@@ -6,7 +6,8 @@ import { notFoundError } from "../utils/helpers.js";
 // @route   GET /api/users/profile
 export const getUserProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
+    const userId = req.params.id;
+    const user = await User.findById(userId).select("-password");
 
     if (!user) {
       return notFoundError("User not found", res);
@@ -16,7 +17,13 @@ export const getUserProfile = async (req, res, next) => {
 
     if (user.role === "consultant") {
       const consultantProfile = await Consultant.findOne({ user: user._id });
-      profile = { ...profile, ...consultantProfile?._doc };
+      if (consultantProfile) {
+        profile = {
+          ...profile,
+          ...consultantProfile._doc,
+          consultantId: consultantProfile._id, // Add consultant ID
+        };
+      }
     }
 
     res.json(profile);
@@ -24,7 +31,6 @@ export const getUserProfile = async (req, res, next) => {
     next(error);
   }
 };
-
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 export const updateUserProfile = async (req, res, next) => {

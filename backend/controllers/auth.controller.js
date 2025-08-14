@@ -132,7 +132,7 @@ export const registerConsultant = async (req, res, next) => {
     res.status(201).json({
       message: "Consultant registration successful",
       userId: user._id,
-      consultantId: consultant._id,
+      consultantId: consultant._id, // Return consultant ID
       role: user.role,
     });
   } catch (error) {
@@ -148,6 +148,10 @@ export const login = async (req, res, next) => {
 
     const user = await User.findOne({ email }).select("+password");
 
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
     // For consultants, check if their profile is approved
     if (user.role === "consultant") {
       const consultant = await Consultant.findOne({ user: user._id });
@@ -158,12 +162,20 @@ export const login = async (req, res, next) => {
       }
     }
 
-    if (user && (await user.matchPassword(password))) {
+    if (await user.matchPassword(password)) {
+      // Get consultant profile ID for consultants
+      let consultantProfile = null;
+      if (user.role === "consultant") {
+        const consultant = await Consultant.findOne({ user: user._id });
+        if (consultant) consultantProfile = consultant._id;
+      }
+
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
+        consultantProfile, // Include consultant ID here
         token: generateToken(user._id),
         profilePhoto: user.profilePhoto?.url,
       });

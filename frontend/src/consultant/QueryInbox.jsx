@@ -1,112 +1,228 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch, FaFileExcel, FaFilePdf } from 'react-icons/fa';
-
-const queries = [
-    {
-        id: 1,
-        name: 'Alex Reynolds',
-        time: '2h ago',
-        title: 'Financial planning for startup',
-        status: 'New',
-        initials: 'AR',
-        color: 'bg-blue-100 text-primary',
-    },
-    {
-        id: 2,
-        name: 'Priya Sharma',
-        time: '5h ago',
-        title: 'HR policy consultation',
-        status: 'Accepted',
-        initials: 'PS',
-        color: 'bg-green-100 text-green-600',
-    },
-    {
-        id: 3,
-        name: 'Thomas Wright',
-        time: 'Yesterday',
-        title: 'IT infrastructure review',
-        status: 'Pending',
-        initials: 'TW',
-        color: 'bg-yellow-100 text-yellow-600',
-    },
-    {
-        id: 4,
-        name: 'Maria Johnson',
-        time: '2 days ago',
-        title: 'Brand identity development',
-        status: 'Rejected',
-        initials: 'MJ',
-        color: 'bg-red-100 text-red-600',
-    }
-];
+import io from 'socket.io-client';
+import { getConsultantQuries } from '../api/consultant';
+import { useSelector } from 'react-redux';
+import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const QueryInbox = () => {
-    return (
-        <main>
-            <header className=" bg-white p-6 w-full flex justify-between items-center">
-                <div>
-                    <h2 className="text-xl font-bold">Query Inbox</h2>
-                    <p className="text-sm text-gray-600">Welcome back, John</p>
-                </div>
-            </header>
-            <div className="flex p-6 gap-6">
+  const [queries, setQueries] = useState([]);
+  const [selectedQuery, setSelectedQuery] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    totalQueries: 0,
+    limit: 10,
+  });
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [socket, setSocket] = useState(null);
 
-                {/* Left Panel */}
-                <div className="w-1/3 bg-white rounded-xl shadow p-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-bold">Query Inbox</h2>
-                        <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">50</span>
-                    </div>
 
-                    {queries.map((query) => (
-                        <div
-                            key={query.id}
-                            className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 cursor-pointer"
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${query.color}`}>
-                                    {query.initials}
-                                </div>
-                                <div>
-                                    <p className="text-sm font-semibold line-clamp-1">{query.name}</p>
-                                    <p className="text-xs text-gray-500 line-clamp-1">{query.title}</p>
-                                </div>
-                            </div>
-                            <div className="text-right text-xs">
-                                <p className="text-gray-400 my-1">{query.time}</p>
-                                <span
-                                    className={`text-xs font-medium px-2 py-0.5 my-1 rounded-full ${query.status === 'New'
-                                        ? 'bg-blue-100 text-primary'
-                                        : query.status === 'Accepted'
-                                            ? 'bg-green-100 text-green-600'
-                                            : query.status === 'Pending'
-                                                ? 'bg-yellow-100 text-yellow-600'
-                                                : 'bg-red-100 text-red-600'
-                                        }`}
-                                >
-                                    {query.status}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  const token = useSelector(selectCurrentToken);
+  const consultantId = useSelector(selectCurrentUser);
 
-                {/* Right Panel */}
-                <div className="flex-1 bg-white rounded-xl shadow p-6">
-                    {/* Search and Filter */}
-                    <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center bg-gray-100 px-3 py-2 rounded-lg w-1/2">
-                            <FaSearch className="text-gray-400 mr-2" />
-                            <input
-                                type="text"
-                                placeholder="Search queries..."
-                                className="bg-transparent outline-none w-full"
-                            />
-                        </div>
-                        <button className="bg-primary text-white px-4 py-2 rounded-lg font-semibold">Filter</button>
-                    </div>
+  console.log(consultantId)
+  
+ useEffect(() => {
+  const fetchQueries = async () => {
+    try {
+      const response = await getConsultantQuries({
+        consultantId,
+        token,
+        status: "pending", // or "all"
+        page: 1,
+        limit: 10
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching queries:", error);
+    }
+  };
 
-                    {/* Query Details */}
+  if (consultantId && token) {
+    fetchQueries();
+  }
+}, [consultantId, token]);
+
+
+
+  
+  // Fetch queries from API
+  const fetchQueries = async (page = 1, status = 'all') => {
+    try {
+      const response = await fetch(
+        `/api/queries?status=${status}&page=${page}&limit=${pagination.limit}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }
+      );
+      const data = await response.json();
+      
+      setQueries(data.queries);
+      setPagination({
+        page: data.currentPage,
+        totalPages: data.totalPages,
+        totalQueries: data.totalQueries,
+        limit: pagination.limit
+      });
+      
+      // Set first query as selected by default
+      if (data.queries.length > 0 && !selectedQuery) {
+        setSelectedQuery(data.queries[0]);
+      }
+    } catch (error) {
+      console.error('Error fetching queries:', error);
+    }
+  };
+
+  // Initialize WebSocket connection
+  useEffect(() => {
+    const newSocket = io(BASE_URL, {
+      transports: ['websocket'],
+    });
+    
+    setSocket(newSocket);
+
+    // Clean up on unmount
+    return () => newSocket.close();
+  }, []);
+
+  // Set up WebSocket listeners
+  useEffect(() => {
+    if (!socket) return;
+
+    // Join consultant-specific room
+    const consultantId = localStorage.getItem('consultantId');
+    if (consultantId) {
+      socket.emit('join-consultant', consultantId);
+    }
+
+    // Handle new query event
+    socket.on('new-query', (newQuery) => {
+      setQueries(prev => [newQuery, ...prev]);
+      
+      // Update pagination totals
+      setPagination(prev => ({
+        ...prev,
+        totalQueries: prev.totalQueries + 1,
+        totalPages: Math.ceil((prev.totalQueries + 1) / prev.limit)
+      }));
+    });
+
+    // Handle query update event
+    socket.on('update-query', (updatedQuery) => {
+      setQueries(prev => prev.map(query => 
+        query._id === updatedQuery._id ? updatedQuery : query
+      ));
+      
+      // Update selected query if it's the one being viewed
+      if (selectedQuery && selectedQuery._id === updatedQuery._id) {
+        setSelectedQuery(updatedQuery);
+      }
+    });
+
+    return () => {
+      socket.off('new-query');
+      socket.off('update-query');
+    };
+  }, [socket, selectedQuery]);
+
+  // Initial fetch
+  useEffect(() => {
+    fetchQueries();
+  }, []);
+
+  // Handle query selection
+  const handleQuerySelect = (query) => {
+    setSelectedQuery(query);
+  };
+
+  // Handle status filter change
+  const handleStatusFilter = (status) => {
+    setStatusFilter(status);
+    fetchQueries(1, status);
+  };
+
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    fetchQueries(newPage, statusFilter);
+  };
+
+  return (
+    <main>
+      <header className="bg-white px-6 pb-2 w-full flex justify-between items-center">
+          <h2 className="text-xl font-bold">Query Inbox</h2>
+      </header>
+      
+      <div className="flex p-6 gap-6">
+        {/* Left Panel */}
+        <div className="w-1/3 bg-white rounded-xl shadow p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-bold">Upcoming Queries </h2>
+            <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">
+              {pagination.totalQueries}
+            </span>
+          </div>
+          
+          {/* Status Filter */}
+          <div className="flex mb-4 space-x-2">
+            {['all', 'New', 'Accepted', 'Pending', 'Rejected'].map(status => (
+              <button
+                key={status}
+                className={`text-xs px-2 py-1 rounded-full ${
+                  statusFilter === status 
+                    ? 'bg-primary text-white' 
+                    : 'bg-gray-200 text-gray-700'
+                }`}
+                onClick={() => handleStatusFilter(status)}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+          
+          {/* Queries List */}
+          {queries.map((query) => (
+            <div
+              key={query._id}
+              className={`flex items-center justify-between p-3 rounded-lg cursor-pointer ${
+                selectedQuery?._id === query._id 
+                  ? 'bg-blue-50 border border-primary' 
+                  : 'hover:bg-gray-100'
+              }`}
+              onClick={() => handleQuerySelect(query)}
+            >
+              {/* ... existing query item UI ... */}
+            </div>
+          ))}
+          
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              disabled={pagination.page === 1}
+              onClick={() => handlePageChange(pagination.page - 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            
+            <span>
+              Page {pagination.page} of {pagination.totalPages}
+            </span>
+            
+            <button
+              disabled={pagination.page === pagination.totalPages}
+              onClick={() => handlePageChange(pagination.page + 1)}
+              className="px-3 py-1 border rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+        
+        {/* Right Panel */}
+        {selectedQuery && (
                     <div className="border rounded-lg p-5">
                         <div className="flex justify-between gap-2 mb-2">
 
@@ -153,11 +269,10 @@ const QueryInbox = () => {
                             <button className="bg-primary text-white px-4 py-2 rounded">Accept Query</button>
                         </div>
                     </div>
-                </div>
-            </div>
-        </main>
-
-    );
+        )}
+      </div>
+    </main>
+  );
 };
 
 export default QueryInbox;

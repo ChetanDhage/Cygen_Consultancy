@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FaClosedCaptioning, FaCloudUploadAlt } from 'react-icons/fa';
+import {  FaCloudUploadAlt } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { fetchConsultantProfile } from '../api/consultant';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken } from '../redux/authSlice';
 import { sendQuery } from '../api/user';
@@ -12,6 +11,7 @@ const SubmitQueryForm = () => {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
   const para = useParams();
   const consultantId = para.consultant_id;
   const token = useSelector(selectCurrentToken);
@@ -37,7 +37,7 @@ const SubmitQueryForm = () => {
 
     e.preventDefault();
 
-
+    setSubmitted(true);
     const formData = new FormData();
     formData.append('consultantId', consultantId);
     formData.append('querySub', subject);
@@ -52,6 +52,8 @@ const SubmitQueryForm = () => {
     try {
       const response = await sendQuery({ formData, token });
       console.log("Query submitted:", response.data);
+      setSubmitted(false);
+      setSubject('');  setDescription(''); setFiles([]);
       alert("Query submitted successfully!");
     } catch (error) {
       console.error("Error submitting query:", error);
@@ -121,10 +123,11 @@ const SubmitQueryForm = () => {
 
       {/* Submit */}
       <button
+        disabled={submitted}
         type="submit"
         className="w-full bg-primary text-white text-sm font-semibold py-3 rounded-lg hover:bg-primary transition"
       >
-        Submit & Proceed to Payment →
+       {submitted ? 'Submitting...' : ' Submit & Proceed to Payment →'}
       </button>
     </form>
   );

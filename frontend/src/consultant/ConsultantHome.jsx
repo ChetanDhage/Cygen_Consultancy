@@ -7,15 +7,12 @@ import {
 
 const inboxQueryPath = '/consultant-dashboard/query-inbox';
 
+
 const ConsultantHome = () => {
   return (
    <main className=" w-full flex-1 ">
-            <header className=" bg-white p-6 w-full flex justify-between items-center ">
-                <div>
-                    <h2 className="text-xl font-bold">Consultant Dashboard</h2>
-                    <p className="text-sm text-gray-600 ">Welcome back, John</p>
-                </div>
-            
+            <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center ">
+                    <h2 className="text-xl font-bold">Consultant Dashboard</h2>   
             </header>
 
             <div className=' p-6'>

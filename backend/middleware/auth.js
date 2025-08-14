@@ -3,29 +3,48 @@ import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
 
 // Protect routes
-export const protect = asyncHandler(async (req, res, next) => {
-  let token;
+const protect = async (req, res, next) => {
+  try {
+    let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select("-password");
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token failed");
     }
-  }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+    if (!token) {
+      return res.status(401).json({
+        message: "Not authorized, no token provided",
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find user and attach consultant profile if exists
+    req.user = await User.findById(decoded.id).select("-password");
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    // Attach consultant profile ID if user is a consultant
+    if (req.user.role === "consultant") {
+      const consultant = await consultant.findOne({ user: req.user._id });
+      if (consultant) {
+        req.user.consultantProfile = consultant._id;
+      }
+    }
+
+    next();
+  } catch (error) {
+    console.error("Authentication error:", error);
+    res.status(401).json({ message: "Not authorized, token failed" });
   }
-});
+};
+
+export {protect};
 
 // Role-based middleware
 export const admin = (req, res, next) => {

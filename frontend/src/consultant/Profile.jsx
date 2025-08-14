@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
-import { fetchConsultantProfile } from '../../api/consultant';
+import { fetchConsultantProfile } from '../api/consultant';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../redux/authSlice';
 
-const ConsultantProfile = () => {
+const Profile = () => {
   const usertype = "user";
   const [consultantData, setConsultantData] = useState(null);
-  const para = useParams();
-  const consultantId = para.consultant_id;
+  const consultantId = useSelector(selectCurrentUser)._id; // Assuming you want to fetch the profile of the current user
 
   useEffect(() => {
     const fetchConsultant = async () => {
@@ -15,7 +16,7 @@ const ConsultantProfile = () => {
         const response = await fetchConsultantProfile(consultantId);
         if (response) {
           setConsultantData(response);
-          console.log("API Response:", response);
+          console.log("API Response:", response.response.data.message);
         }
       } catch (error) {
         console.error("Error fetching consultant:", error);
@@ -146,4 +147,4 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-export default ConsultantProfile;
+export default Profile;

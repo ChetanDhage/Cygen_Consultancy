@@ -11,7 +11,7 @@ import admin from "../middleware/admin.js";
 const router = express.Router();
 
 router
-  .route("/profile")
+  .route("/profile/:id")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
