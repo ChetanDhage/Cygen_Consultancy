@@ -100,19 +100,19 @@ export const updateQueryStatus = async (req, res, next) => {
 
     if (status === "accepted") {
       const session = new Session({
-        consultant: query.consultant._id,
-        user: query.user,
+        consultant: Query.consultant._id,
+        customer: Query.user, // Changed from 'user' to 'customer'
         date,
         duration,
         type,
-        fee: query.consultant.expectedFee,
+        fee: Query.consultant.expectedFee,
         status: "scheduled",
+        query: Query._id, // Link session to query
       });
 
       await session.save();
-      query.session = session._id;
+      Query.session = session._id;
     }
-
     const updatedQuery = await query.save();
 
     // Emit status update to consultant's room
@@ -126,6 +126,8 @@ export const updateQueryStatus = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+  
+  
 };
 
 // Get single query by ID

@@ -12,12 +12,17 @@ const sessionSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    query: {
+      // Add reference to the original query
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Query",
+    },
     date: {
       type: Date,
       required: true,
     },
     duration: {
-      type: Number,
+      type: Number, // in minutes
       required: true,
     },
     status: {
@@ -27,7 +32,7 @@ const sessionSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["video", "audio", "chat"],
+      enum: ["video", "audio", "in-person"], // Updated enum values
       required: true,
     },
     fee: {
@@ -43,8 +48,9 @@ const sessionSchema = new mongoose.Schema(
     notes: String,
     documents: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Document",
+        name: String,
+        url: String,
+        publicId: String,
       },
     ],
     followUpSessions: [
@@ -53,8 +59,22 @@ const sessionSchema = new mongoose.Schema(
         ref: "Session",
       },
     ],
+    parentSession: {
+      // Track parent session for follow-ups
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Session",
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+
+// Virtual for session ID
+sessionSchema.virtual("sessionId").get(function () {
+  return `SES-${this._id.toString().slice(-6).toUpperCase()}`;
+});
 
 export default mongoose.model("Session", sessionSchema);
