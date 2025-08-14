@@ -5,17 +5,17 @@ import {
   updateQueryStatus,
   getQueryById,
 } from "../controllers/query.controller.js";
-import { protect } from "../middleware/auth.js";
+import { protect, consultant, user as customer } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
 // User routes
-router.post("/", protect, upload.array("supportDocs"), createQuery);
+router.post("/", protect, customer, upload.array("supportDocs"), createQuery);
 
 // Consultant routes
-router.get("/", protect, getConsultantQueries);
-router.get("/:id", protect, getQueryById);
-router.put("/:id", protect, updateQueryStatus);
+router.get("/", protect, consultant, getConsultantQueries);
+router.get("/:id", protect, consultant, getQueryById);
+router.put("/:id", protect, consultant, updateQueryStatus);
 
 export default router;

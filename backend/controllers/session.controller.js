@@ -6,7 +6,7 @@ import { notFoundError } from "../utils/helpers.js";
 export const getConsultantSessions = async (req, res, next) => {
   try {
     const { status } = req.query;
-    const filter = { consultant: req.user._id };
+    const filter = { consultant: req.user.consultantProfile || req.user._id };
 
     if (status) {
       filter.status = status;
@@ -89,15 +89,12 @@ export const addSessionDocument = async (req, res, next) => {
       return notFoundError("Session not found", res);
     }
 
-    // Process file upload
+    // Process file upload (local storage)
     if (req.file) {
-      const result = await uploadToCloudinary(req.file.path);
       session.documents.push({
         name: req.file.originalname,
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.file.filename}`,
       });
-
       await session.save();
     }
 

@@ -14,13 +14,12 @@ const verificationSchema = new mongoose.Schema(
       {
         name: String,
         url: String,
-        publicId: String,
       },
     ],
     status: {
       type: String,
       enum: Object.values(VERIFICATION_STATUS),
-      default: 'approved',
+      default: "approved",
     },
     reviewedBy: {
       type: mongoose.Schema.Types.ObjectId,

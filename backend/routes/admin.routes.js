@@ -1,4 +1,5 @@
 import express from "express";
+import { protect } from "../middleware/auth.js";
 import admin from "../middleware/admin.js";
 import {
   getConsultants,
@@ -13,8 +14,9 @@ import {
 
 const router = express.Router();
 
-// Apply admin middleware to all routes
-// router.use(admin);
+// Apply authentication and admin middleware to all routes
+router.use(protect);
+router.use(admin);
 
 // Consultant management
 router.get("/consultants", getConsultants);

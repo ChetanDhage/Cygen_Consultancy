@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
+import ConsultantModel from "../models/Consultant.js";
 
 // Protect routes
 const protect = async (req, res, next) => {
@@ -31,9 +32,11 @@ const protect = async (req, res, next) => {
 
     // Attach consultant profile ID if user is a consultant
     if (req.user.role === "consultant") {
-      const consultant = await consultant.findOne({ user: req.user._id });
-      if (consultant) {
-        req.user.consultantProfile = consultant._id;
+      const consultantProfile = await ConsultantModel.findOne({
+        user: req.user._id,
+      });
+      if (consultantProfile) {
+        req.user.consultantProfile = consultantProfile._id;
       }
     }
 
@@ -44,7 +47,7 @@ const protect = async (req, res, next) => {
   }
 };
 
-export {protect};
+export { protect };
 
 // Role-based middleware
 export const admin = (req, res, next) => {

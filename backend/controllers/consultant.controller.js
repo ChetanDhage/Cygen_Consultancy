@@ -1,10 +1,6 @@
 import Consultant from "../models/Consultant.js";
 import User from "../models/User.js";
 import Verification from "../models/Verification.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-} from "../config/cloudinary.js";
 import { notFoundError } from "../utils/helpers.js";
 
 // @desc    Update consultant profile
@@ -44,39 +40,24 @@ export const updateConsultantProfile = async (req, res, next) => {
         .map((lang) => lang.trim());
     if (req.body.expectedFee) consultant.expectedFee = req.body.expectedFee;
 
-    // Handle profile photo update
+    // Handle profile photo update (local storage)
     if (req.files?.profilePhoto) {
-      // Delete old photo if exists
-      if (consultant.user.profilePhoto?.publicId) {
-        await deleteFromCloudinary(consultant.user.profilePhoto.publicId);
-      }
-
-      const result = await uploadToCloudinary(req.files.profilePhoto[0].path);
       consultant.user.profilePhoto = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.profilePhoto[0].filename}`,
       };
     }
 
-    // Handle resume update
+    // Handle resume update (local storage)
     if (req.files?.resume) {
-      // Delete old resume if exists
-      if (consultant.resume?.publicId) {
-        await deleteFromCloudinary(consultant.resume.publicId);
-      }
-
-      const result = await uploadToCloudinary(req.files.resume[0].path);
       consultant.resume = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.resume[0].filename}`,
       };
     }
 
-    // Handle certifications
+    // Handle certifications (local storage)
     if (req.files?.certifications) {
       for (let i = 0; i < req.files.certifications.length; i++) {
         const file = req.files.certifications[i];
-        const result = await uploadToCloudinary(file.path);
 
         // Get certification name from body
         const certName =
@@ -85,8 +66,7 @@ export const updateConsultantProfile = async (req, res, next) => {
         // Add to verification documents
         consultant.verification.documents.push({
           name: certName,
-          fileUrl: result.secure_url,
-          publicId: result.public_id,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -109,7 +89,10 @@ export const updateConsultantProfile = async (req, res, next) => {
 export const getConsultantById = async (req, res, next) => {
   try {
     const consultant = await Consultant.findById(req.params.id)
-      .populate("Consultant", "name email contactNumber location linkedInProfile profilePhoto") // ✅ corrected
+      .populate(
+        "user",
+        "name email contactNumber location linkedInProfile profilePhoto"
+      )
       .populate("verification");
 
     if (!consultant) {
@@ -122,8 +105,6 @@ export const getConsultantById = async (req, res, next) => {
   }
 };
 
-
-
 // @desc    Get consultant profile
 // @route   GET /api/consultants/profile
 export const getConsultantProfile = async (req, res, next) => {
@@ -132,7 +113,10 @@ export const getConsultantProfile = async (req, res, next) => {
     console.log("Consultant ID from params:", consultant_id);
 
     const consultant = await Consultant.findById(consultant_id)
-      .populate("user", "name email contactNumber location linkedInProfile profilePhoto")
+      .populate(
+        "user",
+        "name email contactNumber location linkedInProfile profilePhoto"
+      )
       .populate("verification");
 
     if (!consultant) {
@@ -147,10 +131,6 @@ export const getConsultantProfile = async (req, res, next) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
-
-
-
 
 // @desc    Remove certification
 // @route   DELETE /api/consultants/certifications/:id
@@ -175,9 +155,6 @@ export const removeCertification = async (req, res, next) => {
     }
 
     const certification = consultant.verification.documents[certIndex];
-
-    // Delete from Cloudinary
-    await deleteFromCloudinary(certification.publicId);
 
     // Remove from array
     consultant.verification.documents.splice(certIndex, 1);

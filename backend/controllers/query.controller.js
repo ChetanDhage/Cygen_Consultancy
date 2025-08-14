@@ -2,7 +2,6 @@ import Query from "../models/Query.js";
 import Consultant from "../models/Consultant.js";
 import Session from "../models/Session.js";
 import { notFoundError } from "../utils/helpers.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
 
 // Get consultant queries with pagination and status filtering
 
@@ -38,8 +37,6 @@ export const getConsultantQueries = async (req, res, next) => {
   }
 };
 
-
-
 // Create query with WebSocket notification
 export const createQuery = async (req, res, next) => {
   try {
@@ -54,11 +51,9 @@ export const createQuery = async (req, res, next) => {
     const files = [];
     if (req.files?.length) {
       for (const file of req.files) {
-        const result = await uploadToCloudinary(file.path);
         files.push({
           name: file.originalname,
-          url: result.secure_url,
-          publicId: result.public_id,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -106,18 +101,18 @@ export const updateQueryStatus = async (req, res, next) => {
 
     if (status === "accepted") {
       const session = new Session({
-        consultant: Query.consultant._id,
-        customer: Query.user, // Changed from 'user' to 'customer'
+        consultant: query.consultant._id,
+        customer: query.user,
         date,
         duration,
         type,
-        fee: Query.consultant.expectedFee,
+        fee: query.consultant.expectedFee,
         status: "scheduled",
-        query: Query._id, // Link session to query
+        query: query._id,
       });
 
       await session.save();
-      Query.session = session._id;
+      query.session = session._id;
     }
     const updatedQuery = await query.save();
 
@@ -132,8 +127,6 @@ export const updateQueryStatus = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  
-  
 };
 
 // Get single query by ID
