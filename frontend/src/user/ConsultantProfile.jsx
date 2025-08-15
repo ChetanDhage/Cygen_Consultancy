@@ -2,20 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 import { fetchConsultantProfile } from '../api/consultant';
+import { useSelector } from 'react-redux';
+import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
 
 const ConsultantProfile = () => {
-  const usertype = "user";
+  const currentUser = useSelector(selectCurrentUser);
+  const usertype = currentUser.role;
+  
+  const token = useSelector(selectCurrentToken);
+
   const [consultantData, setConsultantData] = useState(null);
   const para = useParams();
   const consultantId = para.consultant_id;
+  
+
 
   useEffect(() => {
     const fetchConsultant = async () => {
       try {
-        const response = await fetchConsultantProfile(consultantId);
-        if (response) {
-          setConsultantData(response);
-          console.log("API Response:", response);
+        const response = await fetchConsultantProfile({ consultantId, token });
+        if (response?.data) {
+          // store only the consultant object
+          setConsultantData(response.data);
+          console.log("API Response:", response.data);
         }
       } catch (error) {
         console.error("Error fetching consultant:", error);
@@ -23,10 +32,14 @@ const ConsultantProfile = () => {
     };
 
     fetchConsultant();
-  }, [consultantId]);
+  }, [consultantId, token]);
 
   if (!consultantData) {
-    return <div className="p-6 text-center text-gray-500">Loading consultant profile...</div>;
+    return (
+      <div className="p-6 text-center text-gray-500">
+        Loading consultant profile...
+      </div>
+    );
   }
 
   return (
@@ -34,18 +47,26 @@ const ConsultantProfile = () => {
       <div className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md">
         <h1 className="text-3xl font-bold text-primary">Consultant Profile</h1>
         <hr className="my-4 border-primary" />
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Profile Photo */}
           <div className="flex justify-center">
             <img
-              src={consultantData?.user?.profilePhoto || 'https://via.placeholder.com/150'}
+              src={
+                consultantData?.user?.profilePhoto?.url ||
+                'https://via.placeholder.com/150'
+              }
               alt="Consultant"
               className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-primary object-cover shadow"
             />
           </div>
 
+          {/* Basic Info */}
           <div className="md:col-span-2">
             <div className="space-y-1">
-              <h2 className="text-2xl font-semibold">{consultantData?.user?.name}</h2>
+              <h2 className="text-2xl font-semibold">
+                {consultantData?.user?.name}
+              </h2>
               <p className="text-gray-600">{consultantData?.designation}</p>
               <p className="text-gray-500">{consultantData?.company}</p>
             </div>
@@ -55,8 +76,30 @@ const ConsultantProfile = () => {
               <ProfileInfo label="Contact" value={consultantData?.contactNumber} />
               <ProfileInfo label="Location" value={consultantData?.location} />
               <ProfileInfo label="Industry" value={consultantData?.industry} />
-              <ProfileInfo label="Fee Expectation" value={`₹ ${consultantData?.expectedFee}`} />
+              <ProfileInfo
+                label="Fee Expectation"
+                value={`₹ ${consultantData?.expectedFee}`}
+              />
               <ProfileInfo label="Rating" value={consultantData?.rating || 0} />
+              <ProfileInfo
+                label="Experience"
+                value={`${consultantData?.yearsOfExperience} years`}
+              />
+              {consultantData?.resume?.url && (
+                <ProfileInfo
+                  label="Resume"
+                  value={
+                    <a
+                      href={consultantData.resume.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline"
+                    >
+                      View Resume
+                    </a>
+                  }
+                />
+              )}
             </div>
           </div>
         </div>
@@ -66,7 +109,10 @@ const ConsultantProfile = () => {
           <Section title="Skills">
             <div className="flex flex-wrap gap-2">
               {consultantData.skills.map((skill, idx) => (
-                <span key={idx} className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-600">
+                <span
+                  key={idx}
+                  className="bg-gray-100 text-sm px-3 py-1 rounded-full text-gray-600"
+                >
                   {skill}
                 </span>
               ))}
@@ -76,7 +122,9 @@ const ConsultantProfile = () => {
 
         {/* About */}
         <Section title="About Me">
-          <p className="text-sm text-gray-700">{consultantData?.about || "No information provided."}</p>
+          <p className="text-sm text-gray-700">
+            {consultantData?.about || 'No information provided.'}
+          </p>
         </Section>
 
         {/* Languages */}
@@ -104,7 +152,9 @@ const ConsultantProfile = () => {
                   key={index}
                   className="bg-gray-50 rounded-lg p-4 border border-gray-200"
                 >
-                  <p className="italic text-sm text-gray-600 mb-2">{review.text}</p>
+                  <p className="italic text-sm text-gray-600 mb-2">
+                    {review.text}
+                  </p>
                   <div className="flex items-center gap-1">
                     {[...Array(review.rating)].map((_, i) => (
                       <FaStar key={i} className="text-yellow-500" />
@@ -117,7 +167,7 @@ const ConsultantProfile = () => {
           </Section>
         )}
 
-        {usertype === "user" && (
+        {usertype === 'user' && (
           <div className="mt-8">
             <Link to={`/user-dashboard/query/${consultantId}`}>
               <button className="w-full md:w-auto px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">

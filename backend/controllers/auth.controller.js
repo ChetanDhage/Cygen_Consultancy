@@ -162,9 +162,7 @@ export const login = async (req, res, next) => {
       const consultant = await Consultant.findOne({ user: user._id });
 
       if (!consultant) {
-        return res
-          .status(404)
-          .json({ message: "Consultant profile not found" });
+        return res.status(404).json({ message: "Consultant profile not found" });
       }
 
       if (consultant.status !== "approved") {
@@ -175,13 +173,12 @@ export const login = async (req, res, next) => {
 
       // Respond with consultant profile details
       return res.json({
-        _id: user._id,
+        _id: consultant._id,
         name: consultant.name,
         email: consultant.email,
         role: user.role,
-        consultantProfile: consultant._id, // Include consultant profile ID
         token: generateToken(user._id), // token tied to user
-        profilePhoto: consultant.profilePhoto?.url || user.profilePhoto?.url,
+        profilePhoto: consultant.profilePhoto?.url,
       });
     }
 
@@ -198,6 +195,7 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
 // @desc    Verify email (no longer needed with auto-verify)
 // @route   GET /api/auth/verify/:token
 export const verifyEmail = async (req, res, next) => {

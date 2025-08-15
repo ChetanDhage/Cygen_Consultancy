@@ -3,7 +3,10 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // ✅ Get Consultant 
 export const fetchAllConsultant = async () => {
-  const response = await axios.get(`${BASE_URL}/api/admin/verified-consultant`);
+   const response = await axios.get(
+  `${BASE_URL}/api/admin/verified-consultant`,
+ 
+);
   return response;
 };
 
@@ -17,9 +20,14 @@ export const fetchConsultantById = async (consultant_id) => {
   return response.data;
 };
 
-export const fetchConsultantProfile = async (consultant_id) => {
-  // console.log("Fetching profile for:", consultant_id);
-  const response = await axios.get(`${BASE_URL}/api/consultants/profile/${consultant_id}`);
+export const fetchConsultantProfile = async ({consultantId, token}) => {
+  const response = await axios.get(
+  `${BASE_URL}/api/consultants/profile/${consultantId}`,
+  {
+    headers: { Authorization: `Bearer ${token}` }
+  }
+);
+
   return response.data;
 };
 

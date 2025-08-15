@@ -3,6 +3,7 @@ import {
   updateConsultantProfile,
   getConsultantProfile,
   removeCertification,
+  getConsultantById,
 } from "../controllers/consultant.controller.js";
 import { protect, consultant } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
@@ -16,7 +17,7 @@ router.use(protect);
 router.get("/profile", consultant, getConsultantProfile);
 
 // Get consultant profile by ID
-router.get("/profile/:consultant_id", getConsultantProfile);
+router.get("/profile/:id", getConsultantById);
 
 // Update consultant profile
 router.put(

@@ -25,9 +25,9 @@ const SubmitQueryForm = () => {
   useEffect(() => {
     const fetchConsultant = async () => {
       try {
-        const response = await fetchConsultantProfile(consultantId);
-        setConsultantData(response);
-
+        const response = await fetchConsultantProfile({consultantId, token});
+        setConsultantData(response.data);
+console.log(response.data)
         // Reset fields
         setSubject('');
         setSessionDateTime('');
