@@ -2,14 +2,26 @@ import Session from "../models/Session.js";
 import Query from "../models/Query.js"; // Add this import
 import { notFoundError } from "../utils/helpers.js";
 
-// Get consultant sessions
+// Get consultant sessions (with today's filter support)
 export const getConsultantSessions = async (req, res, next) => {
   try {
-    const { status } = req.query;
+    const { status, today } = req.query;
     const filter = { consultant: req.user.consultantProfile || req.user._id };
 
+    // Status filter if provided
     if (status) {
       filter.status = status;
+    }
+
+    // Today's date filter
+    if (today === "true") {
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const endOfDay = new Date();
+      endOfDay.setHours(23, 59, 59, 999);
+
+      filter.date = { $gte: startOfDay, $lte: endOfDay };
     }
 
     const sessions = await Session.find(filter)
@@ -26,10 +38,14 @@ export const getConsultantSessions = async (req, res, next) => {
   }
 };
 
-// Get session details
+
+// Get session details (only if belongs to logged-in consultant)
 export const getSessionDetails = async (req, res, next) => {
   try {
-    const session = await Session.findById(req.params.id)
+    const session = await Session.findOne({
+      _id: req.params.id,
+      consultant: req.user.consultantProfile || req.user._id,
+    })
       .populate("customer", "name email designation company")
       .populate({
         path: "query",
@@ -42,7 +58,7 @@ export const getSessionDetails = async (req, res, next) => {
       .populate("followUpSessions");
 
     if (!session) {
-      return notFoundError("Session not found", res);
+      return notFoundError("Session not found or not accessible", res);
     }
 
     res.json({
@@ -53,6 +69,7 @@ export const getSessionDetails = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Create follow-up session
 export const createFollowUpSession = async (req, res, next) => {
