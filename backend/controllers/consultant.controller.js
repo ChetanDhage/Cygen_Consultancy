@@ -1,10 +1,6 @@
 import Consultant from "../models/Consultant.js";
 import User from "../models/User.js";
 import Verification from "../models/Verification.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-} from "../config/cloudinary.js";
 import { notFoundError } from "../utils/helpers.js";
 
 // @desc    Update consultant profile
@@ -44,39 +40,24 @@ export const updateConsultantProfile = async (req, res, next) => {
         .map((lang) => lang.trim());
     if (req.body.expectedFee) consultant.expectedFee = req.body.expectedFee;
 
-    // Handle profile photo update
+    // Handle profile photo update (local storage)
     if (req.files?.profilePhoto) {
-      // Delete old photo if exists
-      if (consultant.user.profilePhoto?.publicId) {
-        await deleteFromCloudinary(consultant.user.profilePhoto.publicId);
-      }
-
-      const result = await uploadToCloudinary(req.files.profilePhoto[0].path);
       consultant.user.profilePhoto = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.profilePhoto[0].filename}`,
       };
     }
 
-    // Handle resume update
+    // Handle resume update (local storage)
     if (req.files?.resume) {
-      // Delete old resume if exists
-      if (consultant.resume?.publicId) {
-        await deleteFromCloudinary(consultant.resume.publicId);
-      }
-
-      const result = await uploadToCloudinary(req.files.resume[0].path);
       consultant.resume = {
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.files.resume[0].filename}`,
       };
     }
 
-    // Handle certifications
+    // Handle certifications (local storage)
     if (req.files?.certifications) {
       for (let i = 0; i < req.files.certifications.length; i++) {
         const file = req.files.certifications[i];
-        const result = await uploadToCloudinary(file.path);
 
         // Get certification name from body
         const certName =
@@ -85,8 +66,7 @@ export const updateConsultantProfile = async (req, res, next) => {
         // Add to verification documents
         consultant.verification.documents.push({
           name: certName,
-          fileUrl: result.secure_url,
-          publicId: result.public_id,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -97,60 +77,74 @@ export const updateConsultantProfile = async (req, res, next) => {
     const updatedConsultant = await consultant.save();
 
     res.json({
+      success: true,
       message: "Profile updated successfully",
-      consultant: updatedConsultant,
+      data: updatedConsultant,
     });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc    Get consultant by ID
 // @route   GET /api/consultants/:id
 export const getConsultantById = async (req, res, next) => {
   try {
     const consultant = await Consultant.findById(req.params.id)
-      .populate("Consultant", "name email contactNumber location linkedInProfile profilePhoto") // ✅ corrected
+      .populate(
+        "user",
+        "name email contactNumber location linkedInProfile profilePhoto"
+      )
       .populate("verification");
 
     if (!consultant) {
       return notFoundError("Consultant not found", res);
     }
 
-    res.json(consultant);
+    res.json({
+      success: true,
+      data: consultant,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-
-
 // @desc    Get consultant profile
-// @route   GET /api/consultants/profile
+// @route   GET /api/consultants/profile/:consultant_id
 export const getConsultantProfile = async (req, res, next) => {
   try {
     const { consultant_id } = req.params;
-    console.log("Consultant ID from params:", consultant_id);
+
+    if (!consultant_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Consultant ID is required",
+      });
+    }
 
     const consultant = await Consultant.findById(consultant_id)
-      .populate("user", "name email contactNumber location linkedInProfile profilePhoto")
+      .populate(
+        "user",
+        "name email contactNumber location linkedInProfile profilePhoto"
+      )
       .populate("verification");
 
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
-    // 👇 Log and return the consultant
-    console.log("Consultant found:", consultant);
-    res.status(200).json(consultant); // ✅ make sure you respond with data
+    res.status(200).json({
+      success: true,
+      data: consultant,
+    });
   } catch (error) {
-    console.error("Error fetching consultant:", error);
-    res.status(500).json({ message: "Server error", error });
+    next(error);
   }
 };
-
-
-
-
 
 // @desc    Remove certification
 // @route   DELETE /api/consultants/certifications/:id
@@ -174,16 +168,14 @@ export const removeCertification = async (req, res, next) => {
       return notFoundError("Certification not found", res);
     }
 
-    const certification = consultant.verification.documents[certIndex];
-
-    // Delete from Cloudinary
-    await deleteFromCloudinary(certification.publicId);
-
     // Remove from array
     consultant.verification.documents.splice(certIndex, 1);
     await consultant.verification.save();
 
-    res.json({ message: "Certification removed successfully" });
+    res.json({
+      success: true,
+      message: "Certification removed successfully",
+    });
   } catch (error) {
     next(error);
   }

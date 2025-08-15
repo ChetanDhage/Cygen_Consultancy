@@ -9,7 +9,7 @@ import {
 } from "../config/constants.js";
 import { getAnalyticsData } from "../utils/analytics.js";
 
-// Get all consultants with filtering
+// Get consultants within sub-admin's scope (basic filtering)
 export const getConsultants = async (req, res) => {
   try {
     const { status, search } = req.query;
@@ -28,7 +28,8 @@ export const getConsultants = async (req, res) => {
 
     const consultants = await Consultant.find(filter)
       .populate("user", "name email profilePhoto")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(100); // Limit results for sub-admin scope
 
     res.json({
       success: true,
@@ -43,14 +44,18 @@ export const getConsultants = async (req, res) => {
   }
 };
 
+// Get consultants by status (limited scope)
 export const getConsultantsByStatus = async (req, res) => {
   try {
-    const consultants = await Consultant.find({ status: "approved" });
+    const { status } = req.params;
+    const consultants = await Consultant.find({ status })
+      .populate("user", "name email profilePhoto")
+      .limit(50);
 
     if (!consultants.length) {
       return res.status(404).json({
         success: false,
-        message: `No consultants with status: approved`,
+        message: `No consultants with status: ${status}`,
       });
     }
 
@@ -67,11 +72,25 @@ export const getConsultantsByStatus = async (req, res) => {
   }
 };
 
-// Update consultant status
+// Update consultant status (limited to pending/approved/rejected)
 export const updateConsultantStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, rejectionReason } = req.body;
+
+    // Validate status for sub-admin permissions
+    if (
+      ![
+        CONSULTANT_STATUS.PENDING,
+        CONSULTANT_STATUS.APPROVED,
+        CONSULTANT_STATUS.REJECTED,
+      ].includes(status)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status for sub-admin",
+      });
+    }
 
     const consultant = await Consultant.findById(id).populate("user");
 
@@ -83,6 +102,9 @@ export const updateConsultantStatus = async (req, res) => {
     }
 
     consultant.status = status;
+    consultant.reviewedBy = req.user._id;
+    consultant.reviewDate = new Date();
+
     if (status === CONSULTANT_STATUS.REJECTED && rejectionReason) {
       consultant.rejectionReason = rejectionReason;
     }
@@ -93,7 +115,11 @@ export const updateConsultantStatus = async (req, res) => {
     if (status === CONSULTANT_STATUS.APPROVED) {
       await Verification.findOneAndUpdate(
         { consultant: consultant.user._id },
-        { status: VERIFICATION_STATUS.VERIFIED },
+        {
+          status: VERIFICATION_STATUS.VERIFIED,
+          reviewedBy: req.user._id,
+          reviewDate: new Date(),
+        },
         { new: true }
       );
     }
@@ -111,78 +137,7 @@ export const updateConsultantStatus = async (req, res) => {
   }
 };
 
-// Get all customers
-export const getCustomers = async (req, res) => {
-  try {
-    const { status, search } = req.query;
-    const filter = { role: "user" };
-
-    if (status && status !== "All") {
-      filter.status = status;
-    }
-
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const customers = await User.find(filter)
-      .select("-password")
-      .sort({ createdAt: -1 });
-
-    res.json({
-      success: true,
-      count: customers.length,
-      data: customers,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
-
-// Get all transactions
-export const getTransactions = async (req, res) => {
-  try {
-    const { status, search } = req.query;
-    const filter = {};
-
-    if (status && status !== "All") {
-      filter.status = status;
-    }
-
-    if (search) {
-      filter.$or = [
-        { "customer.name": { $regex: search, $options: "i" } },
-        { "consultant.name": { $regex: search, $options: "i" } },
-        { transactionId: { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const transactions = await Transaction.find(filter)
-      .populate("customer", "name email")
-      .populate("consultant", "name email")
-      .populate("session")
-      .sort({ createdAt: -1 });
-
-    res.json({
-      success: true,
-      count: transactions.length,
-      data: transactions,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
-
-// Get verifications
+// Get verifications within sub-admin scope
 export const getVerifications = async (req, res) => {
   try {
     const { status, search } = req.query;
@@ -208,7 +163,8 @@ export const getVerifications = async (req, res) => {
           select: "name email",
         },
       })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(100);
 
     res.json({
       success: true,
@@ -223,11 +179,25 @@ export const getVerifications = async (req, res) => {
   }
 };
 
-// Update verification status
+// Update verification status (limited scope)
 export const updateVerificationStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, rejectionReason } = req.body;
+
+    // Validate status for sub-admin permissions
+    if (
+      ![
+        VERIFICATION_STATUS.PENDING,
+        VERIFICATION_STATUS.VERIFIED,
+        VERIFICATION_STATUS.REJECTED,
+      ].includes(status)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status for sub-admin",
+      });
+    }
 
     const verification = await Verification.findById(id).populate("consultant");
 
@@ -252,7 +222,11 @@ export const updateVerificationStatus = async (req, res) => {
     if (status === VERIFICATION_STATUS.VERIFIED) {
       await Consultant.findOneAndUpdate(
         { user: verification.consultant._id },
-        { status: CONSULTANT_STATUS.APPROVED },
+        {
+          status: CONSULTANT_STATUS.APPROVED,
+          reviewedBy: req.user._id,
+          reviewDate: new Date(),
+        },
         { new: true }
       );
     }
@@ -270,8 +244,8 @@ export const updateVerificationStatus = async (req, res) => {
   }
 };
 
-// Get analytics data
-export const getAnalytics = async (req, res) => {
+// Get basic analytics data (limited scope)
+export const getBasicAnalytics = async (req, res) => {
   try {
     const { range = "7d" } = req.query;
 
@@ -285,9 +259,6 @@ export const getAnalytics = async (req, res) => {
       case "30d":
         startDate.setDate(startDate.getDate() - 30);
         break;
-      case "90d":
-        startDate.setDate(startDate.getDate() - 90);
-        break;
       default:
         startDate.setDate(startDate.getDate() - 7);
     }
@@ -295,45 +266,134 @@ export const getAnalytics = async (req, res) => {
     const endDate = new Date();
     endDate.setHours(23, 59, 59, 999);
 
-    const analyticsData = await getAnalyticsData(startDate, endDate);
+    // Get basic counts for sub-admin scope
+    const totalConsultants = await Consultant.countDocuments();
+    const pendingConsultants = await Consultant.countDocuments({
+      status: CONSULTANT_STATUS.PENDING,
+    });
+    const approvedConsultants = await Consultant.countDocuments({
+      status: CONSULTANT_STATUS.APPROVED,
+    });
+    const rejectedConsultants = await Consultant.countDocuments({
+      status: CONSULTANT_STATUS.REJECTED,
+    });
 
-    // Calculate summary statistics
-    const summary = {
-      totalUsers: 0,
-      totalConsultants: 0,
-      totalCustomers: 0,
-      totalRevenue: 0,
-      totalSessions: 0,
-      userDistribution: {
-        consultants: 0,
-        customers: 0,
-        admins: 0,
+    const totalVerifications = await Verification.countDocuments();
+    const pendingVerifications = await Verification.countDocuments({
+      status: VERIFICATION_STATUS.PENDING,
+    });
+    const verifiedVerifications = await Verification.countDocuments({
+      status: VERIFICATION_STATUS.VERIFIED,
+    });
+
+    // Get recent transactions count
+    const recentTransactions = await Transaction.countDocuments({
+      createdAt: { $gte: startDate, $lte: endDate },
+    });
+
+    const analyticsData = {
+      summary: {
+        totalConsultants,
+        pendingConsultants,
+        approvedConsultants,
+        rejectedConsultants,
+        totalVerifications,
+        pendingVerifications,
+        verifiedVerifications,
+        recentTransactions,
+      },
+      range: {
+        startDate,
+        endDate,
       },
     };
 
-    if (analyticsData.length > 0) {
-      // Latest data
-      const latest = analyticsData[analyticsData.length - 1];
+    res.json({
+      success: true,
+      data: analyticsData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 
-      summary.totalUsers = latest.totalUsers;
-      summary.totalConsultants = latest.totalConsultants;
-      summary.totalCustomers = latest.totalCustomers;
-      summary.totalRevenue = analyticsData.reduce(
-        (sum, data) => sum + data.revenue,
-        0
-      );
-      summary.totalSessions = analyticsData.reduce(
-        (sum, data) => sum + data.transactions,
-        0
-      );
-      summary.userDistribution = latest.userDistribution;
+// Get sub-admin profile
+export const getSubAdminProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Update sub-admin profile
+export const updateSubAdminProfile = async (req, res) => {
+  try {
+    const { name, contactNumber, location } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
+
+    // Only allow updating certain fields
+    if (name) user.name = name;
+    if (contactNumber) user.contactNumber = contactNumber;
+    if (location) user.location = location;
+
+    await user.save();
+
+    const updatedUser = await User.findById(user._id).select("-password");
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Get moderation queue (consultants pending review)
+export const getModerationQueue = async (req, res) => {
+  try {
+    const pendingConsultants = await Consultant.find({
+      status: CONSULTANT_STATUS.PENDING,
+    })
+      .populate("user", "name email profilePhoto")
+      .sort({ createdAt: 1 })
+      .limit(50);
+
+    const pendingVerifications = await Verification.find({
+      status: VERIFICATION_STATUS.PENDING,
+    })
+      .populate("consultant", "name email")
+      .sort({ createdAt: 1 })
+      .limit(50);
 
     res.json({
       success: true,
       data: {
-        summary,
-        analytics: analyticsData,
+        pendingConsultants,
+        pendingVerifications,
+        totalPending: pendingConsultants.length + pendingVerifications.length,
       },
     });
   } catch (error) {

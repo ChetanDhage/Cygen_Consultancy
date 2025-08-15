@@ -6,17 +6,21 @@ import { notFoundError } from "../utils/helpers.js";
 export const getConsultantSessions = async (req, res, next) => {
   try {
     const { status } = req.query;
-    const filter = { consultant: req.user._id };
+    const filter = { consultant: req.user.consultantProfile || req.user._id };
 
     if (status) {
       filter.status = status;
     }
 
     const sessions = await Session.find(filter)
-      .populate("customer", "name email designation company") // Added designation and company
+      .populate("customer", "name email designation company")
       .sort({ date: -1 });
 
-    res.json(sessions);
+    res.json({
+      success: true,
+      count: sessions.length,
+      data: sessions,
+    });
   } catch (error) {
     next(error);
   }
@@ -26,10 +30,10 @@ export const getConsultantSessions = async (req, res, next) => {
 export const getSessionDetails = async (req, res, next) => {
   try {
     const session = await Session.findById(req.params.id)
-      .populate("customer", "name email designation company") // Added designation and company
+      .populate("customer", "name email designation company")
       .populate({
         path: "query",
-        select: "querySub queryText files", // Populate query details
+        select: "querySub queryText files",
         populate: {
           path: "user",
           select: "name",
@@ -41,7 +45,10 @@ export const getSessionDetails = async (req, res, next) => {
       return notFoundError("Session not found", res);
     }
 
-    res.json(session);
+    res.json({
+      success: true,
+      data: session,
+    });
   } catch (error) {
     next(error);
   }
@@ -65,7 +72,7 @@ export const createFollowUpSession = async (req, res, next) => {
       type,
       fee,
       status: "scheduled",
-      parentSession: parentSessionId, // Track parent session
+      parentSession: parentSessionId,
     });
 
     await followUpSession.save();
@@ -73,7 +80,10 @@ export const createFollowUpSession = async (req, res, next) => {
     parentSession.followUpSessions.push(followUpSession._id);
     await parentSession.save();
 
-    res.status(201).json(followUpSession);
+    res.status(201).json({
+      success: true,
+      data: followUpSession,
+    });
   } catch (error) {
     next(error);
   }
@@ -89,19 +99,19 @@ export const addSessionDocument = async (req, res, next) => {
       return notFoundError("Session not found", res);
     }
 
-    // Process file upload
+    // Process file upload (local storage)
     if (req.file) {
-      const result = await uploadToCloudinary(req.file.path);
       session.documents.push({
         name: req.file.originalname,
-        url: result.secure_url,
-        publicId: result.public_id,
+        url: `/uploads/${req.file.filename}`,
       });
-
       await session.save();
     }
 
-    res.json(session);
+    res.json({
+      success: true,
+      data: session,
+    });
   } catch (error) {
     next(error);
   }

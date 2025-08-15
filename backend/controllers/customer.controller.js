@@ -1,5 +1,4 @@
 import Customer from "../models/Customer.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
 import User from "../models/User.js";
 
 // Create consultation request
@@ -18,34 +17,34 @@ export const createCustomer = async (req, res, next) => {
       companyDetails,
       serviceArea,
       requirements,
-      urgentRequest
+      urgentRequest,
     } = req.body;
 
     const userExists = await User.findOne({ email });
-        if (userExists) {
-          return res.status(400).json({ message: "Email already in use" });
-        }
-    
-        const user = await User.create({
-          name:firstName,
-          email,
-          password,
-          role: "user",
-          contactNumber:phone,
-          location:country,
-          linkedInProfile,
-        });
+    if (userExists) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already in use",
+      });
+    }
 
+    const user = await User.create({
+      name: firstName,
+      email,
+      password,
+      role: "user",
+      contactNumber: phone,
+      location: country,
+      linkedInProfile,
+    });
 
-    // Process file uploads
+    // Process file uploads (local storage)
     const files = [];
     if (req.files?.supportDocs) {
       for (const file of req.files.supportDocs) {
-        const result = await uploadToCloudinary(file.path);
         files.push({
           name: file.originalname,
-          url: result.secure_url,
-          publicId: result.public_id,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -69,8 +68,12 @@ export const createCustomer = async (req, res, next) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "Customer profile submitted successfully",
-      requestId: request._id,
+      data: {
+        requestId: request._id,
+        userId: user._id,
+      },
     });
   } catch (error) {
     next(error);

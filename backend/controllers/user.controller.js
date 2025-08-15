@@ -61,42 +61,51 @@ export const updateUserProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Get all consultants (admin only)
+// @desc    Get all consultants (public endpoint)
 // @route   GET /api/users/consultants
-// Get all consultants with filtering
 export const getConsultants = async (req, res, next) => {
   try {
-    const { domain, minExperience, maxExperience, minFee, maxFee, minRating, search } = req.query;
-    
+    const {
+      domain,
+      minExperience,
+      maxExperience,
+      minFee,
+      maxFee,
+      minRating,
+      search,
+    } = req.query;
+
     const filter = { status: "approved" };
-    
+
     // Domain filter
     if (domain) {
-      filter.skills = domain;
+      filter.skills = { $in: [domain] };
     }
-    
+
     // Experience filter
     if (minExperience || maxExperience) {
       filter.yearsOfExperience = {};
-      if (minExperience) filter.yearsOfExperience.$gte = minExperience;
-      if (maxExperience) filter.yearsOfExperience.$lte = maxExperience;
+      if (minExperience)
+        filter.yearsOfExperience.$gte = parseInt(minExperience);
+      if (maxExperience)
+        filter.yearsOfExperience.$lte = parseInt(maxExperience);
     }
-    
+
     // Fee filter
     if (minFee || maxFee) {
       filter.expectedFee = {};
-      if (minFee) filter.expectedFee.$gte = minFee;
-      if (maxFee) filter.expectedFee.$lte = maxFee;
+      if (minFee) filter.expectedFee.$gte = parseInt(minFee);
+      if (maxFee) filter.expectedFee.$lte = parseInt(maxFee);
     }
-    
+
     // Rating filter
     if (minRating) {
-      filter.rating = { $gte: minRating };
+      filter.rating = { $gte: parseFloat(minRating) };
     }
-    
+
     // Search filter
     if (search) {
-      const searchRegex = new RegExp(search, 'i');
+      const searchRegex = new RegExp(search, "i");
       filter.$or = [
         { name: searchRegex },
         { skills: searchRegex },
@@ -107,26 +116,38 @@ export const getConsultants = async (req, res, next) => {
 
     const consultants = await Consultant.find(filter)
       .populate("user", "name email profilePhoto")
-      .select("-certifications -resume");
+      .select("-certifications -resume -verification")
+      .sort({ rating: -1, yearsOfExperience: -1 });
 
-    res.json(consultants);
+    res.json({
+      success: true,
+      count: consultants.length,
+      data: consultants,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-// Get consultant by ID
+// @desc    Get consultant by ID (public endpoint)
+// @route   GET /api/users/consultants/:id
 export const getConsultantById = async (req, res, next) => {
   try {
-    const consultant = await Consultant.findById(req.params.id)
+    const consultant = await Consultant.findOne({
+      _id: req.params.id,
+      status: "approved",
+    })
       .populate("user", "name email profilePhoto")
-      .populate("reviews");
+      .select("-certifications -resume -verification");
 
     if (!consultant) {
       return notFoundError("Consultant not found", res);
     }
 
-    res.json(consultant);
+    res.json({
+      success: true,
+      data: consultant,
+    });
   } catch (error) {
     next(error);
   }

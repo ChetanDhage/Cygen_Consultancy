@@ -6,11 +6,7 @@ const certificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fileUrl: {
-    type: String,
-    required: true,
-  },
-  publicId: {
+  url: {
     type: String,
     required: true,
   },
@@ -65,7 +61,6 @@ const consultantSchema = new mongoose.Schema(
     },
     resume: {
       url: String,
-      publicId: String,
     },
     certifications: [certificationSchema],
     status: {

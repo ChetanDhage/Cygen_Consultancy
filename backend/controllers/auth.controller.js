@@ -65,7 +65,7 @@ export const registerConsultant = async (req, res, next) => {
       isVerified: true, // Auto-verify
     });
 
-    // Upload profile photo if exists
+    // Upload profile photo if exists (local storage)
     if (req.files?.profilePhoto) {
       user.profilePhoto = {
         url: `/uploads/${req.files.profilePhoto[0].filename}`,
@@ -92,7 +92,7 @@ export const registerConsultant = async (req, res, next) => {
       expectedFee: req.body.expectedFee,
     };
 
-    // Upload resume if exists
+    // Upload resume if exists (local storage)
     if (req.files?.resume) {
       consultantData.resume = {
         url: `/uploads/${req.files.resume[0].filename}`,
@@ -101,7 +101,7 @@ export const registerConsultant = async (req, res, next) => {
 
     const consultant = await Consultant.create(consultantData);
 
-    // Step 3: Process certifications
+    // Step 3: Process certifications (local storage)
     const certifications = [];
     if (req.files?.certifications) {
       for (let i = 0; i < req.files.certifications.length; i++) {
@@ -113,7 +113,7 @@ export const registerConsultant = async (req, res, next) => {
 
         certifications.push({
           name: certName,
-          fileUrl: `/uploads/${file.filename}`,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -162,7 +162,9 @@ export const login = async (req, res, next) => {
       const consultant = await Consultant.findOne({ user: user._id });
 
       if (!consultant) {
-        return res.status(404).json({ message: "Consultant profile not found" });
+        return res
+          .status(404)
+          .json({ message: "Consultant profile not found" });
       }
 
       if (consultant.status !== "approved") {
@@ -173,12 +175,13 @@ export const login = async (req, res, next) => {
 
       // Respond with consultant profile details
       return res.json({
-        _id: consultant._id,
+        _id: user._id,
         name: consultant.name,
         email: consultant.email,
         role: user.role,
+        consultantProfile: consultant._id, // Include consultant profile ID
         token: generateToken(user._id), // token tied to user
-        profilePhoto: consultant.profilePhoto?.url,
+        profilePhoto: consultant.profilePhoto?.url || user.profilePhoto?.url,
       });
     }
 

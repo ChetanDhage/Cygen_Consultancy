@@ -2,11 +2,8 @@ import Query from "../models/Query.js";
 import Consultant from "../models/Consultant.js";
 import Session from "../models/Session.js";
 import { notFoundError } from "../utils/helpers.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
 
 // Get consultant queries with pagination and status filtering
-
-// ✅ Get consultant queries by consultant ID
 export const getConsultantQueries = async (req, res, next) => {
   try {
     const { status, page = 1, limit = 10, consultantId } = req.query;
@@ -22,9 +19,10 @@ export const getConsultantQueries = async (req, res, next) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 })
       .skip(startIndex)
-      .limit(limit);
+      .limit(parseInt(limit));
 
     res.json({
+      success: true,
       queries,
       currentPage: Number(page),
       totalPages: Math.ceil(total / limit),
@@ -32,11 +30,8 @@ export const getConsultantQueries = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    console.log("Error fetching consultant queries:", error);
   }
 };
-
-
 
 // Create query with WebSocket notification
 export const createQuery = async (req, res, next) => {
@@ -46,17 +41,18 @@ export const createQuery = async (req, res, next) => {
 
     const consultant = await Consultant.findById(consultantId);
     if (!consultant) {
-      return res.status(404).json({ message: "Consultant not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
     }
 
     const files = [];
     if (req.files?.length) {
       for (const file of req.files) {
-        const result = await uploadToCloudinary(file.path);
         files.push({
           name: file.originalname,
-          url: result.secure_url,
-          publicId: result.public_id,
+          url: `/uploads/${file.filename}`,
         });
       }
     }
@@ -77,10 +73,13 @@ export const createQuery = async (req, res, next) => {
     io.to(`consultant_${consultantId}`).emit("new-query", query);
 
     res.status(201).json({
+      success: true,
       message: "Query submitted successfully",
-      queryId: query._id,
-      paymentRequired: true,
-      amount: consultant.expectedFee,
+      data: {
+        queryId: query._id,
+        paymentRequired: true,
+        amount: consultant.expectedFee,
+      },
     });
   } catch (error) {
     next(error);
@@ -107,19 +106,20 @@ export const updateQueryStatus = async (req, res, next) => {
 
     if (status === "accepted") {
       const session = new Session({
-        consultant: Query.consultant._id,
-        customer: Query.user, // Changed from 'user' to 'customer'
+        consultant: query.consultant._id,
+        customer: query.user,
         date,
         duration,
         type,
-        fee: Query.consultant.expectedFee,
+        fee: query.consultant.expectedFee,
         status: "scheduled",
-        query: Query._id, // Link session to query
+        query: query._id,
       });
 
       await session.save();
-      Query.session = session._id;
+      query.session = session._id;
     }
+
     const updatedQuery = await query.save();
 
     // Emit status update to consultant's room
@@ -129,12 +129,13 @@ export const updateQueryStatus = async (req, res, next) => {
       updatedQuery
     );
 
-    res.json(updatedQuery);
+    res.json({
+      success: true,
+      data: updatedQuery,
+    });
   } catch (error) {
     next(error);
   }
-
-
 };
 
 // Get single query by ID
@@ -148,7 +149,10 @@ export const getQueryById = async (req, res, next) => {
       return notFoundError("Query not found", res);
     }
 
-    res.json(query);
+    res.json({
+      success: true,
+      data: query,
+    });
   } catch (error) {
     next(error);
   }

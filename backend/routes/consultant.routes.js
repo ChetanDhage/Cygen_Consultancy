@@ -10,17 +10,13 @@ import upload from "../middleware/upload.js";
 const router = express.Router();
 
 // Apply authentication and consultant role middleware
-// router.use(protect, consultant);
+router.use(protect);
 
 // Get consultant profile
-router.get("/profile", getConsultantProfile);
-
-
+router.get("/profile", consultant, getConsultantProfile);
 
 // Get consultant profile by ID
 router.get("/profile/:consultant_id", getConsultantProfile);
-
-
 
 // Update consultant profile
 router.put(
@@ -30,10 +26,11 @@ router.put(
     { name: "resume", maxCount: 1 },
     { name: "certifications", maxCount: 10 },
   ]),
+  consultant,
   updateConsultantProfile
 );
 
 // Remove certification
-router.delete("/certifications/:id", removeCertification);
+router.delete("/certifications/:id", consultant, removeCertification);
 
 export default router;

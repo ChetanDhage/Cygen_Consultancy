@@ -18,10 +18,10 @@ import paymentRoutes from "./routes/payment.routes.js";
 import queryRoutes from "./routes/query.routes.js";
 import documentRoutes from "./routes/document.routes.js";
 import adminRoutes from "./routes/admin.routes.js"; // Add admin routes
+import subAdminRoutes from "./routes/sub-admin.routes.js"; // Add sub-admin routes
 import { updateDailyAnalytics } from "./utils/analytics.js"; // Import analytics update function
 //import { cleanupUploads } from "./middleware/upload.js";
-import customerRouter from './routes/customer.routes.js';
-
+import customerRouter from "./routes/customer.routes.js";
 
 // Configure environment variables
 dotenv.config();
@@ -33,8 +33,8 @@ const __dirname = path.dirname(__filename);
 // Initialize Express app
 const app = express();
 const server = http.createServer(app); // Create HTTP server
-const io = initWebSocket(server);     // Attach WebSocket to it
-app.set('socketio', io);              // Make io accessible in routes
+const io = initWebSocket(server); // Attach WebSocket to it
+app.set("socketio", io); // Make io accessible in routes
 
 // Connect to MongoDB
 connectDB();
@@ -66,7 +66,8 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/queries", queryRoutes);
 app.use("/api/documents", documentRoutes);
 app.use("/api/admin", adminRoutes); // Admin routes
-app.use("/api/customer",customerRouter );
+app.use("/api/sub-admin", subAdminRoutes); // Sub-admin routes
+app.use("/api/customer", customerRouter);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
@@ -149,6 +150,5 @@ process.on("uncaughtException", (err) => {
 app.get("/api/example", (req, res) => {
   res.json({ message: "Backend is connected successfully!" });
 });
-
 
 export default app;
