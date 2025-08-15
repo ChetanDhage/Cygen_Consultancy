@@ -41,7 +41,7 @@ export const getConsultantQueries = async (req, res, next) => {
 // Create query with WebSocket notification
 export const createQuery = async (req, res, next) => {
   try {
-    const { consultantId, querySub, queryText } = req.body;
+    const { consultantId, querySub, queryText, sessionDateTime, duration, sessionLink } = req.body;
     const userId = req.user._id;
 
     const consultant = await Consultant.findById(consultantId);
@@ -66,11 +66,13 @@ export const createQuery = async (req, res, next) => {
       consultant: consultantId,
       querySub,
       queryText,
+      sessionDateTime,
+      duration,
+      sessionLink,
       files,
       fee: consultant.expectedFee,
     });
 
-    // Emit new query event to consultant's room
     const io = req.app.get("socketio");
     io.to(`consultant_${consultantId}`).emit("new-query", query);
 
@@ -84,6 +86,7 @@ export const createQuery = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Update query status with WebSocket notification
 export const updateQueryStatus = async (req, res, next) => {

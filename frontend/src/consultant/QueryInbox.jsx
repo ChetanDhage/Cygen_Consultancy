@@ -35,6 +35,7 @@ const QueryInbox = () => {
       });
 
       const data = response.data;
+      console.log(data)
 
       setQueries(data.queries);
       setPagination({
@@ -127,11 +128,10 @@ const QueryInbox = () => {
             {['all', 'New', 'Accepted', 'Pending', 'Rejected'].map(status => (
               <button
                 key={status}
-                className={`text-xs px-2 py-1 rounded-full ${
-                  statusFilter === status
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-200 text-gray-700'
-                }`}
+                className={`text-xs px-2 py-1 rounded-full ${statusFilter === status
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-700'
+                  }`}
                 onClick={() => handleStatusFilter(status)}
               >
                 {status}
@@ -143,11 +143,10 @@ const QueryInbox = () => {
           {queries.map((query) => (
             <div
               key={query._id}
-              className={`flex flex-col p-3 rounded-2xl cursor-pointer my-2 ${
-                selectedQuery?._id === query._id
-                  ? 'bg-blue-50 border border-primary'
-                  : 'hover:bg-gray-100'
-              }`}
+              className={`flex flex-col p-3 rounded-2xl cursor-pointer my-2 ${selectedQuery?._id === query._id
+                ? 'bg-blue-50 border border-primary'
+                : 'hover:bg-gray-100'
+                }`}
               onClick={() => handleQuerySelect(query)}
             >
               <h4 className="font-semibold text-sm">{query.querySub}</h4>
@@ -183,6 +182,12 @@ const QueryInbox = () => {
         {/* Right Panel */}
         {selectedQuery && (
           <div className="border rounded-lg p-5 flex-1 bg-white shadow">
+            <p className="text-sm text-gray-600 mb-4">
+              Proposed Fee:{' '}
+              <span className="font-semibold text-black">
+                ${selectedQuery.fee}
+              </span>
+            </p>
             <div className="flex justify-between gap-2 mb-2">
               <div>
                 <h3 className="text-lg font-semibold">
@@ -193,9 +198,9 @@ const QueryInbox = () => {
                   <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary bg-primaryLight">
                     {selectedQuery.user?.name
                       ? selectedQuery.user.name
-                          .split(' ')
-                          .map((n) => n[0])
-                          .join('')
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
                       : 'U'}
                   </div>
                   <div>
@@ -208,8 +213,14 @@ const QueryInbox = () => {
                 {selectedQuery.status}
               </span>
             </div>
+            <hr className=' mb-6' />
 
-            <p className="text-sm text-gray-500 mb-4">{selectedQuery.queryText}</p>
+            <p className="text-sm text-gray-500 mb-4">
+              <p className=' text-lg font-semibold text-gray-800'>Subject </p>
+    
+              {selectedQuery.queryText}
+            </p>
+            <hr className=' mb-6' />
 
             <h4 className="font-semibold text-sm mb-2">Attached Documents</h4>
             <div className="flex gap-2 mb-4">
@@ -234,15 +245,43 @@ const QueryInbox = () => {
                 <p className="text-xs text-gray-400">No attachments</p>
               )}
             </div>
+            <hr  className=' mb-6'/>
 
-            <p className="text-sm text-gray-600 mb-4">
-              Proposed Fee:{' '}
-              <span className="font-semibold text-black">
-                ${selectedQuery.fee}
-              </span>
+            <p className="text-sm text-gray-600 my-2">
+              <span className="font-medium">Date & Time:</span>{' '}
+              {selectedQuery.sessionDateTime
+                ? new Date(selectedQuery.sessionDateTime).toLocaleString('en-US', {
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
+                })
+                : 'Not scheduled'}
+            </p>
+            <p className="text-sm text-gray-600 my-2">
+              <span className="font-medium">Duration:</span> {selectedQuery.duration || 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600 my-2">
+              <span className="font-medium">Session Link:</span>{' '}
+              {selectedQuery.sessionLink ? (
+                <a
+                  href={selectedQuery.sessionLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline"
+                >
+                  Join Meet
+                </a>
+              ) : (
+                'Not available'
+              )}
             </p>
 
-            <div className="flex gap-4">
+
+            <div className="flex gap-4 my-6">
               <button className="border border-gray-300 px-4 py-2 rounded text-gray-600">
                 Reject
               </button>

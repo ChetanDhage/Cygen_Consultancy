@@ -45,12 +45,15 @@ const SessionDetails = () => {
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-600 mb-2">Session Type</h3>
-            <div className="w-full space-x-4 mb-1">
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">Session Link</h3>
+            <div className="w-full space-x-4 mb-1 flex justify-between">
               
               <div className=" flex gap-2 items-center">
                 <FaVideo className="text-gray-500" />
                 <span className="text-gray-600">Video Call</span>
+              </div>
+              <div>
+                <p className="font-medium">Join Meet</p>
               </div>
             </div>
             <div className="w-full flex justify-between items-center gap-4 space-x-4">
@@ -58,7 +61,7 @@ const SessionDetails = () => {
                 <FaMoneyBillWave className="text-gray-500" />
               <span className="text-gray-600">Fee</span>
               </div>
-             
+                
                 <p className="font-medium">$300</p>
               
             </div>
