@@ -1,8 +1,8 @@
 import Session from "../models/Session.js";
-import Query from "../models/Query.js"; // Add this import
+import Query from "../models/Query.js";
 import { notFoundError } from "../utils/helpers.js";
 
-// Get consultant sessions (with today's filter support)
+// Get consultant sessions (only with accepted queries + today's filter support)
 export const getConsultantSessions = async (req, res, next) => {
   try {
     const { status, today } = req.query;
@@ -24,8 +24,18 @@ export const getConsultantSessions = async (req, res, next) => {
       filter.date = { $gte: startOfDay, $lte: endOfDay };
     }
 
+    // 🔹 Step 1: find all accepted queries
+    const acceptedQueries = await Query.find({ status: "accepted" }).select(
+      "_id"
+    );
+
+    // 🔹 Step 2: filter sessions only with those queries
+    filter.query = { $in: acceptedQueries.map((q) => q._id) };
+
+    // Fetch sessions
     const sessions = await Session.find(filter)
       .populate("customer", "name email designation company")
+      .populate("query", "querySub queryText status")
       .sort({ date: -1 });
 
     res.json({
@@ -38,8 +48,7 @@ export const getConsultantSessions = async (req, res, next) => {
   }
 };
 
-
-// Get session details (only if belongs to logged-in consultant)
+// Get session details (only if belongs to logged-in consultant AND query is accepted)
 export const getSessionDetails = async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -49,7 +58,8 @@ export const getSessionDetails = async (req, res, next) => {
       .populate("customer", "name email designation company")
       .populate({
         path: "query",
-        select: "querySub queryText files",
+        match: { status: "accepted" }, // 🔹 only accepted queries
+        select: "querySub queryText files status",
         populate: {
           path: "user",
           select: "name",
@@ -57,8 +67,8 @@ export const getSessionDetails = async (req, res, next) => {
       })
       .populate("followUpSessions");
 
-    if (!session) {
-      return notFoundError("Session not found or not accessible", res);
+    if (!session || !session.query) {
+      return notFoundError("Session not found or query not accepted", res);
     }
 
     res.json({
@@ -69,7 +79,6 @@ export const getSessionDetails = async (req, res, next) => {
     next(error);
   }
 };
-
 
 // Create follow-up session
 export const createFollowUpSession = async (req, res, next) => {
