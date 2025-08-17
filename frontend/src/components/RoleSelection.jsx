@@ -92,7 +92,7 @@ import { useNavigate } from "react-router-dom";
 
 const roles = [
   { 
-    id: "client",
+    id: "user",
     label: "Client", 
     icon: <FaUser className="text-xl" />, 
     description: "Access services & hire experts",

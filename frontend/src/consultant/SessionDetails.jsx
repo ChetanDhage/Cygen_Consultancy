@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaCalendarAlt, FaClock, FaVideo, FaMoneyBillWave, FaFileWord, FaFilePdf, FaCheck, FaPlus } from "react-icons/fa";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "../redux/authSlice";
 
 const SessionDetails = () => {
+
+  const token = useSelector(selectCurrentToken);
+
+  const sessioncome = async () => {
+  const response = await axios.get(`${BASE_URL}/api/sessions`,
+  {
+    headers: { Authorization: `Bearer ${token}` }
+  }
+  );
+  console.log("data:", response)
+};
+
+useEffect(()=>{
+sessioncome();
+},[])
+
   return (
     <main>
       <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center">

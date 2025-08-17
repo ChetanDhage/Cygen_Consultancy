@@ -18,7 +18,7 @@ const ConsultantHome = () => {
             <div className=' p-6'>
                 {/* Welcome Banner */}
                 <section className=" w-full  bg-primaryLight text-primary p-6 rounded-xl shadow mb-6">
-                    <h3 className="text-lg font-semibold text-black">Welcome back, John!</h3>
+                   
                     <p className="text-sm">You have 3 new queries and 2 scheduled sessions today</p>
                     <Link to={inboxQueryPath}>
                     <button className="mt-4 bg-white  text-black font-semibold px-4 py-2 rounded shadow text-sm">
@@ -76,7 +76,7 @@ const ConsultantHome = () => {
                 </section>
 
                 {/* Recent Queries */}
-                <section className="bg-white p-4 rounded-lg shadow">
+                {/* <section className="bg-white p-4 rounded-lg shadow">
                     <div className="flex justify-between mb-4">
                         <h4 className="font-semibold">Recent Queries</h4>
                         <a href="#" className="text-primary text-sm">View All Queries</a>
@@ -117,7 +117,7 @@ const ConsultantHome = () => {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
             </div>
         </main>
   )
