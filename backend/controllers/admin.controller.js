@@ -348,7 +348,7 @@ export const getAnalytics = async (req, res) => {
   }
 };
 
-// Delete Consultant
+
 // Delete Consultant
 export const deleteConsultant = async (req, res) => {
   try {
