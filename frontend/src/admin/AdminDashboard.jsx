@@ -37,13 +37,14 @@ const AdminDashboard = () => {
         {
             icon: <FaUserFriends />,
             label: 'Consultant',
-            badge: 3, path: "/admin-dashboard/consultant",
+            // badge: 3, 
+            path: "/admin-dashboard/consultant",
             active: params === "consultant" ? true : false
         },
         {
             icon: <FaUser />,
             label: 'Customer',
-            badge: 3, path: "/admin-dashboard/customer",
+           path: "/admin-dashboard/customer",
             active: params === "customer" ? true : false
         },
         {
@@ -54,9 +55,9 @@ const AdminDashboard = () => {
         },
         {
             icon: <FaDollarSign />,
-            label: 'Trasaction',
-            path: "/admin-dashboard/trasaction",
-            active: params === "trasaction" ? true : false
+            label: 'Manage Sub Admin',
+            path: "/admin-dashboard/manage-sub-admin",
+            active: params === "manage-sub-admin" ? true : false
         },
         {
             icon: <FaUserFriends />,
@@ -83,13 +84,6 @@ const AdminDashboard = () => {
                 <div>
                     <Link to={'/'}><h1 className="text-2xl font-bold text-primary mb-8">Worklify</h1></Link>
                     <nav className="space-y-2">
-                        {/* <button className="flex items-center gap-3 text-primary font-semibold mb-4">
-                            <span className=" bg-primaryLight p-2 rounded-md">
-                                <FaUser className="w-5 h-5" />
-                            </span>
-                            Dashboard
-                        </button> */}
-
                         <div className=' w-[200px] overflow-hidden '>
                             {menuItems.map((item, idx) => (
                                 <MenuItem
@@ -138,7 +132,7 @@ const AdminDashboard = () => {
                         <Route path='/consultant' element={<AdminConsultant />} />
                         <Route path='/customer' element={<AdminCustomer />} />
                         <Route path='/verification' element={<AdminVerification />} />
-                        <Route path='/trasaction' element={<AdminTransaction />} />
+                        <Route path='/manage-sub-admin' element={<AdminTransaction />} />
                         <Route path='/analysis' element={<AdminAnalysis />} />
                         <Route path='/profile' element={<ConsultantProfile />} />
                         <Route path='/notification' element={<NotificationPage />} />

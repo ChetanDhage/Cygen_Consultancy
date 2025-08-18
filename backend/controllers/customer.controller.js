@@ -1,3 +1,4 @@
+import e from "express";
 import Customer from "../models/Customer.js";
 import User from "../models/User.js";
 
@@ -79,3 +80,15 @@ export const createCustomer = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllCustomers = async (req, res, next) => {
+  try {
+    const customers = await Customer.find().populate("user", "name email");
+    res.status(200).json({
+      success: true,
+      data: customers,
+    });
+  } catch (error) {
+    next(error);
+  }
+}

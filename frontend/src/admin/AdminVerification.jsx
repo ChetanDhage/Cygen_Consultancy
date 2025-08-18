@@ -78,7 +78,7 @@ const AdminVerification = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Consultant Management</h1>
+      <h1 className="text-2xl font-bold mb-4">Consultant <span className="   text-primary">Verification</span></h1>
 
       {/* Filter Tabs */}
       <div className="flex items-center mb-4 gap-3">
@@ -114,7 +114,7 @@ const AdminVerification = () => {
           </thead>
           <tbody>
             {filteredData.map((item) => (
-              <tr key={item._id} className="border-b hover:bg-primaryLight">
+              <tr key={item._id} onClick={() => handleOpenProfile(item._id)} className="border-b hover:bg-primaryLight cursor-pointer">
                 <td>
                   <div>
                     <p>{item.user?.name}</p>
@@ -138,17 +138,20 @@ const AdminVerification = () => {
                   </span>
                 </td>
                 <td className="flex gap-3 items-center">
-                  <AiOutlineEye
+                  {/* <AiOutlineEye
+                    title="View Profile"
                     onClick={() => handleOpenProfile(item._id)}
                     className="text-primary cursor-pointer text-xl"
-                  />
+                  /> */}
                   <FiCheck
+                    title="Approve"
                     className="text-green-500 cursor-pointer text-xl"
                     onClick={() =>
                       handleStatusUpdate(item._id, STATUS.APPROVED)
                     }
                   />
                   <FiX
+                    title="Reject"
                     className="text-red-500 cursor-pointer text-xl"
                     onClick={() =>
                       handleStatusUpdate(item._id, STATUS.REJECTED)
@@ -190,7 +193,7 @@ const ProfileInfo = ({ consultantId, token, onClose, handleStatusUpdate }) => {
       }
     };
     fetchConsultant();
-  }, [consultantId, token]);
+  }, [consultantId, token, handleStatusUpdate]);
 
   if (!consultantData) return null;
 
@@ -198,7 +201,18 @@ const ProfileInfo = ({ consultantId, token, onClose, handleStatusUpdate }) => {
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 ">
 
       <div className=" w-1/2  mx-auto bg-white p-6  shadow-md">
-        <h1 className="text-2xl font-bold text-primary">Consultant Profile</h1>
+        <h1 className="text-2xl font-bold text-primary w-full flex justify-between items-center">Consultant Profile
+          <span
+            className={`px-3 py-1 rounded-full text-sm ${consultantData.status === 'pending'
+              ? "bg-pink-100 text-pink-600"
+              : consultantData.status === 'approved'
+                ? "bg-blue-100 text-blue-600"
+                : "bg-red-100 text-red-600"
+              }`}
+          >
+            {consultantData.status}
+          </span>
+        </h1>
         <hr className="my-4 border-primary" />
 
         <div className=" relative grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -320,20 +334,20 @@ const ProfileInfo = ({ consultantId, token, onClose, handleStatusUpdate }) => {
         )}
         <div className=" w-full justify-between flex gap-4 mt-4">
 
-         <div className="flex items-center justify-center gap-2 bg-green-200 px-4 py-2 w-full">
+          <div
+            onClick={() =>handleStatusUpdate(consultantData._id, STATUS.APPROVED)}
+            className="flex items-center justify-center cursor-pointer gap-2 bg-green-200 px-4 py-2 w-full">
             <FiCheck
               className="text-green-500 cursor-pointer text-xl"
-              onClick={() =>
-                handleStatusUpdate(consultantData._id, STATUS.APPROVED)
-              }
+
             /> Approve
           </div>
-          <div className="flex items-center justify-center gap-2 bg-red-200 px-4 py-2 w-full">
+          <div
+            onClick={() =>handleStatusUpdate(consultantData._id, STATUS.REJECTED)}
+            className="flex items-center justify-center cursor-pointer gap-2 bg-red-200 px-4 py-2 w-full">
             <FiX
               className="text-red-500 cursor-pointer text-xl"
-              onClick={() =>
-                handleStatusUpdate(consultantData._id, STATUS.REJECTED)
-              }
+
             /> Reject
           </div>
         </div>
@@ -345,9 +359,6 @@ const ProfileInfo = ({ consultantId, token, onClose, handleStatusUpdate }) => {
         </button>
       </div>
     </div>
-
-
-
   );
 };
 const ProfileInform = ({ label, value }) => (

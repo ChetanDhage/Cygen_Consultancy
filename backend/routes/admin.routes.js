@@ -9,6 +9,9 @@ import {
   updateVerificationStatus,
   getAnalytics,
   getConsultantsByStatus,
+  deleteConsultant,
+  deleteCustomer,
+  updateCustomerStatus,
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
@@ -17,13 +20,17 @@ const router = express.Router();
 // router.use(protect);
 // router.use(admin);
 
+
 // Consultant management
 router.get("/consultants", getConsultants);
 router.get("/verified-consultant", getConsultantsByStatus);
 router.put("/consultants/:id/status", updateConsultantStatus);
+router.delete("/consultants/:id", deleteConsultant);  
 
 // Customer management
 router.get("/customers", getCustomers);
+router.delete("/customers/:id", deleteCustomer);  
+router.put("/customer/status",  updateCustomerStatus);
 
 // Transaction management
 router.get("/transactions", getTransactions);
