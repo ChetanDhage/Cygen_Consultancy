@@ -16,8 +16,12 @@ export const fetchConsultants = async () => {
   return response.data;
 };
 
-export const updateConsultantStatus = async (id, status) => {
-  const response = await axios.put(`${BASE_URL}/api/admin/consultants/${id}/status`, { status });
+
+export const updateConsultantStatus = async (id, status, rejectionReason = "") => {
+  const response = await axios.put(
+    `${BASE_URL}/api/admin/consultants/${id}/status`,
+    { status, rejectionReason }
+  );
   return response.data;
 };
 

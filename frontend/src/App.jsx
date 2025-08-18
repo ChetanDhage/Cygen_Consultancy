@@ -21,7 +21,6 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
 
-
         <Route path='/signup' element={<RoleSelection />} />
         <Route path='/consultant' element={<SignUpConsultant />} />
         <Route path='/user' element={<SignUpUser />} />
@@ -32,20 +31,22 @@ const App = () => {
         <Route path='/how-it-works' element={<HowItWorks />} />
         <Route path='/contact' element={<Contact />} />
 
-        <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path='/user-dashboard/*' element={<UserDashboard />} />
-        </Route>
-        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
           <Route path='/admin-dashboard/*' element={<AdminDashboard />} />
-        </Route>
-        <Route element={<ProtectedRoute allowedRoles={["consultant"]} />}>
-          <Route path='/consultant-dashboard/*' element={<ConsultantDashboard />} />
-        </Route>
-
+        {/* </Route> */}
+        
         <Route element={<ProtectedRoute allowedRoles={["subadmin"]} />}>
           <Route path='/subadmin-dashboard/*' element={<SubAdminDashboard />} />
         </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
+          <Route path='/user-dashboard/*' element={<UserDashboard />} />
+        </Route>
+        
+        <Route element={<ProtectedRoute allowedRoles={["consultant"]} />}>
+          <Route path='/consultant-dashboard/*' element={<ConsultantDashboard />} />
+        </Route>
+        
         <Route path='*' element={<h1>Page Not Found</h1>} />
       </Routes>
     </>

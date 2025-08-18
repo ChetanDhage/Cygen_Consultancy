@@ -1,29 +1,29 @@
 import React from 'react'
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import {
-  FaBell,
-  FaUser,
+    FaBell,
+    FaUser,
 } from 'react-icons/fa';
 
 const inboxQueryPath = '/consultant-dashboard/query-inbox';
 
 
 const ConsultantHome = () => {
-  return (
-   <main className=" w-full flex-1 ">
+    return (
+        <main className=" w-full flex-1 ">
             <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center ">
-                    <h2 className="text-xl font-bold">Consultant Dashboard</h2>   
+                <h2 className="text-xl font-bold">Consultant Dashboard</h2>
             </header>
 
             <div className=' p-6'>
                 {/* Welcome Banner */}
                 <section className=" w-full  bg-primaryLight text-primary p-6 rounded-xl shadow mb-6">
-                   
+
                     <p className="text-sm">You have 3 new queries and 2 scheduled sessions today</p>
                     <Link to={inboxQueryPath}>
-                    <button className="mt-4 bg-white  text-black font-semibold px-4 py-2 rounded shadow text-sm">
-                        View Incoming Queries
-                    </button>
+                        <button className="mt-4 bg-white  text-black font-semibold px-4 py-2 rounded shadow text-sm">
+                            View Incoming Queries
+                        </button>
                     </Link>
                 </section>
 
@@ -120,7 +120,7 @@ const ConsultantHome = () => {
                 </section> */}
             </div>
         </main>
-  )
+    )
 }
 
 export default ConsultantHome

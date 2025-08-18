@@ -4,6 +4,7 @@ import Verification from "../models/Verification.js";
 import generateToken from "../utils/generateToken.js";
 import crypto from "crypto";
 import path from "path";
+import { CONSULTANT_STATUS } from "../config/constants.js";
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -122,7 +123,7 @@ export const registerConsultant = async (req, res, next) => {
     const verification = await Verification.create({
       consultant: user._id,
       documents: certifications,
-      status: "approved",
+      status: CONSULTANT_STATUS.PENDING,
     });
 
     // Associate verification with consultant

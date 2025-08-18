@@ -5,8 +5,6 @@ import { getConsultantQuries, updateQueryStatus } from '../api/consultant';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
 const QueryInbox = () => {
   const [queries, setQueries] = useState([]);
   const [selectedQuery, setSelectedQuery] = useState(null);
@@ -23,8 +21,8 @@ const QueryInbox = () => {
   const [rejected, setRejected] = useState('Reject Query');
 
   const token = useSelector(selectCurrentToken);
-  const consultant = useSelector(selectCurrentUser); // Full user object
-  const consultantId = consultant?._id; // Adjust depending on your state shape
+  const consultant = useSelector(selectCurrentUser);
+  const consultantId = consultant?._id;
 
   // Fetch queries from API
   const fetchQueries = async (page = 1, status = 'all') => {

@@ -132,7 +132,7 @@ const AdminDashboard = () => {
             {/* Main Content */}
             <main className='w-full lg:h-screen lg:overflow-y-scroll'>
                 <Routes>
-                    <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                    {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
 
                         <Route path='/' element={<AdminHome />} />
                         <Route path='/consultant' element={<AdminConsultant />} />
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
                         <Route path='/analysis' element={<AdminAnalysis />} />
                         <Route path='/profile' element={<ConsultantProfile />} />
                         <Route path='/notification' element={<NotificationPage />} />
-                    </Route>
+                    {/* </Route> */}
                 </Routes>
 
             </main>

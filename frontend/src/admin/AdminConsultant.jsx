@@ -1,22 +1,50 @@
-import React, { useState } from "react";
-import { FaFilePdf } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FiCheck, FiX } from "react-icons/fi";
+import { updateConsultantStatus } from "../api/admin";
+import axios from "axios";
+import { fetchConsultantProfile } from "../api/consultant";
+import { selectCurrentToken } from "../redux/authSlice";
+import { useSelector } from "react-redux";
 
 const AdminConsultant = () => {
 
-  
+
+  const STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+  SUSPENDED: "suspended",
+};
 
   const [filter, setFilter] = useState("All");
-  const data = [
-    { name: "Rajesh Kumar", email: "rajesh@example.com", specialization: "Network Security", Experience: 3, rating: "2 days ago",fee:"1000", status: "Pending" },
-    { name: "Priya Sharma", email: "priya@example.com", specialization: "AI & Machine Learning", Experience: 2, rating: "1 day ago",fee:"1000", status: "Pending" },
-    { name: "Amit Patel", email: "amit@example.com", specialization: "Cloud Security", Experience: 4, rating: "5 days ago",fee:"1000", status: "Rejected" },
-    { name: "Neha Gupta", email: "neha@example.com", specialization: "Data Science", Experience: 3, rating: "3 days ago",fee:"1000", status: "Verified" },
-    { name: "Sanjay Kumar", email: "sanjay@example.com", specialization: "Web Development", Experience: 2, rating: "1 day ago",fee:"1000", status: "Pending" },
-  ];
+  const [consultants, setConsultants] = useState([]);
+  const token = useSelector(selectCurrentToken);
 
-  const filteredData = filter === "All" ? data : data.filter((item) => item.status === filter);
+  // ✅ Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedConsultantId, setSelectedConsultantId] = useState(null);
+
+  // ✅ Fetch consultants list
+  useEffect(() => {
+    const fetchConsultants = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/consultants`
+        );
+        setConsultants(res.data.data);
+      } catch (err) {
+        console.error("Error fetching consultants", err);
+      }
+    };
+    fetchConsultants();
+  }, []);
+
+ 
+  const filteredData =
+    filter === "All"
+      ? consultants
+      : consultants.filter((c) => c.status === filter.toLowerCase());
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -24,21 +52,20 @@ const AdminConsultant = () => {
 
       {/* Filter Tabs */}
       <div className="flex items-center mb-4 gap-3">
-        {["All", "Pending", "Verified", "Rejected"].map((status) => (
-          <button
-            key={status}
-            className={`px-4 py-1 rounded-lg ${
-              filter === status ? "bg-primary text-white" : "bg-gray-200"
-            }`}
-            onClick={() => setFilter(status)}
-          >
-            {status}
-          </button>
-        ))}
-        <div className="ml-auto flex gap-2">
-          <input type="text" placeholder="Search AdminConsultants..." className="border rounded-lg px-3 py-1" />
-          <button className="bg-primary text-white px-4 py-1 rounded-lg">Filter</button>
-        </div>
+        {["All", STATUS.PENDING, STATUS.APPROVED, STATUS.REJECTED].map(
+          (status) => (
+            <button
+              key={status}
+              className={`px-4 py-1 rounded-lg ${filter === status
+                ? "bg-primary text-white"
+                : "bg-gray-200"
+                }`}
+              onClick={() => setFilter(status)}
+            >
+              {status}
+            </button>
+          )
+        )}
       </div>
 
       {/* Table */}
@@ -49,42 +76,54 @@ const AdminConsultant = () => {
               <th>Consultant</th>
               <th>Specialization</th>
               <th>Experience</th>
-              <th>rating</th>
+              <th>Applied</th>
               <th>Fee</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
-              <tr key={index} className="border-b">
+            {filteredData.map((item) => (
+              <tr key={item._id} className="border-b hover:bg-primaryLight">
                 <td>
                   <div>
-                    <p>{item.name}</p>
-                    <p className="text-sm text-gray-500">{item.email}</p>
+                    <p>{item.user?.name}</p>
+                    <p className="text-sm text-gray-500">{item.user?.email}</p>
                   </div>
                 </td>
-                <td>{item.specialization}</td>
-                <td className="flex items-center gap-1">{item.Experience}</td>
-                <td>{item.rating}</td>
-                <td>{item.fee}</td>
+                <td>{item.designation}</td>
+                <td>{item.yearsOfExperience} yrs</td>
+                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                <td>{item.expectedFee}/hr</td>
                 <td>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      item.status === "Pending"
-                        ? "bg-pink-100 text-pink-600"
-                        : item.status === "Verified"
+                    className={`px-3 py-1 rounded-full text-sm ${item.status === STATUS.PENDING
+                      ? "bg-pink-100 text-pink-600"
+                      : item.status === STATUS.APPROVED
                         ? "bg-blue-100 text-blue-600"
                         : "bg-red-100 text-red-600"
-                    }`}
+                      }`}
                   >
                     {item.status}
                   </span>
                 </td>
-                <td className="flex gap-3">
-                  <AiOutlineEye className="text-primary cursor-pointer" />
-                  <FiCheck className="text-green-500 cursor-pointer" />
-                  <FiX className="text-red-500 cursor-pointer" />
+                <td className="flex gap-3 items-center">
+                  <AiOutlineEye
+                    // onClick={() => handleOpenProfile(item._id)}
+                    className="text-primary cursor-pointer text-xl"
+                  />
+                  <FiCheck
+                    className="text-green-500 cursor-pointer text-xl"
+                    // onClick={() =>
+                    //   handleStatusUpdate(item._id, STATUS.APPROVED)
+                    // }
+                  />
+                  <FiX
+                    className="text-red-500 cursor-pointer text-xl"
+                    // onClick={() =>
+                    //   handleStatusUpdate(item._id, STATUS.REJECTED)
+                    // }
+                  />
                 </td>
               </tr>
             ))}
@@ -92,11 +131,7 @@ const AdminConsultant = () => {
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-end mt-4 gap-2">
-        <button className="px-3 py-1 border rounded">1</button>
-        <button className="px-3 py-1 border rounded">2</button>
-      </div>
+    
     </div>
   );
 };
