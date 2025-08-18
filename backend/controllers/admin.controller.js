@@ -4,6 +4,7 @@ import Verification from "../models/Verification.js";
 import Transaction from "../models/Transaction.js";
 import { CONSULTANT_STATUS, VERIFICATION_STATUS } from "../config/constants.js";
 import { getAnalyticsData } from "../utils/analytics.js";
+import Customer from "../models/Customer.js";
 
 // -----------------------------
 // Get all consultants
@@ -340,6 +341,107 @@ export const getAnalytics = async (req, res) => {
     });
   } catch (error) {
     console.error("getAnalytics error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+// Delete Consultant
+// Delete Consultant
+export const deleteConsultant = async (req, res) => {
+  try {
+    const { id } = req.params; // ✅ get id from URL param
+
+    const consultant = await Consultant.findById(id).populate("user");
+    if (!consultant) {
+      return res.status(404).json({
+        success: false,
+        message: "Consultant not found",
+      });
+    }
+
+    // Delete consultant
+    await consultant.deleteOne();
+
+    // Optionally delete linked User as well
+    if (consultant.user) {
+      await User.findByIdAndDelete(consultant.user._id);
+    }
+
+    res.json({
+      success: true,
+      message: "Consultant deleted successfully",
+    });
+  } catch (error) {
+    console.error("deleteConsultant error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+
+// Delete Customer
+export const deleteCustomer = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const customer = await Customer.findById(id).populate("user");
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: "Customer not found",
+      });
+    }
+
+    // Optionally delete linked User as well
+    await customer.deleteOne();
+    if (customer.user) {
+      await User.findByIdAndDelete(customer.user._id);
+    }
+
+    res.json({
+      success: true,
+      message: "Customer deleted successfully",
+    });
+  } catch (error) {
+    console.error("deleteCustomer error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Server error",
+    });
+  }
+};
+
+
+// controllers/customerController.js
+export const updateCustomerStatus = async (req, res) => {
+  try {
+    const { id, status } = req.body;
+
+    const customer = await Customer.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: "Customer not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Customer status updated to ${status}`,
+      customer,
+    });
+  } catch (error) {
+    console.error("updateCustomerStatus error:", error);
     res.status(500).json({
       success: false,
       message: error.message || "Server error",

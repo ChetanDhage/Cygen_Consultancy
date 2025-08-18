@@ -27,8 +27,19 @@ export const updateConsultantStatus = async (id, status, rejectionReason = "") =
 
 // ✅ Customer management
 export const fetchCustomers = async () => {
-  const response = await axios.get(`${BASE_URL}/api/admin/customers`);
+  const response = await axios.get(`${BASE_URL}/api/customer/`);
   return response.data;
+};
+
+
+export const updateCustomerStatus = async (id, status) => {
+  const response = await axios.put(`${BASE_URL}/api/admin/customer/status`, { id, status });
+  return response.data; // ✅ return proper JSON
+};
+
+export const deleteCustomer = async (id, status) => {
+  const response = await axios.delete(`/api/admin/customers/${id}`);
+  return response.data; // ✅ return proper JSON
 };
 
 // ✅ Transaction management

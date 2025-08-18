@@ -25,9 +25,9 @@ const SubmitQueryForm = () => {
   useEffect(() => {
     const fetchConsultant = async () => {
       try {
-        const response = await fetchConsultantProfile({consultantId, token});
+        const response = await fetchConsultantProfile({ consultantId, token });
         setConsultantData(response.data);
-console.log(response.data)
+        console.log(response.data)
         // Reset fields
         setSubject('');
         setSessionDateTime('');
@@ -114,7 +114,7 @@ console.log(response.data)
       {/* Consultant Info */}
       <div className="flex items-center gap-4 bg-primaryLight p-4 rounded-lg mb-6">
         <img
-          src={consultantData?.profileImage?.url || 'https://via.placeholder.com/150'}
+          src={consultantData?.user?.profilePhoto?.url || 'https://via.placeholder.com/150'}
           alt={consultantData?.name}
           className="w-12 h-12 rounded-full object-cover"
         />
@@ -126,21 +126,27 @@ console.log(response.data)
       </div>
 
       {/* Session Date & Time */}
-      <div className="mb-6">
+      <div className="mb-6 ">
         <label className="block font-medium text-sm mb-2">Session Date & Time</label>
-        <DatePicker
+        <div className=' w-full flex justify-center'>
+          <DatePicker
           selected={sessionDateTime ? new Date(sessionDateTime) : null}
           onChange={handleDateChange}
           showTimeSelect
+          placeholderText='Select date and time'
           dateFormat="Pp"
-          className="w-full border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary"
+          width="100%"
+          withPortal
+          className=" border border-gray-300 rounded-lg p-3 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary"
         />
+        </div>
       </div>
 
       {/* Duration */}
       <div className="mb-6">
         <label className="block font-medium text-sm mb-2">Duration</label>
         <input
+          placeholder='add duration in minutes'
           required
           type="text"
           value={duration}
@@ -154,6 +160,7 @@ console.log(response.data)
         <label className="block font-medium text-sm mb-2">Session Link</label>
         <input
           required
+          placeholder='e.g. Zoom, Google Meet link'
           type="text"
           value={sessionLink}
           onChange={(e) => setSessionLink(e.target.value)}
@@ -166,6 +173,8 @@ console.log(response.data)
         <label className="block font-medium text-sm mb-2">Subject</label>
         <textarea
           required
+          placeholder='Briefly describe the subject of your query'
+          maxLength={200}
           rows="2"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
@@ -178,6 +187,8 @@ console.log(response.data)
         <label className="block font-medium text-sm mb-2">Describe your query</label>
         <textarea
           required
+          placeholder='Provide detailed information about your query'
+          maxLength={1000}
           rows="6"
           value={description}
           onChange={(e) => setDescription(e.target.value)}

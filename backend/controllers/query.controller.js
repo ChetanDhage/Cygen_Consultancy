@@ -93,10 +93,7 @@ export const updateQueryStatus = async (req, res, next) => {
     const { id } = req.params;
     const { status, date, duration, type } = req.body;
 
-    const query = await Query.findById(id).populate(
-      "consultant",
-      "expectedFee"
-    );
+    const query = await Query.findById(id).populate("consultant", "expectedFee");
 
     if (!query) {
       return notFoundError("Query not found", res);
@@ -108,7 +105,7 @@ export const updateQueryStatus = async (req, res, next) => {
       const session = new Session({
         consultant: query.consultant._id,
         customer: query.user,
-        date,
+        date: new Date(date), // ✅ ensure Date object
         duration,
         type,
         fee: query.consultant.expectedFee,
@@ -118,17 +115,14 @@ export const updateQueryStatus = async (req, res, next) => {
 
       await session.save();
       query.session = session._id;
+      query.sessionDateTime = new Date(date); // ✅ also store in Query
     }
 
     const updatedQuery = await query.save();
-    
 
     // Emit status update to consultant's room
     const io = req.app.get("socketio");
-    io.to(`consultant_${query.consultant._id}`).emit(
-      "update-query",
-      updatedQuery
-    );
+    io.to(`consultant_${query.consultant._id}`).emit("update-query", updatedQuery);
 
     res.json({
       success: true,

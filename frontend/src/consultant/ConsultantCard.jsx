@@ -9,7 +9,7 @@ const ConsultantCard = ({ key, consultant}) => {
   return (
     <div id={key} className=" relative border rounded-lg p-4 shadow hover:shadow-lg transition duration-300">
       <img
-        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+        src={consultant?.user?.profilePhoto?.url || 'https://via.placeholder.com/150'}
         alt="Consultant"
         className=" relative z-20 h-40 w-40 rounded-full m-auto object-cover shadow-md shadow-white"
       />
@@ -27,23 +27,23 @@ const ConsultantCard = ({ key, consultant}) => {
       </div>
       <div className="mt-4">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">{consultant?.name}</h3>
+          <h3 className="md:text-lg font-semibold">{consultant?.name}</h3>
           <span className="text-primary font-bold">{consultant?.expectedFee}₹/hr</span>
         </div>
         <p className="text-sm text-gray-600 mb-1">{consultant?.designation}</p>
         <span className="text-green-600 text-xs font-medium">● Available Now</span>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="lg:text-base text-xs text-gray-500 mt-2 ">
           {consultant?.yearsOfExperience}+ years experience helping businesses scale with data-driven strategies.
         </p>
 
         <div className="mt-3 flex justify-between">
           <Link to={`/user-dashboard/profile/${consultant?.id}`}>
-            <button className="text-primary border px-3 py-1 rounded hover:bg-blue-50">
+            <button className="text-primary border px-3 py-1 rounded hover:bg-blue-50 lg:text-base text-xs">
               View Profile
             </button>
           </Link>
           <Link to={`/user-dashboard/query/${consultant?.id}`}>
-            <button className="bg-primary text-white px-3 py-1 rounded hover:bg-blue-700">
+            <button className="bg-primary text-white px-3 py-1 rounded hover:bg-primary/90 lg:text-base text-xs">
               Book Session
             </button>
           </Link>

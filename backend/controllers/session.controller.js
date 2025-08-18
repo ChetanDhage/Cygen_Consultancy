@@ -1,38 +1,46 @@
 import Session from "../models/Session.js";
-import Query from "../models/Query.js";
 import { notFoundError } from "../utils/helpers.js";
+
+// Get consultant sessions (categorized)
 
 export const getConsultantSessions = async (req, res, next) => {
   try {
     const consultantId = req.user.consultantProfile || req.user._id;
+
     const today = new Date();
     today.setHours(0, 0, 0, 0); // start of today
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1); // start of next day
 
-    // 🔹 Fetch all consultant sessions
-    const sessions = await Query.find({ consultant: consultantId, status: "accepted" })
-      .populate("user", "name email designation company") // ✅ user instead of customer
-      .populate("consultant", "name email")              // optional
-      .populate("followUpSessions")                      // if it exists
-      .sort({ sessionDateTime: 1 });
+    // ✅ Fetch sessions with proper date type
+    const sessions = await Session.find({ consultant: consultantId })
+      .populate("customer", "name email designation company")
+      .populate("consultant", "name email")
+      .populate({
+        path: "query",
+        select: "querySub queryText files status sessionDateTime",
+      })
+      .populate("followUpSessions")
+      .sort({ date: 1 });
 
     if (!sessions || sessions.length === 0) {
-      return res.status(404).json({ message: "No sessions found for this consultant" });
+      return res.json({
+        success: true,
+        today: [],
+        upcoming: [],
+        missed: [],
+        totals: { today: 0, upcoming: 0, missed: 0, overall: 0 },
+      });
     }
 
-    // 🔹 Categorize sessions
+    // ✅ Categorize by Session.date
     const todaySessions = sessions.filter(
-      (s) => s.sessionDateTime >= today && s.sessionDateTime < tomorrow
+      (s) => s.date >= today && s.date < tomorrow
     );
 
-    const upcomingSessions = sessions.filter(
-      (s) => s.sessionDateTime >= tomorrow
-    );
+    const upcomingSessions = sessions.filter((s) => s.date >= tomorrow);
 
-    const missedSessions = sessions.filter(
-      (s) => s.sessionDateTime < today
-    );
+    const missedSessions = sessions.filter((s) => s.date < today);
 
     res.json({
       success: true,
@@ -43,16 +51,13 @@ export const getConsultantSessions = async (req, res, next) => {
         today: todaySessions.length,
         upcoming: upcomingSessions.length,
         missed: missedSessions.length,
-        overall: sessions.length
-      }
+        overall: sessions.length,
+      },
     });
   } catch (error) {
     next(error);
   }
 };
-
-
-
 // Get session details (only if belongs to logged-in consultant AND query is accepted)
 export const getSessionDetails = async (req, res, next) => {
   try {
@@ -63,7 +68,7 @@ export const getSessionDetails = async (req, res, next) => {
       .populate("customer", "name email designation company")
       .populate({
         path: "query",
-        match: { status: "accepted" }, // 🔹 only accepted queries
+        match: { status: "accepted" }, // only accepted queries
         select: "querySub queryText files status",
         populate: {
           path: "user",
@@ -130,7 +135,6 @@ export const addSessionDocument = async (req, res, next) => {
       return notFoundError("Session not found", res);
     }
 
-    // Process file upload (local storage)
     if (req.file) {
       session.documents.push({
         name: req.file.originalname,
