@@ -121,6 +121,7 @@ export const updateQueryStatus = async (req, res, next) => {
     }
 
     const updatedQuery = await query.save();
+    
 
     // Emit status update to consultant's room
     const io = req.app.get("socketio");

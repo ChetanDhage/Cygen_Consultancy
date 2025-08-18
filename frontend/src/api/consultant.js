@@ -41,6 +41,7 @@ export const updateConsultantProfile = async (formData) => {
   return response.data;
 };
 
+
 // ✅ Remove Certification
 export const removeCertification = async (id) => {
   const response = await axios.delete(`${BASE_URL}/api/consultants/certifications/${id}`);
@@ -60,4 +61,20 @@ export const getConsultantQuries = async ({ consultantId, token, status = "all",
       limit
     }
   });
+};
+
+
+// ✅ Update Query Status
+export const updateQueryStatus = async ({ queryId, token, status, date, duration, type }) => {
+  const response = await axios.put(
+    `${BASE_URL}/api/queries/${queryId}`, 
+    { status, date, duration, type },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
 };

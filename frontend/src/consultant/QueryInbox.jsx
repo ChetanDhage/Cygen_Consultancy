@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaFileExcel, FaFilePdf } from 'react-icons/fa';
 import io from 'socket.io-client';
-import { getConsultantQuries } from '../api/consultant';
+import { getConsultantQuries, updateQueryStatus } from '../api/consultant';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
 
@@ -18,6 +18,9 @@ const QueryInbox = () => {
   });
   const [statusFilter, setStatusFilter] = useState('all');
   const [socket, setSocket] = useState(null);
+
+  const [accepted, setAccepted] = useState('Accept Query');
+  const [rejected, setRejected] = useState('Reject Query');
 
   const token = useSelector(selectCurrentToken);
   const consultant = useSelector(selectCurrentUser); // Full user object
@@ -62,7 +65,7 @@ const QueryInbox = () => {
 
   // WebSocket connection
   useEffect(() => {
-    const newSocket = io(BASE_URL, { transports: ['websocket'] });
+    const newSocket = io('localhost:5000', { transports: ['websocket'] });
     setSocket(newSocket);
     return () => newSocket.close();
   }, []);
@@ -107,6 +110,54 @@ const QueryInbox = () => {
   };
   const handlePageChange = (newPage) => fetchQueries(newPage, statusFilter);
 
+  const handleAccept = async () => {
+  if (!selectedQuery) return;
+  try {
+    setAccepted('processing the request...');
+    const res = await updateQueryStatus({
+      queryId: selectedQuery._id,
+      token,
+      status: "accepted",
+      date: new Date().toISOString(),
+      duration: 60,   // ✅ number, not "1 hour"
+      type: "video",
+    });
+    setAccepted('Query accepted');
+
+    alert(`You ${res.data.status} this query`);
+
+    setSelectedQuery(res.data);
+    setQueries(prev =>
+      prev.map(q => (q._id === res.data._id ? res.data : q))
+    );
+  } catch (err) {
+    console.error("Error accepting query:", err.response?.data || err);
+  }
+};
+
+
+  // Handle Reject
+  const handleReject = async () => {
+    if (!selectedQuery) return;
+    try {
+      setRejected('processing the request...');
+      const res = await updateQueryStatus({
+        queryId: selectedQuery._id,
+        token,
+        status: "rejected",
+      });
+      alert(`You ${res.data.status} this query`);
+      setRejected('Query rejected');
+      setSelectedQuery(res.data);
+      setQueries(prev =>
+        prev.map(q => (q._id === res.data._id ? res.data : q))
+      );
+    } catch (err) {
+      console.error("Error rejecting query:", err);
+    }
+  };
+
+
   return (
     <main>
       <header className="bg-white px-6 pb-2 w-full flex justify-between items-center">
@@ -143,14 +194,14 @@ const QueryInbox = () => {
           {queries.map((query) => (
             <div
               key={query._id}
-              className={`flex flex-col p-3 rounded-2xl cursor-pointer my-2 ${selectedQuery?._id === query._id
-                ? 'bg-blue-50 border border-primary'
-                : 'hover:bg-gray-100'
+              className={`flex flex-col p-3 rounded-sm cursor-pointer my-2 ${selectedQuery?._id === query._id
+                ? 'text-primary  border border-primary'
+                : 'hover:text-primary hover:border border-primary '
                 }`}
               onClick={() => handleQuerySelect(query)}
             >
               <h4 className="font-semibold text-sm">{query.querySub}</h4>
-              <p className="text-xs text-gray-500 truncate">{query.queryText}</p>
+              <p className="text-xs text-gray-500 truncate line-clamp-2">{query.queryText}</p>
               <span className="text-xs mt-1 text-gray-400">
                 {new Date(query.createdAt).toLocaleString()}
               </span>
@@ -188,14 +239,14 @@ const QueryInbox = () => {
                 ${selectedQuery.fee}
               </span>
             </p>
-            <div className="flex justify-between gap-2 mb-2">
-              <div>
+            <div className="flex justify-between gap-2  w-full">
+              <div className=' w-full'>
                 <h3 className="text-lg font-semibold">
                   Subject: {selectedQuery.querySub}
                 </h3>
-                <br />
-                <div className="flex gap-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary bg-primaryLight">
+              
+                <div className="flex gap-2 border border-primary bg-primaryLight rounded-r-full px-6 py-4 my-4 w-full">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-primary bg-white border border-primary">
                     {selectedQuery.user?.name
                       ? selectedQuery.user.name
                         .split(' ')
@@ -213,13 +264,13 @@ const QueryInbox = () => {
                 {selectedQuery.status}
               </span>
             </div>
-            <hr className=' mb-6' />
+           
 
-            <p className="text-sm text-gray-500 mb-4">
-              <p className=' text-lg font-semibold text-gray-800'>Subject </p>
-    
+            <div className="text-sm text-gray-500 mb-4">
+              <p className=' text-lg font-semibold text-gray-800'>Description </p>
+
               {selectedQuery.queryText}
-            </p>
+            </div>
             <hr className=' mb-6' />
 
             <h4 className="font-semibold text-sm mb-2">Attached Documents</h4>
@@ -245,7 +296,7 @@ const QueryInbox = () => {
                 <p className="text-xs text-gray-400">No attachments</p>
               )}
             </div>
-            <hr  className=' mb-6'/>
+            <hr className=' mb-6' />
 
             <p className="text-sm text-gray-600 my-2">
               <span className="font-medium">Date & Time:</span>{' '}
@@ -282,13 +333,20 @@ const QueryInbox = () => {
 
 
             <div className="flex gap-4 my-6">
-              <button className="border border-gray-300 px-4 py-2 rounded text-gray-600">
-                Reject
+              <button
+                onClick={handleReject}
+                className="border border-gray-300 px-4 py-2 rounded text-gray-600"
+              >
+                {rejected}
               </button>
-              <button className="bg-primary text-white px-4 py-2 rounded">
-                Accept Query
+              <button
+                onClick={handleAccept}
+                className="bg-primary text-white px-4 py-2 rounded"
+              >
+                {accepted}
               </button>
             </div>
+
           </div>
         )}
       </div>

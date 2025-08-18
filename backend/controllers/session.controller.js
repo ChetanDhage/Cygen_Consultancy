@@ -2,51 +2,56 @@ import Session from "../models/Session.js";
 import Query from "../models/Query.js";
 import { notFoundError } from "../utils/helpers.js";
 
-// Get consultant sessions (only with accepted queries + today's filter support)
 export const getConsultantSessions = async (req, res, next) => {
   try {
-    const { status, today } = req.query;
-    const filter = { consultant: req.user.consultantProfile || req.user._id };
+    const consultantId = req.user.consultantProfile || req.user._id;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // start of today
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // start of next day
 
-    // Status filter if provided
-    if (status) {
-      filter.status = status;
+    // 🔹 Fetch all consultant sessions
+    const sessions = await Query.find({ consultant: consultantId, status: "accepted" })
+      .populate("user", "name email designation company") // ✅ user instead of customer
+      .populate("consultant", "name email")              // optional
+      .populate("followUpSessions")                      // if it exists
+      .sort({ sessionDateTime: 1 });
+
+    if (!sessions || sessions.length === 0) {
+      return res.status(404).json({ message: "No sessions found for this consultant" });
     }
 
-    // Today's date filter
-    if (today === "true") {
-      const startOfDay = new Date();
-      startOfDay.setHours(0, 0, 0, 0);
-
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
-
-      filter.date = { $gte: startOfDay, $lte: endOfDay };
-    }
-
-    // 🔹 Step 1: find all accepted queries
-    const acceptedQueries = await Query.find({ status: "accepted" }).select(
-      "_id"
+    // 🔹 Categorize sessions
+    const todaySessions = sessions.filter(
+      (s) => s.sessionDateTime >= today && s.sessionDateTime < tomorrow
     );
 
-    // 🔹 Step 2: filter sessions only with those queries
-    filter.query = { $in: acceptedQueries.map((q) => q._id) };
+    const upcomingSessions = sessions.filter(
+      (s) => s.sessionDateTime >= tomorrow
+    );
 
-    // Fetch sessions
-    const sessions = await Session.find(filter)
-      .populate("customer", "name email designation company")
-      .populate("query", "querySub queryText status")
-      .sort({ date: -1 });
+    const missedSessions = sessions.filter(
+      (s) => s.sessionDateTime < today
+    );
 
     res.json({
       success: true,
-      count: sessions.length,
-      data: sessions,
+      today: todaySessions,
+      upcoming: upcomingSessions,
+      missed: missedSessions,
+      totals: {
+        today: todaySessions.length,
+        upcoming: upcomingSessions.length,
+        missed: missedSessions.length,
+        overall: sessions.length
+      }
     });
   } catch (error) {
     next(error);
   }
 };
+
+
 
 // Get session details (only if belongs to logged-in consultant AND query is accepted)
 export const getSessionDetails = async (req, res, next) => {

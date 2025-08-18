@@ -36,7 +36,7 @@ const ConsultantDashboard = () => {
   }, [para]);
 
   const menuItems = [
-    { icon: <FaCalendarAlt />, label: 'Scheduled Sessions', path: "/consultant-dashboard/", active: params === "" ? true : false },
+    { icon: <FaCalendarAlt />, label: 'Overview', path: "/consultant-dashboard/", active: params === "" ? true : false },
     { icon: <FaTasks />, label: 'Query Inbox',  path: "/consultant-dashboard/query-inbox", active: params === "query-inbox" ? true : false },
     { icon: <FaUserFriends />, label: 'Session Data', path: "/consultant-dashboard/session-data", active: params === "session-data" ? true : false },
     { icon: <FaDollarSign />, label: 'Earnings', path: "/consultant-dashboard/earning", active: params === "earning" ? true : false },
