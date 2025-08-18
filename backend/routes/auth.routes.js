@@ -4,7 +4,9 @@ import {
   registerConsultant,
   login,
   verifyEmail,
+  updateCredentials,
 } from "../controllers/auth.controller.js";
+import { protect } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
@@ -28,5 +30,8 @@ router.post("/login", login);
 
 // Email verification
 router.get("/verify/:token", verifyEmail);
+
+// Update credentials (protected route)
+router.put("/update-credentials", protect, updateCredentials);
 
 export default router;

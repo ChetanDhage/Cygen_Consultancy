@@ -6,6 +6,32 @@ import crypto from "crypto";
 import path from "path";
 import { CONSULTANT_STATUS } from "../config/constants.js";
 
+import { ADMIN_CREDENTIALS, SUB_ADMIN_CREDENTIALS } from "../config/admin.js";
+
+// @desc    Initialize admin and sub-admin accounts
+const initializeAdminAccounts = async () => {
+  try {
+    // Check and create admin
+    const adminExists = await User.findOne({ email: ADMIN_CREDENTIALS.email });
+    if (!adminExists) {
+      await User.create(ADMIN_CREDENTIALS);
+    }
+
+    // Check and create sub-admin
+    const subAdminExists = await User.findOne({
+      email: SUB_ADMIN_CREDENTIALS.email,
+    });
+    if (!subAdminExists) {
+      await User.create(SUB_ADMIN_CREDENTIALS);
+    }
+  } catch (error) {
+    console.error("Error initializing admin accounts:", error);
+  }
+};
+
+// Initialize admin accounts when the server starts
+initializeAdminAccounts();
+
 // @desc    Register a new user
 // @route   POST /api/auth/register
 export const register = async (req, res, next) => {
@@ -16,6 +42,13 @@ export const register = async (req, res, next) => {
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Prevent registration with admin/sub-admin role
+    if (role === "admin" || role === "sub-admin") {
+      return res
+        .status(403)
+        .json({ message: "Cannot register with this role" });
     }
 
     // Create user
@@ -36,6 +69,58 @@ export const register = async (req, res, next) => {
       email: user.email,
       role: user.role,
       token: generateToken(user._id),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// This login implementation has been moved below
+
+// @desc    Update user credentials
+// @route   PUT /api/auth/update-credentials
+export const updateCredentials = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, newUsername } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify current password
+    const isPasswordValid = await user.matchPassword(currentPassword);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    // Update username if provided
+    if (newUsername) {
+      user.name = newUsername;
+    }
+
+    // Update password if provided
+    if (newPassword) {
+      // Password validation
+      if (newPassword.length < 8) {
+        return res
+          .status(400)
+          .json({ message: "Password must be at least 8 characters long" });
+      }
+      user.password = newPassword;
+    }
+
+    await user.save();
+
+    res.json({
+      message: "Credentials updated successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     next(error);
@@ -163,7 +248,9 @@ export const login = async (req, res, next) => {
       const consultant = await Consultant.findOne({ user: user._id });
 
       if (!consultant) {
-        return res.status(404).json({ message: "Consultant profile not found" });
+        return res
+          .status(404)
+          .json({ message: "Consultant profile not found" });
       }
 
       if (consultant.status !== "approved") {
