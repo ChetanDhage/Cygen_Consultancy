@@ -11,7 +11,7 @@ const UserHome = () => {
     const getConsultants = async () => {
       try {
         const res = await fetchAllConsultant();
-        console.log("API Response:", res.data);
+        // console.log("API Response:", res.data);
         if (res.data ) {
           setConsultants(res.data.data); 
           setFilteredConsultants(res.data.data);

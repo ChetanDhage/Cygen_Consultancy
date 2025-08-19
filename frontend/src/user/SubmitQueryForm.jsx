@@ -7,6 +7,7 @@ import { selectCurrentToken } from '../redux/authSlice';
 import { sendQuery } from '../api/user';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {toast } from "sonner"; 
 
 const SubmitQueryForm = () => {
   const [consultantData, setConsultantData] = useState(null);
@@ -27,7 +28,7 @@ const SubmitQueryForm = () => {
       try {
         const response = await fetchConsultantProfile({ consultantId, token });
         setConsultantData(response.data);
-        console.log(response.data)
+        // console.log(response.data);
         // Reset fields
         setSubject('');
         setSessionDateTime('');
@@ -76,7 +77,7 @@ const SubmitQueryForm = () => {
       !duration.trim() ||
       !sessionLink.trim()
     ) {
-      alert('Please fill in all required fields.');
+      toast.success('Please fill in all required fields.');
       setSubmitted(false);
       return;
     }
@@ -93,7 +94,7 @@ const SubmitQueryForm = () => {
       setSessionDateTime('');
       setDuration('');
       setSessionLink('');
-      alert('Query submitted successfully!');
+      toast.success('Query submitted successfully!');
     } catch (error) {
       console.error('Error submitting query:', error);
       setSubmitted(false);

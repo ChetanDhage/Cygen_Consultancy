@@ -11,7 +11,7 @@ const CustomersPage = () => {
   const loadCustomers = async () => {
     try {
       const response = await fetchCustomers();
-      console.log("Fetched customers:", response.data);
+      // console.log("Fetched customers:", response.data);
       setCustomers(response.data || []);
     } catch (error) {
       console.error("Error fetching customers:", error);
@@ -56,7 +56,8 @@ const CustomersPage = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
     if (!confirmDelete) return;
     try {
-      await deleteCustomer(id);
+      const res =  await deleteCustomer(id);
+      console.log(res.data)
       loadCustomers();
     } catch (err) {
       console.error("Error deleting customer:", err);

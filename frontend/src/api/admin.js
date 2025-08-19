@@ -38,7 +38,7 @@ export const updateCustomerStatus = async (id, status) => {
 };
 
 export const deleteCustomer = async (id, status) => {
-  const response = await axios.delete(`/api/admin/customers/${id}`);
+  const response = await axios.delete(`${BASE_URL}/api/admin/customers/${id}`);
   return response.data; // ✅ return proper JSON
 };
 

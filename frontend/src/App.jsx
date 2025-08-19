@@ -14,9 +14,13 @@ import SignUpConsultant from './components/SignUpConsultant';
 import UserDashboard from './user/UserDashboard';
 import SignUpUser from './components/SignUpUser';
 import ProtectedRoute from './api/ProtectedRoute';
+import { Toaster } from 'sonner';
+
+
 const App = () => {
   return (
     <>
+       <Toaster richColors position="top-right" />{/* Default Description Success Info Warning Error Action Promise Custom */}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
@@ -31,12 +35,12 @@ const App = () => {
         <Route path='/how-it-works' element={<HowItWorks />} />
         <Route path='/contact' element={<Contact />} />
 
-        {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path='/admin-dashboard/*' element={<AdminDashboard />} />
-        {/* </Route> */}
+        </Route>
         
-        <Route element={<ProtectedRoute allowedRoles={["subadmin"]} />}>
-          <Route path='/subadmin-dashboard/*' element={<SubAdminDashboard />} />
+        <Route element={<ProtectedRoute allowedRoles={["sub-admin"]} />}>
+          <Route path='/sub-admin-dashboard/*' element={<SubAdminDashboard />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>

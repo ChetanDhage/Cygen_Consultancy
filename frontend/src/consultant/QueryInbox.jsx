@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import { getConsultantQuries, updateQueryStatus } from '../api/consultant';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
+import {toast } from "sonner"; 
 
 const QueryInbox = () => {
   const [queries, setQueries] = useState([]);
@@ -36,7 +37,7 @@ const QueryInbox = () => {
       });
 
       const data = response.data;
-      console.log(data)
+      // console.log(data);
 
       setQueries(data.queries);
       setPagination({
@@ -122,7 +123,7 @@ const QueryInbox = () => {
     });
     setAccepted('Query accepted');
 
-    alert(`You ${res.data.status} this query`);
+    toast.success(`You ${res.data.status} this query`);
 
     setSelectedQuery(res.data);
     setQueries(prev =>
@@ -144,7 +145,7 @@ const QueryInbox = () => {
         token,
         status: "rejected",
       });
-      alert(`You ${res.data.status} this query`);
+      toast.success(`You ${res.data.status} this query`);
       setRejected('Query rejected');
       setSelectedQuery(res.data);
       setQueries(prev =>

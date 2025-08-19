@@ -2,19 +2,19 @@ import React from 'react'
 import { FaStar } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-const ConsultantCard = ({ key, consultant}) => {
+const ConsultantCard = ({  consultant}) => {
   
   // console.log(consultant);
-  console.log("aaaaaaaaa ",consultant);
+  // console.log("data: ",consultant);
   return (
-    <div id={key} className=" relative border rounded-lg p-4 shadow hover:shadow-lg transition duration-300">
+    <div key={consultant._id || index } className=" relative border rounded-lg p-4 shadow hover:shadow-lg transition duration-300">
       <img
         src={consultant?.user?.profilePhoto?.url || 'https://via.placeholder.com/150'}
         alt="Consultant"
         className=" relative z-20 h-40 w-40 rounded-full m-auto object-cover shadow-md shadow-white"
       />
       <div className=' absolute z-0 top-0  bg-primaryLight w-full h-1/2 left-0'>
-        <div className="absolute z-10 inset-0 opacity-1 text-blue-500  pointer-events-none">
+        <div className="absolute z-10 inset-0 opacity-1 text-primary  pointer-events-none">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">

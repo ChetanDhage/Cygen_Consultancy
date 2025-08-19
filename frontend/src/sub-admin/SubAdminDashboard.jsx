@@ -12,9 +12,10 @@ import NotificationPage from '../components/common/NotificationPage';
 import ProtectedRoute from '../api/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import {  logout, selectCurrentUserRole } from '../redux/authSlice';
+import { toast } from 'sonner';
 
-const ProfilePath = '/subadmin-dashboard/profile';
-const NotificationPath = '/subadmin-dashboard/notification';
+const ProfilePath = '/sub-admin-dashboard/profile';
+const NotificationPath = '/sub-admin-dashboard/notification';
 
 const SubAdminDashboard = () => {
   const [params, setParams] = useState();
@@ -28,26 +29,26 @@ const SubAdminDashboard = () => {
     {
       icon: <FaCalendarAlt />,
       label: 'Dashboard',
-      path: "/subadmin-dashboard/",
+      path: "/sub-admin-dashboard/",
       active: params === "" ? true : false
     },
     {
       icon: <FaUserTie />,
       label: 'Consultant Verifications',
       // badge: 3,
-      path: "/subadmin-dashboard/verification",
+      path: "/sub-admin-dashboard/verification",
       active: params === "verification" ? true : false
     },
     {
       icon: <FaFlag />,
       label: ' Content Moderation',
-      path: "/subadmin-dashboard/moderation",
+      path: "/sub-admin-dashboard/moderation",
       active: params === "moderation" ? true : false
     },
     {
       icon: <FaChartBar />,
       label: 'Domain Analytics',
-      path: "/subadmin-dashboard/analytics",
+      path: "/sub-admin-dashboard/analytics",
       active: params === "analytics" ? true : false
     },
   ];
@@ -59,6 +60,7 @@ const SubAdminDashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+     toast.success("Logout Successfully")
     navigate("/login");
   };
 
@@ -93,7 +95,7 @@ const SubAdminDashboard = () => {
 
         <div className="flex flex-col ">
          {
-            checkCurrentUserRole==='subadmin' &&
+            checkCurrentUserRole==='sub-admin' &&
             <button
               onClick={handleLogout}
               className="px-4 py-2 mb-4 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
@@ -118,7 +120,7 @@ const SubAdminDashboard = () => {
       {/* Main Content */}
       <main className='w-full lg:h-screen lg:overflow-y-scroll p-8'>
         <Routes>
-          <Route element={<ProtectedRoute allowedRoles={["subadmin"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["sub-admin"]} />}>
           
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/profile" element={<SubAdminProfile />} />

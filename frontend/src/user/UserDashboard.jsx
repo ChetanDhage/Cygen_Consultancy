@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectCurrentUserRole } from '../redux/authSlice';
 import UserProfile from './UserProfile';
 import ConsultantProfile from './ConsultantProfile';
+import { toast } from 'sonner';
 
 
 const ProfilePath = '/user-dashboard/profile';
@@ -27,7 +28,7 @@ const userDashboard = () => {
   const para = useParams();
   useEffect(() => {
     setParams(para['*']);
-    console.log(params);
+    // console.log(params);
   }, [para]);
 
   const menuItems = [
@@ -43,6 +44,7 @@ const userDashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+     toast.success("Logout Successfully")
     navigate("/login");
   };
 

@@ -19,7 +19,7 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Form submission logic here
-    alert(`Thank you ${formData.name}! Your message has been sent.`);
+    toast.success(`Thank you ${formData.name}! Your message has been sent.`);
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 

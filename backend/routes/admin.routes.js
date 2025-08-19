@@ -20,7 +20,7 @@ const router = express.Router();
 // router.use(protect);
 // router.use(admin);
 
-
+// /api/admin
 // Consultant management
 router.get("/consultants", getConsultants);
 router.get("/verified-consultant", getConsultantsByStatus);
@@ -29,7 +29,7 @@ router.delete("/consultants/:id", deleteConsultant);
 
 // Customer management
 router.get("/customers", getCustomers);
-router.delete("/customers/:id", deleteCustomer);  
+router.delete("/customers/:id", deleteCustomer); 
 router.put("/customer/status",  updateCustomerStatus);
 
 // Transaction management

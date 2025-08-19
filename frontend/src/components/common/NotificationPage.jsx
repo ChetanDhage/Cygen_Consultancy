@@ -43,7 +43,7 @@ const NotificationPage = () => {
         message: 'Your consultation with Michael Brown has been cancelled.',
         time: '2 days ago',
         read: true,
-        type: 'alert'
+        type: 'toast.success'
       }
     ];
   });
@@ -87,7 +87,7 @@ const NotificationPage = () => {
       case 'request': return <FiBell className="text-primary text-xl" />;
       case 'reminder': return <FiClock className="text-yellow-500 text-xl" />;
       case 'payment': return <FiCheck className="text-green-500 text-xl" />;
-      case 'alert': return <FiAlertCircle className="text-red-500 text-xl" />;
+      case 'toast.success': return <FiAlertCircle className="text-red-500 text-xl" />;
       case 'system': return <FiInfo className="text-purple-500 text-xl" />;
       default: return <FiBell className="text-gray-500 text-xl" />;
     }

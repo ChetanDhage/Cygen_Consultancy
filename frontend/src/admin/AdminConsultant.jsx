@@ -101,14 +101,14 @@ const AdminConsultant = () => {
           <tbody>
             {filteredData.map((item) => (
               <tr key={item._id} 
-              className="border-b hover:bg-primaryLight ">
-                <td>
-                  <div 
-                    onClick={() => {
+              className="border-b hover:bg-primaryLight  cursor-pointer"
+               onClick={() => {
                       setSelectedConsultantId(item._id);
                       setModalOpen(true);
                     }}
-                  className=" hover:underline cursor-pointer hover:text-blue-500">
+              >
+                <td>
+                  <div>
                     <p className=" ">{item.user?.name}</p>
                     <p className="text-sm text-gray-500">{item.user?.email}</p>
                   </div>

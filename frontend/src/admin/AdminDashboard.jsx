@@ -14,6 +14,8 @@ import ProtectedRoute from '../api/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectCurrentUserRole } from '../redux/authSlice';
 import ConsultantProfile from '../user/ConsultantProfile';
+import Profile from './Profile';
+import { toast } from 'sonner';
 
 const ProfilePath = '/admin-dashboard/profile';
 const NotificationPath = '/admin-dashboard/notification';
@@ -24,7 +26,7 @@ const AdminDashboard = () => {
     const para = useParams();
     useEffect(() => {
         setParams(para['*']);
-        console.log(params);
+        // console.log(params);
     }, [para]);
 
     const menuItems = [
@@ -73,6 +75,7 @@ const AdminDashboard = () => {
 
     const handleLogout = () => {
         dispatch(logout());
+        toast.success("Logout Successfully");
         navigate("/login");
     };
 
@@ -126,7 +129,7 @@ const AdminDashboard = () => {
             {/* Main Content */}
             <main className='w-full lg:h-screen lg:overflow-y-scroll'>
                 <Routes>
-                    {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
+                    <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
 
                         <Route path='/' element={<AdminHome />} />
                         <Route path='/consultant' element={<AdminConsultant />} />
@@ -134,9 +137,9 @@ const AdminDashboard = () => {
                         <Route path='/verification' element={<AdminVerification />} />
                         <Route path='/manage-sub-admin' element={<AdminTransaction />} />
                         <Route path='/analysis' element={<AdminAnalysis />} />
-                        <Route path='/profile' element={<ConsultantProfile />} />
+                        <Route path='/profile' element={<Profile />} />
                         <Route path='/notification' element={<NotificationPage />} />
-                    {/* </Route> */}
+                    </Route>
                 </Routes>
 
             </main>

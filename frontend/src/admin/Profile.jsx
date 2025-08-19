@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchConsultantProfile } from '../api/consultant';
 import { useSelector } from 'react-redux';
 import { selectCurrentToken, selectCurrentUser } from '../redux/authSlice';
 
-const ConsultantProfile = () => {
+const Profile = () => {
   const currentUser = useSelector(selectCurrentUser);
   const usertype = currentUser.role;
-  
+  const adminId = currentUser._id;
   const token = useSelector(selectCurrentToken);
 
   const [consultantData, setConsultantData] = useState(null);
-  const para = useParams();
-  const consultantId = para.consultant_id;
-  
-
 
   useEffect(() => {
     const fetchConsultant = async () => {
       try {
-        const response = await fetchConsultantProfile({ consultantId, token });
+        const response = await fetchConsultantProfile({ adminId, token });
         if (response?.data) {
           // store only the consultant object
           setConsultantData(response.data);
-          // console.log("API Response:", response.data);
+          console.log("API Response:", response.data);
         }
       } catch (error) {
         console.error("Error fetching consultant:", error);
@@ -32,7 +28,7 @@ const ConsultantProfile = () => {
     };
 
     fetchConsultant();
-  }, [consultantId, token]);
+  }, [adminId, token]);
 
   if (!consultantData) {
     return (
@@ -169,7 +165,7 @@ const ConsultantProfile = () => {
 
         {usertype === 'user' && (
           <div className="mt-8">
-            <Link to={`/user-dashboard/query/${consultantId}`}>
+            <Link to={`/user-dashboard/query/${adminId}`}>
               <button className="w-full md:w-auto px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">
                 Book a Session
               </button>
@@ -196,4 +192,4 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-export default ConsultantProfile;
+export default Profile;

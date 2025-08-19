@@ -50,7 +50,11 @@ export const getConsultantsByStatus = async (req, res) => {
   try {
     const consultants = await Consultant.find({
       status: CONSULTANT_STATUS.APPROVED,
-    });
+    }).populate(
+      "user",
+      "name email contactNumber location linkedInProfile profilePhoto"
+    );
+
 
     if (!consultants.length) {
       return res.status(404).json({
@@ -387,34 +391,21 @@ export const deleteConsultant = async (req, res) => {
 // Delete Customer
 export const deleteCustomer = async (req, res) => {
   try {
-    const { id } = req.body;
-
+    const { id } = req.params;
     const customer = await Customer.findById(id).populate("user");
     if (!customer) {
-      return res.status(404).json({
-        success: false,
-        message: "Customer not found",
-      });
+      return res.status(404).json({ success: false, message: "Customer not found" });
     }
-
-    // Optionally delete linked User as well
     await customer.deleteOne();
     if (customer.user) {
       await User.findByIdAndDelete(customer.user._id);
     }
-
-    res.json({
-      success: true,
-      message: "Customer deleted successfully",
-    });
+    res.json({ success: true, message: "Customer deleted successfully" });
   } catch (error) {
-    console.error("deleteCustomer error:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message || "Server error",
-    });
+    res.status(500).json({ success: false, message: error.message || "Server error" });
   }
 };
+
 
 
 // controllers/customerController.js
@@ -448,3 +439,4 @@ export const updateCustomerStatus = async (req, res) => {
     });
   }
 };
+

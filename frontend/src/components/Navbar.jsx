@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
 import { logout, selectCurrentUserRole } from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'sonner';
 
 const navLinks = [
   { path: '/', label: 'Home' },
@@ -176,11 +177,12 @@ const CheckUserExists = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(`Current user role: ${userRole}`);
+    // console.log(`Current user role: ${userRole}`);
   }, [userRole]);
 
   const handleLogout = () => {
     dispatch(logout()); // clear user in Redux
+    toast.success("Logout Successfully");
     navigate("/login"); // redirect to login
   };
 
@@ -215,7 +217,7 @@ const CheckUserExists = () => {
 
       <button
         onClick={handleLogout}
-        className="px-4 py-2 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
+        className="px-4 py-2 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg ml-4 md:ml-1"
       >
         Logout
       </button>

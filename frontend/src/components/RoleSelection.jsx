@@ -25,7 +25,7 @@
 //     if (role) {
 //       navigate(`/${role}`);
 //     } else {
-//       alert("Invalid role selected");
+//       toast.success("Invalid role selected");
 //     }
 //   };
 
@@ -123,7 +123,7 @@ const SignupRoleSelection = ({ onSelect }) => {
       <section className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           {/* Glassmorphism Card Container */}
-          <div className="backdrop-blur-lg bg-white/30 dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden border border-white/20 dark:border-gray-700/50">
+          <div className="backdrop-blur-lg bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden border border-white/20 dark:border-gray-700/50">
             <div className="p-8 text-center">
               <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
                 Join as...

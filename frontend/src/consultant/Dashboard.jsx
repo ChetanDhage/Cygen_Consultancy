@@ -21,6 +21,7 @@ import ProtectedRoute from '../api/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectCurrentUser, selectCurrentUserRole } from '../redux/authSlice';
 import Profile from './Profile';
+import { toast } from 'sonner';
 
 
 const ProfilePath = '/consultant-dashboard/profile';
@@ -50,6 +51,7 @@ const ConsultantDashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+     toast.success("Logout Successfully")
     navigate("/login");
   };
 

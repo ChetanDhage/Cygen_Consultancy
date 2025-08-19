@@ -6,15 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, setError } from "../redux/authSlice";
 import { selectAuthError } from "../redux/authSlice";
 
+import {toast } from "sonner"; 
+
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
   const [email, setEmail] = useState("consultant11@gmail.com");
-  const [pwd, setPwd] = useState("user12345");
+  const [pwd, setPwd] = useState("consultant");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+console.log(' user@gmail.com user123456 /n admin@cygen.com | subadmin@cygen.com SubAdmin@123 ');
 
   // ✅ Get error directly from Redux
   const error = useSelector(selectAuthError);
@@ -35,7 +39,7 @@ const Login = () => {
       dispatch(login(response.data));
 
       const userRole = response.data.role;
-      alert("Login successful!");
+      toast.success("Login successful!");
 
       if (userRole === "consultant") {
         navigate("/consultant-dashboard");
@@ -46,8 +50,8 @@ const Login = () => {
       if (userRole === "admin") {
         navigate("/admin-dashboard");
       }
-      if (userRole === "subadmin") {
-        navigate("/subadmin-dashboard");
+      if (userRole === "sub-admin") {
+        navigate("/sub-admin-dashboard");
       }
 
     } catch (err) {
@@ -63,6 +67,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-2xl my-4">
         <div className="flex flex-col items-center">
+
           <div className="bg-gradient-to-r from-primarylight to-primary p-3 rounded-full mb-4">
             <FaUserTie className="dark:text-white text-gray-600 text-3xl" />
           </div>

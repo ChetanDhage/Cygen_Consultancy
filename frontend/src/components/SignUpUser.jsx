@@ -4,6 +4,7 @@ import Select from './common/Select';
 import { FaUserTie } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
+import {toast } from "sonner"; 
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -124,7 +125,7 @@ const SignUpUser = () => {
       );
 
       console.log('✅ Registered User:', response.data);
-      alert('Sign Up Successfull')
+      toast.success('Sign Up Successfull')
       navigate('/login')
 
       setSubmitted(true);

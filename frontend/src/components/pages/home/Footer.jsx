@@ -18,7 +18,7 @@
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
-//     alert(`Thank you for subscribing with: ${email}`);
+//     toast.success(`Thank you for subscribing with: ${email}`);
 //     setEmail('');
 //   };
 

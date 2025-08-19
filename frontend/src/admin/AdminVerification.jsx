@@ -6,6 +6,7 @@ import axios from "axios";
 import { fetchConsultantProfile } from "../api/consultant";
 import { selectCurrentToken } from "../redux/authSlice";
 import { useSelector } from "react-redux";
+import { toast } from 'sonner';
 
 const STATUS = {
   PENDING: "pending",
@@ -45,7 +46,7 @@ const AdminVerification = () => {
       if (!consultant) return;
 
       if (consultant.status === newStatus) {
-        alert("You cannot update status to the same value");
+        toast.success("You cannot update status to the same value");
         return;
       }
 
@@ -55,7 +56,7 @@ const AdminVerification = () => {
         newStatus === STATUS.REJECTED ? "Not qualified" : ""
       );
 
-      alert(`You updated Status to ${res.data.status}`);
+      toast.success(`You updated Status to ${res.data.status}`);
 
       setConsultants((prev) =>
         prev.map((c) => (c._id === id ? { ...c, status: res.data.status } : c))

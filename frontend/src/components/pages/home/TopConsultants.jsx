@@ -9,7 +9,10 @@ const TopConsultants = () => {
     const getConsultants = async () => {
       try {
         const res = await fetchAllConsultant();
-        setConsultants(res.data.slice(0, 4)); // Only first 4
+        // If backend returns { data: [...] }
+        const list = res.data?.data || res.data || [];
+        setConsultants(list.slice(0, 4)); // ✅ Only first 4
+        // console.log("Top Consultants:", list);
       } catch (err) {
         console.error("Error fetching consultants:", err);
       }
@@ -18,16 +21,12 @@ const TopConsultants = () => {
   }, []);
 
   // Render star icons for rating
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span key={i} className={i <= rating ? "text-yellow-400" : "text-gray-300"}>
-          ★
-        </span>
-      );
-    }
-    return stars;
+  const renderStars = (rating = 0) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <span key={i} className={i < rating ? "text-yellow-400" : "text-gray-300"}>
+        ★
+      </span>
+    ));
   };
 
   return (
@@ -41,25 +40,22 @@ const TopConsultants = () => {
         </p>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto lg:grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 px-4 py-4 scrollbar-hide">
+      <div className="flex gap-6 overflow-x-auto lg:grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 px-4 py-4">
         {consultants.map((consultant, index) => (
           <div
-            key={index}
+            key={consultant._id || index }
             className="min-w-[280px] sm:min-w-[250px] lg:min-w-0 relative group rounded-3xl bg-white dark:bg-gray-900/80 border border-b-primary border-t-primary/90 border-l-0 border-r-0 shadow-md hover:shadow-2xl transition duration-300 hover:scale-105 py-6"
           >
             {/* Avatar */}
             <img
-              src={
-                consultant.image ||
-                "https://via.placeholder.com/150?text=No+Image"
-              }
-              alt={consultant.name}
+              src={consultant?.user.profilePhoto.url || 'https://img.freepik.com/premium-vector/man-character_665280-46970.jpg'}
+              alt={consultant?.name || "Consultant"}
               className="w-16 h-16 rounded-full mx-auto mb-4 object-cover border border-gray-300"
             />
 
             {/* Name */}
             <h3 className="font-semibold text-lg text-center text-gray-800 dark:text-white">
-              {consultant.name}
+              {consultant.name || "Unknown"}
             </h3>
 
             {/* Rating */}
@@ -78,7 +74,7 @@ const TopConsultants = () => {
               {(consultant.skills || []).slice(0, 3).map((skill, i) => (
                 <span
                   key={i}
-                  className={`text-xs font-medium px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-600`}
+                  className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-600"
                 >
                   {skill}
                 </span>
