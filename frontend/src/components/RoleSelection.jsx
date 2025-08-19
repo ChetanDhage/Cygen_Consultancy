@@ -96,7 +96,7 @@ const roles = [
     label: "Client", 
     icon: <FaUser className="text-xl" />, 
     description: "Access services & hire experts",
-    color: "rgba(99, 102, 241, 0.2)" // indigo with opacity
+    color: "rgba(99, 102, 241, 0.2)" // primaryh opacity
   },
   { 
     id: "consultant",
@@ -118,14 +118,14 @@ const SignupRoleSelection = ({ onSelect }) => {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <main className="sm:min-h-screen h-screen overflow-hidden bg-gradient-to-br from-primaryvia-purple-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Navbar />
-      <section className="flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
+      <section className="flex items-center justify-center sm:px-4 py-12">
+        <div className="w-full sm:max-w-md  ">
           {/* Glassmorphism Card Container */}
-          <div className="backdrop-blur-lg bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden border border-white/20 dark:border-gray-700/50">
+          <div className=" bg-white sm:h-fit h-screen  rounded-2xl shadow-xl  sm:border ">
             <div className="p-8 text-center">
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                 Join as...
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mb-8">
@@ -151,9 +151,9 @@ const SignupRoleSelection = ({ onSelect }) => {
                     />
                     {/* Glassmorphism Card */}
                     <div
-                      className={`backdrop-blur-sm p-5 rounded-xl border border-white/30 dark:border-gray-700/50 transition-all ${
+                      className={`backdrop-blur-sm p-5 rounded-xl border transition-all ${
                         selectedRole === role.id 
-                          ? "bg-gradient-to-r from-indigo-100/50 to-purple-100/50 dark:from-indigo-900/30 dark:to-purple-900/30 shadow-inner"
+                          ? "bg-gradient-to-r from-primary/50 to-purple-100/50 dark:from-primary/30 dark:to-purple-900/30 shadow-inner"
                           : "bg-white/20 dark:bg-gray-700/20 hover:bg-white/30 dark:hover:bg-gray-700/30"
                       }`}
                       style={{
@@ -162,9 +162,9 @@ const SignupRoleSelection = ({ onSelect }) => {
                     >
                       <div className="flex items-center">
                         <div
-                          className={`flex items-center justify-center w-12 h-12 rounded-full mr-4 ${
+                          className={`flex items-center justify-center w-12 h-12 rounded-full mr-4  border ${
                             selectedRole === role.id 
-                              ? "bg-white text-indigo-600 dark:text-emerald-400"
+                              ? "bg-white text-primary dark:text-emerald-400"
                               : "bg-white/90 text-gray-700 dark:bg-gray-600/90 dark:text-white"
                           }`}
                         >
@@ -174,7 +174,7 @@ const SignupRoleSelection = ({ onSelect }) => {
                           <h3
                             className={`font-semibold ${
                               selectedRole === role.id 
-                                ? "text-indigo-700 dark:text-emerald-400"
+                                ? "text-gray-800 dark:text-emerald-400"
                                 : "text-gray-700 dark:text-white"
                             }`}
                           >
@@ -183,7 +183,7 @@ const SignupRoleSelection = ({ onSelect }) => {
                           <p
                             className={`text-sm ${
                               selectedRole === role.id 
-                                ? "text-indigo-600/90 dark:text-emerald-300/90"
+                                ? "text-gray-700 dark:text-emerald-300/90"
                                 : "text-gray-600 dark:text-gray-300"
                             }`}
                           >
@@ -193,12 +193,12 @@ const SignupRoleSelection = ({ onSelect }) => {
                         <div
                           className={`ml-4 w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                             selectedRole === role.id 
-                              ? "border-indigo-600 dark:border-emerald-400"
+                              ? "border-primary dark:border-emerald-400"
                               : "border-gray-300 dark:border-gray-500"
                           }`}
                         >
                           {selectedRole === role.id && (
-                            <div className="w-3 h-3 rounded-full bg-indigo-600 dark:bg-emerald-400" />
+                            <div className="w-3 h-3 rounded-full bg-primary dark:bg-emerald-400" />
                           )}
                         </div>
                       </div>
@@ -212,7 +212,7 @@ const SignupRoleSelection = ({ onSelect }) => {
                 onClick={handleSubmit}
                 className={`w-full mt-8 py-3 rounded-lg font-semibold text-lg transition-all transform ${
                   selectedRole
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95"
+                    ? "bg-gradient-to-r from-primary to-purple-500 text-white shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95"
                     : "bg-gray-200/50 dark:bg-gray-700/50 text-gray-400 dark:text-gray-500 cursor-not-allowed"
                 }`}
               >

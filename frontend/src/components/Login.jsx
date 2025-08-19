@@ -7,6 +7,7 @@ import { login, setError } from "../redux/authSlice";
 import { selectAuthError } from "../redux/authSlice";
 
 import {toast } from "sonner"; 
+import Navbar from "./Navbar";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -39,7 +40,7 @@ console.log(' user@gmail.com user123456 /n admin@cygen.com NewAdmin@123 /n subad
       dispatch(login(response.data));
 
       const userRole = response.data.role;
-      toast.success("Login successful!");
+      toast.success("Login successful! Welcome to job portal");
 
       if (userRole === "consultant") {
         navigate("/consultant-dashboard");
@@ -64,12 +65,15 @@ console.log(' user@gmail.com user123456 /n admin@cygen.com NewAdmin@123 /n subad
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-2xl my-4">
+    
+    <>
+    <Navbar/>
+    <div className="min-h-screen  flex items-center justify-center sm:px-4">
+      <div className="sm:max-w-md  w-full h-screen sm:h-fit bg-white dark:bg-[#0b1225] p-8 rounded-3xl shadow-2xl sm:my-4">
         <div className="flex flex-col items-center">
 
-          <div className="bg-gradient-to-r from-primarylight to-primary p-3 rounded-full mb-4">
-            <FaUserTie className="dark:text-white text-gray-600 text-3xl" />
+          <div className="border p-4 rounded-xl mb-2">
+            <FaUserTie className="text-primary text-3xl" />
           </div>
           <h2 className="text-2xl font-semibold text-gray-600 dark:text-white mb-1">
             Log In to Worklify
@@ -147,11 +151,12 @@ console.log(' user@gmail.com user123456 /n admin@cygen.com NewAdmin@123 /n subad
             to={"/signup"}
             className="text-blue-500 underline hover:text-blue-600 cursor-pointer"
           >
-            Sign up
+            SignUp 
           </Link>
         </p>
       </div>
     </div>
+    </>
   );
 };
 

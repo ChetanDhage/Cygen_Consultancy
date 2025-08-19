@@ -4,16 +4,17 @@ import {
   FaUserTie, FaBriefcase, FaCertificate, FaArrowRight, FaArrowLeft,
   FaPlusCircle, FaCheckCircle
 } from 'react-icons/fa';
+import Navbar from './Navbar';
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const StepTabs = ({ step }) => {
   const tabs = ["Personal Info", "Professional", "Certifications"];
   return (
-    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-3 font-medium">
+    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1 font-medium">
       {tabs.map((tab, i) => (
         <span
           key={tab}
-          className={`tab-indicator w-1/3 text-center py-5 relative ${step === i
+          className={` tab-indicator w-1/3 text-center py-5 relative ${step === i
             ? 'text-primary dark:text-primary font-semibold'
             : 'text-gray-500 dark:text-gray-400'
             }`}
@@ -31,9 +32,9 @@ const StepTabs = ({ step }) => {
 const ProgressBar = ({ step }) => {
   const widths = ["w-1/3", "w-2/3", "w-full"];
   return (
-    <div className="bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden">
+    <div className=" sm:w-full w-10/12 bg-gray-200 dark:bg-gray-700 h-2.5 rounded-full overflow-hidden  m-auto  ">
       <div
-        className={`bg-gradient-to-r from-primary to-primary ${widths[step]} h-full transition-all duration-500`}
+        className={`bg-gradient-to-r from-primary to-primary ${widths[step]} h-full transition-all duration-500 `}
       ></div>
     </div>
   );
@@ -162,28 +163,29 @@ const SignUpConsultant = () => {
         </p>
         <button
           onClick={resetForm}
-          className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary transition"
+          className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary transition"
         >
           <FaPlusCircle className="inline mr-2" /> Create New Application
         </button>
       </div>
     );
   }
-
-
+  
   return (
-    <div className="w-full mx-auto  dark:bg-[#090d13]">
-      <div className="lg:max-w-5xl w-full  py-10 m-auto bg-white dark:bg-[#0b1225] dark:text-gray-100 shadow-xl">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-primarylight to-primary flex items-center justify-center shadow-lg">
-              <FaUserTie className="text-primary text-3xl" />
+    <>
+    <Navbar/>
+    <div className="w-full mx-auto sm:mt-4  dark:bg-[#090d13]">
+      <div className="lg:max-w-5xl w-full sm:pt-10 m-auto bg-white dark:bg-[#0b1225] dark:text-gray-100 shadow-xl rounded-2xl">
+        <div className="text-center sm:mb-12">
+          <div className="flex justify-center sm:mb-6">
+            <div className=" p-4 rounded-2xl bg-gradient-to-r from-primarylight to-primary flex items-center justify-center shadow-lg  mb-4">
+              <FaUserTie className="text-primary text-2xl" />
             </div>
           </div>
-          <h1 className="text-black dark:text-white text-3xl md:text-4xl font-bold mb-3">
+          <h1 className="text-black dark:text-white text-2xl md:text-4xl font-bold mb-3">
             Consultant SignUp Portal
           </h1>
-          <div className="mt-8 max-w-xl mx-auto">
+          <div className="max-w-xl mx-auto">
             <StepTabs step={step} />
             <ProgressBar step={step} />
           </div>
@@ -198,7 +200,7 @@ const SignUpConsultant = () => {
           {step === 0 && (
             <div>
               <h2 className="text-2xl font-bold mb-8">Personal Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input name="name" value={formData.name} onChange={handleChange} className="input-field" placeholder="Full Name" required />
                 <input type="email" name="email" value={formData.email} onChange={handleChange} className="input-field" placeholder="Email" required />
                 <input name="contactNumber" value={formData.contactNumber} onChange={handleChange} className="input-field" placeholder="Contact Number" />
@@ -215,7 +217,7 @@ const SignUpConsultant = () => {
                 <input type="file" accept=".pdf" onChange={(e) => setResume(e.target.files[0])} />
               </div>
               <div className="flex justify-end mt-12">
-                <button type="button" onClick={handleNext} className="btn-primary text-white bg-primary px-6 py-3 rounded-lg flex items-center">
+                <button type="button" onClick={handleNext} className="btn-primary text-white bg-primary px-4 py-2 rounded-lg flex items-center">
                   Next: Professional <FaArrowRight className="ml-2" />
                 </button>
               </div>
@@ -226,7 +228,7 @@ const SignUpConsultant = () => {
           {step === 1 && (
             <div>
               <h2 className="text-2xl font-bold mb-8">Professional Details</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input name="designation" value={formData.designation} onChange={handleChange} className="input-field" placeholder="Designation / Job Title" />
                 <input name="company" value={formData.company} onChange={handleChange} className="input-field" placeholder="Current Company" />
                 <input name="industry" value={formData.industry} onChange={handleChange} className="input-field" placeholder="Industry / Domain" />
@@ -238,10 +240,10 @@ const SignUpConsultant = () => {
 
               </div>
               <div className="flex justify-between mt-12">
-                <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 rounded-lg flex items-center">
+                <button type="button" onClick={handleBack} className="px-4 py-2 bg-gray-200 rounded-lg flex items-center">
                   <FaArrowLeft className="mr-2" /> Back
                 </button>
-                <button type="button" onClick={handleNext} className="btn-primary text-white px-6 py-3 rounded-lg bg-primary flex items-center">
+                <button type="button" onClick={handleNext} className="btn-primary text-white px-4 py-2 rounded-lg bg-primary flex items-center">
                   Next: Certifications <FaArrowRight className="ml-2" />
                 </button>
               </div>
@@ -255,7 +257,7 @@ const SignUpConsultant = () => {
               {certifications.map((cert, i) => (
                 <div key={i} className="bg-gray-50 p-6 rounded-xl mb-6 border border-gray-100">
                   <h3 className="font-medium text-lg mb-5">Certification #{i + 1}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input
                       className="input-field"
                       placeholder="Certification Name"
@@ -284,17 +286,17 @@ const SignUpConsultant = () => {
                   <FaPlusCircle className="mr-2" /> Add Another Certification
                 </button>
               </div>
-              <div className="p-6 rounded-xl mb-8 border border-primary">
+              <div className="p-4  sm:text-base text-sm rounded-xl mb-8 border border-primary">
                 <label className="flex items-start">
-                  <input type="checkbox" className="mt-1 mr-3 h-5 w-5" required />
+                  <input type="checkbox" className="mt-1 mr-3 h-4 w-4" required />
                   <span>I agree to the Terms of Service and Privacy Policy.</span>
                 </label>
               </div>
               <div className="flex justify-between mt-8">
-                <button type="button" onClick={handleBack} className="px-6 py-3 bg-gray-200 rounded-lg flex items-center">
+                <button type="button" onClick={handleBack} className="px-4 py-2 bg-gray-200 rounded-lg flex items-center">
                   <FaArrowLeft className="mr-2" /> Back
                 </button>
-                <button type="submit" disabled={loading} className="px-8 py-4 bg-primary text-white rounded-lg font-semibold shadow-md flex items-center">
+                <button type="submit" disabled={loading} className="px-4 py-2 bg-primary text-white rounded-lg font-semibold shadow-md flex items-center">
                   {loading ? 'Submitting...' : (<><FaCheckCircle className="mr-2" /> Submit Application</>)}
                 </button>
               </div>
@@ -303,6 +305,7 @@ const SignUpConsultant = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

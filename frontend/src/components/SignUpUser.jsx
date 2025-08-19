@@ -5,6 +5,7 @@ import { FaUserTie } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
 import {toast } from "sonner"; 
+import Navbar from './Navbar';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -36,7 +37,7 @@ const SignUpUser = () => {
   const fileInputRef = useRef(null);
 
   const formSteps = [
-    'Personal & Company Info',
+    'Personal Info',
     'Service Details',
     'Consent & Agreement'
   ];
@@ -145,13 +146,13 @@ const SignUpUser = () => {
       stepClass += " active border-primary text-primary";
       labelClass += " text-gray-900 font-medium";
     } else if (index < currentStep) {
-      stepClass += " completed bg-green-500 border-green-500 text-white";
+      stepClass += " completed bg-green-500 border-green-500 text-green-500";
       labelClass += " text-gray-900 font-medium";
     }
 
     return (
       <div key={index} className={`progress-step relative flex-1 text-center ${index < formSteps.length - 1 ? 'after:content-[""] after:absolute after:top-5 after:left-[60%] after:right-[-40%] after:h-0.5 after:bg-gray-200 after:z-1' : ''}`}>
-        <div className={stepClass}>{index + 1}</div>
+        <div className={stepClass+' bg-white'}>{index + 1}</div>
         <div className={labelClass}>{formSteps[index]}</div>
       </div>
     );
@@ -309,7 +310,7 @@ const SignUpUser = () => {
     <div>
       <h2 className="text-2xl font-semibold text-primary-700 mb-6">Consent & Agreement</h2>
       <div className=' text-sm'>
-        <div className=' bg-gray-100 rounded-xl border p-4 mb-4 '>
+        <div className=' text-gray-800  font-light bg-gray-100   rounded-xl border p-4 mb-4 '>
           <p className=' font-semibold pb-2 text-black'>Terms of Service</p>
           By submitting this form, you agree to our Terms of Service, including the User Agreement and Privacy Policy. We will process your personal data in accordance with our privacy policy to provide you with the requested services.
 
@@ -331,7 +332,10 @@ const SignUpUser = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto my-8">
+    
+    <>
+    <Navbar/>
+    <div className="sm:max-w-4xl mx-auto sm:my-8 mt-4">
       {submitted && (
         <div className="p-6 bg-green-100 text-green-700">Form Submitted Successfully!</div>
       )}
@@ -344,10 +348,10 @@ const SignUpUser = () => {
             <FaUserTie className="text-primary text-3xl" />
           </div>
         </div>
-        <h1 className="text-black dark:text-white text-center text-3xl md:text-4xl font-bold mb-3">
+        <h1 className="text-black dark:text-white text-center text-2xl md:text-4xl font-bold mb-3">
           Customer SignUp Portal
         </h1>
-        <div className="flex justify-between items-center p-6 bg-gray-50">
+        <div className="flex justify-between items-center px-6 py-2 bg-gray-50">
           {formSteps.map((_, index) => renderStepIndicator(index))}
         </div>
 
@@ -357,13 +361,14 @@ const SignUpUser = () => {
           {currentStep === 2 && renderStepThree()}
         </div>
         <div className="flex justify-between p-6 border-t">
-          <button className=' bg-primary px-4 py-2 rounded-md text-white font-semibold' onClick={prevStep} disabled={currentStep === 0}>Previous</button>
+          <button className={` bg-primary px-4 py-2 rounded-md text-white font-semibold ${currentStep === 0 && 'hidden'}`} onClick={prevStep} disabled={currentStep === 0}>Previous</button>
           <button className=' bg-primary px-4 py-2 rounded-md text-white font-semibold' onClick={nextStep} disabled={loading}>
             {loading ? 'Submitting...' : (currentStep === formSteps.length - 1 ? 'Submit' : 'Next')}
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 };
 
