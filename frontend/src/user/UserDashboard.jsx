@@ -92,9 +92,11 @@ const userDashboard = () => {
           </div>
           <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
             <p className="text-sm">Need help?</p>
+            <Link to={'/contact'}>
             <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
               Contact Support
             </button>
+            </Link>
           </div>
         </div>
       </aside>

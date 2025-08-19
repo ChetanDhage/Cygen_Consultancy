@@ -46,7 +46,7 @@ const AdminDashboard = () => {
         {
             icon: <FaUser />,
             label: 'Customer',
-           path: "/admin-dashboard/customer",
+            path: "/admin-dashboard/customer",
             active: params === "customer" ? true : false
         },
         {
@@ -119,9 +119,11 @@ const AdminDashboard = () => {
                     </div>
                     <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
                         <p className="text-sm">Need help?</p>
-                        <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
-                            Contact Support
-                        </button>
+                        <Link to={'/contact'}>
+                            <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
+                                Contact Support
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </aside>

@@ -19,7 +19,7 @@ const ConsultantHome = () => {
                 {/* Welcome Banner */}
                 <section className=" w-full  bg-primaryLight text-primary p-6 rounded-xl shadow mb-6">
 
-                    <p className="text-sm">You have 3 new queries and 2 scheduled sessions today</p>
+                    <p className="text-sm">Check your query now</p>
                     <Link to={inboxQueryPath}>
                         <button className="mt-4 bg-white  text-black font-semibold px-4 py-2 rounded shadow text-sm">
                             View Incoming Queries

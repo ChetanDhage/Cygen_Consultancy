@@ -11,7 +11,7 @@ import MenuItem from '../components/common/MenuItem';
 import NotificationPage from '../components/common/NotificationPage';
 import ProtectedRoute from '../api/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
-import {  logout, selectCurrentUserRole } from '../redux/authSlice';
+import { logout, selectCurrentUserRole } from '../redux/authSlice';
 import { toast } from 'sonner';
 
 const ProfilePath = '/sub-admin-dashboard/profile';
@@ -56,11 +56,11 @@ const SubAdminDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const checkCurrentUserRole = useSelector(selectCurrentUserRole);
-  
+
 
   const handleLogout = () => {
     dispatch(logout());
-     toast.success("Logout Successfully")
+    toast.success("Logout Successfully")
     navigate("/login");
   };
 
@@ -94,8 +94,8 @@ const SubAdminDashboard = () => {
         </div>
 
         <div className="flex flex-col ">
-         {
-            checkCurrentUserRole==='sub-admin' &&
+          {
+            checkCurrentUserRole === 'sub-admin' &&
             <button
               onClick={handleLogout}
               className="px-4 py-2 mb-4 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
@@ -110,9 +110,11 @@ const SubAdminDashboard = () => {
           </div>
           <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
             <p className="text-sm">Need help?</p>
-            <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
-              Contact Support
-            </button>
+            <Link to={'/conntact'}>
+              <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
+                Contact Support
+              </button>
+            </Link>
           </div>
         </div>
       </aside>
@@ -121,14 +123,14 @@ const SubAdminDashboard = () => {
       <main className='w-full lg:h-screen lg:overflow-y-scroll p-8'>
         <Routes>
           <Route element={<ProtectedRoute allowedRoles={["sub-admin"]} />}>
-          
-          <Route path="/" element={<DashboardOverview />} />
-          <Route path="/profile" element={<SubAdminProfile />} />
-          <Route path="/notification" element={<NotificationPage />} />
-          <Route path="/verification" element={<SubAdminVerification />} />
-          <Route path="/moderation" element={<SubAdminModeration />} />
-          <Route path="/analytics" element={<SubAdminAnalytics />} />
-        </Route>
+
+            <Route path="/" element={<DashboardOverview />} />
+            <Route path="/profile" element={<SubAdminProfile />} />
+            <Route path="/notification" element={<NotificationPage />} />
+            <Route path="/verification" element={<SubAdminVerification />} />
+            <Route path="/moderation" element={<SubAdminModeration />} />
+            <Route path="/analytics" element={<SubAdminAnalytics />} />
+          </Route>
         </Routes>
 
       </main>

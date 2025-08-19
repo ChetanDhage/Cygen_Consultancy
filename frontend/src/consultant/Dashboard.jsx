@@ -13,8 +13,7 @@ import {
 import ConsultantHome from './ConsultantHome';
 import QueryInbox from './QueryInbox';
 import SessionDetails from './SessionDetails';
-import EarningsTransactions from './EarningsTransactions';
-import ConsultantRegistration from './ConsultantRegistration';
+import EarningsTransactions from './ChatPage';
 import NotificationPage from '../components/common/NotificationPage';
 import MenuItem from '../components/common/MenuItem';
 import ProtectedRoute from '../api/ProtectedRoute';
@@ -40,8 +39,7 @@ const ConsultantDashboard = () => {
     { icon: <FaCalendarAlt />, label: 'Overview', path: "/consultant-dashboard/", active: params === "" ? true : false },
     { icon: <FaTasks />, label: 'Query Inbox',  path: "/consultant-dashboard/query-inbox", active: params === "query-inbox" ? true : false },
     { icon: <FaUserFriends />, label: 'Session Data', path: "/consultant-dashboard/session-data", active: params === "session-data" ? true : false },
-    { icon: <FaDollarSign />, label: 'Earnings', path: "/consultant-dashboard/earning", active: params === "earning" ? true : false },
-    { icon: <FaCheckCircle />, label: 'Verification', path: "/consultant-dashboard/verification", active: params === "verification" ? true : false },
+    { icon: <FaDollarSign />, label: 'Chat', path: "/consultant-dashboard/chat", active: params === "chat" ? true : false },
   ];
 
   const navigate = useNavigate();
@@ -104,9 +102,11 @@ const ConsultantDashboard = () => {
           </div>
           <div className="mt-5 p-3 bg-primaryLight text-center rounded-lg">
             <p className="text-sm">Need help?</p>
+            <Link to={'/contact'}>
             <button className="text-primary text-sm font-semibold mt-2 border border-primary rounded px-2 py-1">
               Contact Support
             </button>
+            </Link>
           </div>
         </div>
       </aside>
@@ -121,9 +121,8 @@ const ConsultantDashboard = () => {
             <Route path='/' element={<ConsultantHome />} />
             <Route path='/query-inbox' element={<QueryInbox />} />
             <Route path='/session-data' element={<SessionDetails />} />
-            <Route path='/earning' element={<EarningsTransactions />} />
+            <Route path='/chat' element={<EarningsTransactions />} />
             <Route path='/profile' element={<Profile />} />
-            <Route path='/verification' element={<ConsultantRegistration />} />
             <Route path='/notification' element={<NotificationPage />} />
           </Route>
         </Routes>

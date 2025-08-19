@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import Navbar from './Navbar';
+import Loading from './common/Loading';
 const CategorySection = lazy(() => import('./pages/home/CategorySection'));
 const HeroSection = lazy(() => import('./pages/home/HeroSection'));
 const TopConsultants = lazy(() => import('./pages/home/TopConsultants'));
@@ -11,7 +12,7 @@ const Footer = lazy(() => import('./pages/home/Footer'));
 const Home = () => {
     return (
         <>
-            <Suspense fallback={<div>Loading..</div>}>
+            <Suspense fallback={<div><Loading/></div>}>
                 <Navbar />
                 <HeroSection />
                 <CategorySection />

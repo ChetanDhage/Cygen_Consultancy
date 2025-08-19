@@ -18,7 +18,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-console.log(' user@gmail.com user123456 /n admin@cygen.com | subadmin@cygen.com SubAdmin@123 ');
+console.log(' user@gmail.com user123456 /n admin@cygen.com NewAdmin@123 /n subadmin@cygen.com SubAdmin@123 ');
 
   // ✅ Get error directly from Redux
   const error = useSelector(selectAuthError);
