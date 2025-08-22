@@ -4,7 +4,7 @@ const AdminAnalysis = () => {
   return (
     <div>
       AdminAnalysis
-AdminAnalysis
+      AdminAnalysis
     </div>
   )
 }

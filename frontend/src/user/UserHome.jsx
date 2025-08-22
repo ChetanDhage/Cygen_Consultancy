@@ -40,7 +40,7 @@ const UserHome = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-4">Featured Consultants</h2>
+      <h2 className="sm:text-2xl font-bold mb-4">Featured Consultants</h2>
 
       <input
         type="text"

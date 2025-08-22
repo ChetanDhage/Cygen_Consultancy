@@ -46,7 +46,7 @@ const UserProfile = () => {
 
   return (
     <main>
-      <div className="p-6 bg-gray-100">
+      <div className="sm:p-6 bg-gray-100">
         <div className="mx-auto lg:p-10 p-6 bg-white rounded-lg shadow-md max-w-5xl">
           {/* Header with Photo */}
           <div className="flex gap-4 items-center border border-primary bg-primaryLight px-4 py-2 rounded-r-full">
@@ -56,17 +56,17 @@ const UserProfile = () => {
                 "https://via.placeholder.com/150"
               }
               alt="User"
-              className="w-24 h-24 rounded-full border-4 border-primary object-cover shadow bg-white"
+              className="sm:w-24 sm:h-24 w-14 h-14 rounded-full border-4 border-primary object-cover shadow bg-white"
             />
             <div>
-              <h1 className="text-2xl font-bold text-gray-600">
+              <h1 className="sm:text-2xl font-bold text-gray-600">
                 {userData?.name}
               </h1>
               <p className="text-gray-500 capitalize text-sm">
                 {userData?.role}
               </p>
               {userData?.isVerified && (
-                <span className="mt-2 px-3 py-1 inline-block text-sm bg-green-100 text-green-700 rounded-full flex items-center gap-2">
+                <span className="mt-2 px-3 py-1 inline-block text-sm bg-green-100 text-green-700 rounded-full flex items-center gap-1">
                   <FaCheckCircle /> Verified
                 </span>
               )}

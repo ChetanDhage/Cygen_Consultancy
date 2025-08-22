@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 
-const MenuItem = ({ icon, label, badge, path, active }) => {
+const MenuItem = ({ icon, label, badge, path, active, isMobileMenuOpen, setIsMobileMenuOpen  }) => {
     return (
-        <Link to={`${path}`}>
+        <Link to={`${path}`}  >
             <div
                 className={`flex items-center justify-between p-2 my-2 rounded-lg cursor-pointer ${active ? 'bg-primaryLight font-semibold' : 'hover:bg-gray-100'
                     }`}
+                onClick={()=>setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
                 <div className="flex items-center gap-3 text-sm">
                     <div className="text-gray-600">{icon}</div>

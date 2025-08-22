@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaCheckCircle,
-  FaUser,
-  FaPhone,
-  FaBriefcase,
-  FaEnvelope,
-  FaClock,
-  FaStar,
-  FaFilePdf,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+import { FaCheckCircle, FaUser, FaPhone, FaBriefcase, FaEnvelope, FaClock, FaStar, FaFilePdf, FaMapMarkerAlt, } from "react-icons/fa";
 import { fetchConsultantProfile } from "../api/consultant";
 import { useSelector } from "react-redux";
 import { selectCurrentToken, selectCurrentUser } from "../redux/authSlice";
@@ -49,8 +39,11 @@ const Profile = () => {
 
   return (
     <main>
-     
-      <div className="p-6 bg-gray-100">
+      <header className=" bg-white px-6 pb-2 w-full flex justify-between items-center ">
+        <h2 className="text-xl font-bold">Consultant Profile</h2>
+      </header>
+      <div className="sm:p-6 pt-2  bg-gray-100">
+
         <div className="mx-auto lg:p-10 p-6 bg-white rounded-lg shadow-md max-w-5xl">
           <div className="flex  gap-4 items-center  border border-primary bg-primaryLight px-4 py-2 rounded-r-full">
             <img
@@ -59,14 +52,14 @@ const Profile = () => {
                 "https://via.placeholder.com/150"
               }
               alt="Consultant"
-              className="w-24 h-24 rounded-full border-4 border-primary object-cover shadow bg-white "
+              className="sm:w-24 sm:h-24 w-14 h-14 rounded-full border-4 border-primary object-cover shadow bg-white "
             />
             <div>
-              <h1 className="text-2xl font-bold text-gray-600">
-              {consultantData?.user?.name}
-            </h1>
-            <p className="text-gray-500 flex gap-2 items-center text-sm"><BsStars/> {consultantData?.designation}</p>
-            <p className="text-gray-400 flex gap-2 items-center text-sm"> <BsBuildingsFill/> {consultantData?.company}</p>
+              <h1 className="sm:text-2xl font-bold text-gray-600">
+                {consultantData?.user?.name}
+              </h1>
+              <p className="text-gray-500 flex gap-2 items-center text-sm"><BsStars /> {consultantData?.designation}</p>
+              <p className="text-gray-400 flex gap-2 items-center text-sm"> <BsBuildingsFill /> {consultantData?.company}</p>
             </div>
           </div>
 

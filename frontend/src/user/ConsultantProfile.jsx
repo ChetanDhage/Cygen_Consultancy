@@ -51,10 +51,10 @@ const ConsultantProfile = () => {
 
   return (
     <main>
-      <div className="px-6 bg-gray-100">
+      <div className="sm:px-6 bg-gray-100">
         <div className="mx-auto lg:p-10 p-6 bg-white rounded-lg shadow-md max-w-5xl">
           {/* Header with Photo */}
-          <h1 className="text-3xl font-bold ">Consultant  <span className=" text-primary">Profile</span></h1>
+          <h1 className="sm:text-3xl font-bold ">Consultant  <span className=" text-primary">Profile</span></h1>
         <hr className="my-4 border-primary" />
           <div className="flex gap-4 items-center border border-primary bg-primaryLight px-4 py-2 rounded-r-full">
             <img
@@ -63,10 +63,10 @@ const ConsultantProfile = () => {
                 "https://via.placeholder.com/150"
               }
               alt="Consultant"
-              className="w-24 h-24 rounded-full border-4 border-primary object-cover shadow bg-white"
+              className="sm:w-24 sm:h-24 w-14 h-14 rounded-full border-4 border-primary object-cover shadow bg-white"
             />
             <div>
-              <h1 className="text-2xl font-bold text-gray-600">
+              <h1 className="sm:text-2xl font-bold text-gray-600">
                 {consultantData?.user?.name}
               </h1>
               <p className="text-gray-500 flex gap-2 items-center text-sm">
