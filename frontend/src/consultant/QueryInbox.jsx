@@ -191,11 +191,11 @@ const QueryInbox = () => {
           </div>
 
           {/* Queries List */}
-          <div className="scrollbar-hide max-h-[500px] overflow-y-auto">
+          <div className="scrollbar-hide sm:max-h-[500px] overflow-y-auto">
             {queries.map((query) => (
               <div
                 key={query._id}
-                className={`flex flex-col p-3 rounded-sm cursor-pointer my-2 ${
+                className={`flex flex-col p-3 rounded-sm cursor-pointer my-2 border border-gray-200 ${
                   selectedQuery?._id === query._id
                     ? "text-primary border border-primary"
                     : "hover:text-primary hover:border border-primary"

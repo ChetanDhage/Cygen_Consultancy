@@ -12,8 +12,8 @@ import Navbar from "./Navbar";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
-  const [email, setEmail] = useState("consultant11@gmail.com");
-  const [pwd, setPwd] = useState("consultant");
+  const [email, setEmail] = useState("");
+  const [pwd, setPwd] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 

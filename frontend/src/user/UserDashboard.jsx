@@ -94,7 +94,7 @@ const UserDashboard = () => {
 
       {/* Mobile Sidebar (Drawer) */}
       <div
-        className={`fixed top-0 left-0 h-full w-1/2 bg-white shadow-md p-6 flex-col justify-between transform transition-transform duration-300 z-50 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 h-full w-full bg-white shadow-md p-6 flex-col justify-between transform transition-transform duration-300 z-50 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           } lg:hidden flex`}
       >
         <div className="flex justify-between items-center mb-4 ">
