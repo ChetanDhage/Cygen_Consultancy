@@ -84,9 +84,8 @@
 
 // export default SignupRoleSelection;
 
-
 import { useState } from "react";
-import { FaUser, FaUserTie } from "react-icons/fa";
+import { FaUser, FaUserTie, FaArrowRight } from "react-icons/fa";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
@@ -96,19 +95,22 @@ const roles = [
     label: "Client", 
     icon: <FaUser className="text-xl" />, 
     description: "Access services & hire experts",
-    color: "rgba(99, 102, 241, 0.2)" // primaryh opacity
+    gradient: "from-blue-500 to-indigo-600",
+    color: "rgba(99, 102, 241, 0.15)"
   },
   { 
     id: "consultant",
     label: "Consultant", 
     icon: <FaUserTie className="text-xl" />, 
     description: "Provide professional services",
-    color: "rgba(16, 185, 129, 0.2)" // emerald with opacity
+    gradient: "from-emerald-500 to-teal-600",
+    color: "rgba(16, 185, 129, 0.15)"
   }
 ];
 
 const SignupRoleSelection = ({ onSelect }) => {
   const [selectedRole, setSelectedRole] = useState(null);
+  const [hoveredRole, setHoveredRole] = useState(null);
   const navigate = useNavigate();
   
   const handleSubmit = () => {
@@ -118,110 +120,159 @@ const SignupRoleSelection = ({ onSelect }) => {
   };
 
   return (
-    <main className="sm:min-h-screen h-screen overflow-hidden bg-gradient-to-br from-primaryvia-purple-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Navbar />
-      <section className="flex items-center justify-center sm:px-4 py-12">
-        <div className="w-full sm:max-w-md  ">
-          {/* Glassmorphism Card Container */}
-          <div className=" bg-white sm:h-fit h-screen  rounded-2xl shadow-xl  sm:border ">
-            <div className="p-8 text-center">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-                Join as...
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">
-                Select your role to begin your journey
-              </p>
+      
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-blue-200 dark:bg-blue-900/20 rounded-full blur-3xl opacity-30 animate-pulse-slow"></div>
+        <div className="absolute top-1/2 -right-20 w-96 h-96 bg-purple-200 dark:bg-purple-900/20 rounded-full blur-3xl opacity-30 animate-pulse-slow animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-emerald-200 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30 animate-pulse-slow animation-delay-4000"></div>
+      </div>
 
-              <div className="space-y-4">
+      <section className="relative flex items-center justify-center px-4 py-12 sm:py-16">
+        <div className="w-full max-w-md">
+          {/* Glassmorphism Card Container */}
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 dark:border-gray-700/30 overflow-hidden">
+            <div className="p-8 text-center">
+              {/* Header with decorative elements */}
+              <div className="mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-purple-500 rounded-full mb-4 shadow-lg">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 dark:from-white dark:to-gray-200 bg-clip-text text-transparent mb-2">
+                  Join Worklify
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Select your role to begin your journey
+                </p>
+              </div>
+
+              {/* Role selection cards */}
+              <div className="space-y-5 mb-8">
                 {roles.map((role) => (
-                  <label
+                  <div
                     key={role.id}
-                    className="block cursor-pointer transform transition-transform hover:scale-[1.02] active:scale-95"
+                    className={`relative cursor-pointer transform transition-all duration-300 
+                      ${selectedRole === role.id 
+                        ? 'scale-[1.02] shadow-lg' 
+                        : 'hover:scale-[1.02] hover:shadow-md'
+                      }`}
+                    onClick={() => {
+                      setSelectedRole(role.id);
+                      if (onSelect) onSelect(role.id);
+                    }}
+                    onMouseEnter={() => setHoveredRole(role.id)}
+                    onMouseLeave={() => setHoveredRole(null)}
                   >
                     <input
                       type="radio"
                       name="role"
                       value={role.id}
                       checked={selectedRole === role.id}
-                      onChange={() => {
-                        setSelectedRole(role.id);
-                        if (onSelect) onSelect(role.id);
-                      }}
+                      onChange={() => {}}
                       className="hidden"
                     />
-                    {/* Glassmorphism Card */}
-                    <div
-                      className={`backdrop-blur-sm p-5 rounded-xl border transition-all ${
-                        selectedRole === role.id 
-                          ? "bg-gradient-to-r from-primary/50 to-purple-100/50 dark:from-primary/30 dark:to-purple-900/30 shadow-inner"
-                          : "bg-white/20 dark:bg-gray-700/20 hover:bg-white/30 dark:hover:bg-gray-700/30"
-                      }`}
-                      style={{
-                        backgroundColor: selectedRole === role.id ? role.color : ''
-                      }}
-                    >
+                    
+                    {/* Card with gradient border effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${role.gradient} rounded-xl opacity-0 transition-opacity duration-300 ${
+                      selectedRole === role.id ? 'opacity-100' : 'group-hover:opacity-50'
+                    }`}></div>
+                    
+                    <div className={`relative bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm p-5 rounded-xl border transition-all duration-300 ${
+                      selectedRole === role.id 
+                        ? `border-transparent shadow-inner`
+                        : 'border-gray-200/70 dark:border-gray-600/70 hover:border-primary/30 dark:hover:border-emerald-400/30'
+                    }`}>
                       <div className="flex items-center">
-                        <div
-                          className={`flex items-center justify-center w-12 h-12 rounded-full mr-4  border ${
-                            selectedRole === role.id 
-                              ? "bg-white text-primary dark:text-emerald-400"
-                              : "bg-white/90 text-gray-700 dark:bg-gray-600/90 dark:text-white"
-                          }`}
-                        >
+                        {/* Icon container */}
+                        <div className={`flex items-center justify-center w-14 h-14 rounded-xl mr-4 transition-all duration-300 ${
+                          selectedRole === role.id 
+                            ? `bg-gradient-to-r ${role.gradient} text-white shadow-md`
+                            : 'bg-white dark:bg-gray-600 text-gray-600 dark:text-gray-200 shadow-sm'
+                        }`}>
                           {role.icon}
                         </div>
+                        
+                        {/* Text content */}
                         <div className="text-left flex-1">
-                          <h3
-                            className={`font-semibold ${
-                              selectedRole === role.id 
-                                ? "text-gray-800 dark:text-emerald-400"
-                                : "text-gray-700 dark:text-white"
-                            }`}
-                          >
+                          <h3 className={`font-semibold text-lg transition-colors duration-300 ${
+                            selectedRole === role.id 
+                              ? `bg-gradient-to-r ${role.gradient} bg-clip-text text-transparent`
+                              : 'text-gray-800 dark:text-white'
+                          }`}>
                             {role.label}
                           </h3>
-                          <p
-                            className={`text-sm ${
-                              selectedRole === role.id 
-                                ? "text-gray-700 dark:text-emerald-300/90"
-                                : "text-gray-600 dark:text-gray-300"
-                            }`}
-                          >
+                          <p className={`text-sm transition-colors duration-300 ${
+                            selectedRole === role.id 
+                              ? 'text-gray-600 dark:text-gray-300'
+                              : 'text-gray-500 dark:text-gray-400'
+                          }`}>
                             {role.description}
                           </p>
                         </div>
-                        <div
-                          className={`ml-4 w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                            selectedRole === role.id 
-                              ? "border-primary dark:border-emerald-400"
-                              : "border-gray-300 dark:border-gray-500"
-                          }`}
-                        >
+                        
+                        {/* Selection indicator */}
+                        <div className={`ml-4 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                          selectedRole === role.id 
+                            ? `border-transparent bg-gradient-to-r ${role.gradient}`
+                            : 'border-gray-300 dark:border-gray-500'
+                        }`}>
                           {selectedRole === role.id && (
-                            <div className="w-3 h-3 rounded-full bg-primary dark:bg-emerald-400" />
+                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
                           )}
                         </div>
                       </div>
                     </div>
-                  </label>
+                  </div>
                 ))}
               </div>
 
+              {/* Continue button */}
               <button
                 disabled={!selectedRole}
                 onClick={handleSubmit}
-                className={`w-full mt-8 py-3 rounded-lg font-semibold text-lg transition-all transform ${
+                className={`group w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center ${
                   selectedRole
-                    ? "bg-gradient-to-r from-primary to-purple-500 text-white shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95"
-                    : "bg-gray-200/50 dark:bg-gray-700/50 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    ? "bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg hover:shadow-xl hover:from-primary/90 hover:to-purple-600/90 transform hover:-translate-y-0.5"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
                 }`}
               >
-                Continue
+                {selectedRole ? (
+                  <>
+                    <span>Continue</span>
+                    <FaArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                  </>
+                ) : (
+                  "Select your role"
+                )}
               </button>
+
+              
             </div>
           </div>
         </div>
       </section>
+
+      <style jsx>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 6s ease-in-out infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </main>
   );
 };

@@ -139,7 +139,7 @@ const CategorySection = () => {
 
 
       <div className="text-center mt-10">
-        <a href="#" className="text-primary font-medium hover:underline">
+        <a href="categories" className="text-primary font-medium hover:underline">
           View all categories →
         </a>
       </div>
