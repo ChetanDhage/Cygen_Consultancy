@@ -53,7 +53,7 @@ const UserHome = () => {
       {filteredConsultants.length === 0 ? (
         <p>No consultants match your criteria</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredConsultants.map((consultant) => (
             <ConsultantCard key={consultant._id} consultant={consultant} />
           ))}

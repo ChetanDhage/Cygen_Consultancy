@@ -121,7 +121,7 @@ const ConsultantDashboard = () => {
           ></div>
 
           {/* Sidebar Drawer */}
-          <aside className="absolute left-0 top-0 w-1/2 bg-white shadow-md p-6 flex flex-col justify-between min-h-screen z-50">
+          <aside className="absolute left-0 top-0 w-full bg-white shadow-md p-6 flex flex-col justify-between min-h-screen z-50">
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-primary">Worklify</h1>

@@ -442,7 +442,7 @@ const CheckUserExists = () => {
 
         <Link
           to="/signup"
-          className="px-4 py-2 rounded-md text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+          className="px-4 py-2 rounded-md ml-2 sm:ml-0 text-sm font-medium text-white bg-primary hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
         >
           Sign Up
         </Link>

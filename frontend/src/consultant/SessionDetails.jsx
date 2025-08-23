@@ -35,7 +35,7 @@ const SessionDetails = () => {
       </header>
 
       {/* Responsive wrapper */}
-      <div className="w-full flex flex-col lg:flex-row gap-4 mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+      <div className="w-full flex flex-col lg:flex-row gap-4 mx-auto sm:p-6 p-2 bg-gray-100 rounded-lg shadow-md">
         
         {/* Left Card */}
         <div className="bg-white p-6 rounded-lg w-full lg:w-2/3">
