@@ -241,7 +241,6 @@
 //   );
 // };
 
-
 import React, { useState, useEffect } from 'react';
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { HiX } from 'react-icons/hi';
@@ -254,7 +253,7 @@ import { toast } from 'sonner';
 
 // Subcategories for Categories dropdown
 const categoryLinks = [
-  { path: '/category/technology', label: 'Technology' }, 
+  { path: '/category/technology', label: 'Technology' },
   { path: '/category/medical', label: 'Medical & Healthcare' },
   { path: '/category/education', label: 'Education & E-Learning' },
   { path: '/category/finance', label: 'Finance & Banking' },
@@ -326,10 +325,10 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex space-x-1 relative">
+          <ul className="hidden lg:flex space-x-1 relative items-center">
             {navLinks.map((link) => (
-              <li 
-                key={link.label} 
+              <li
+                key={link.label}
                 className="relative group"
                 onMouseEnter={() => setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
@@ -337,10 +336,11 @@ const Navbar = () => {
                 {!link.dropdown ? (
                   <Link
                     to={link.path}
-                    className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${location.pathname === link.path
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                      }`}
+                    className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                      location.pathname === link.path
+                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
                   >
                     {link.label}
                     {location.pathname === link.path && (
@@ -349,21 +349,31 @@ const Navbar = () => {
                   </Link>
                 ) : (
                   <>
-                    <button 
-                      className={`px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-1 transition-all duration-200 ${activeDropdown === link.label
-                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    {/* Categories Link with consistent styling */}
+                    <Link
+                      to={link.path}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg flex items-center gap-1 transition-all duration-200 ${
+                        activeDropdown === link.label || location.pathname.startsWith('/category')
+                          ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                          : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
                       }`}
                     >
-                      {link.label} 
-                      <svg className="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {link.label}
+                      <svg
+                        className={`w-3 h-3 transition-transform ${activeDropdown === link.label ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
-                    </button>
-                    
-                    {/* Dropdown */}
-                    <div 
-                      className={`absolute left-0 top-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl py-2 transition-all duration-300 z-50 min-w-[240px] ${activeDropdown === link.label ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}
+                    </Link>
+
+                    {/* Dropdown - Fixed alignment */}
+                    <div
+                      className={`absolute left-0 top-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl py-2 transition-all duration-300 z-50 min-w-[240px] ${
+                        activeDropdown === link.label ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+                      }`}
                     >
                       {link.dropdown.map((item) => (
                         <Link
@@ -418,9 +428,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <>
-          <div 
-            onClick={() => setIsOpen(false)} 
-            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300" 
+          <div
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           />
           <div className="fixed top-0 right-0 w-80 h-full dark:bg-gray-900 bg-white shadow-2xl z-50 overflow-y-auto transform transition-transform duration-300">
             <div className="flex items-center justify-between p-5 border-b dark:border-gray-800">
@@ -428,8 +438,8 @@ const Navbar = () => {
                 <img src={Logo} alt="logo" className="w-9 h-9 object-contain" />
                 <span className="text-xl font-bold text-blue-600 dark:text-blue-400">Worklify</span>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)} 
+              <button
+                onClick={() => setIsOpen(false)}
                 className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <HiX className="h-5 w-5" />
@@ -442,10 +452,11 @@ const Navbar = () => {
                   <li key={link.label}>
                     <Link
                       to={link.path}
-                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${location.pathname === link.path
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                        }`}
+                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                        location.pathname === link.path || (link.dropdown && location.pathname.startsWith('/category'))
+                          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      }`}
                       onClick={() => !link.dropdown && setIsOpen(false)}
                     >
                       {link.label}
@@ -458,7 +469,11 @@ const Navbar = () => {
                           <li key={item.label}>
                             <Link
                               to={item.path}
-                              className="block px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                                location.pathname === item.path
+                                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                                  : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                              }`}
                               onClick={() => setIsOpen(false)}
                             >
                               {item.label}
@@ -473,7 +488,7 @@ const Navbar = () => {
 
               <div className="mt-8 pt-5 border-t dark:border-gray-800 space-y-3">
                 <CheckUserExists mobile={true} />
-                
+
                 {/* Theme Toggle Button in Mobile Menu */}
                 <button
                   onClick={toggleTheme}
@@ -508,8 +523,8 @@ const CheckUserExists = ({ mobile = false }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    toast.success("Logged out successfully");
-    navigate("/login");
+    toast.success('Logged out successfully');
+    navigate('/login');
   };
 
   if (!userRole) {
