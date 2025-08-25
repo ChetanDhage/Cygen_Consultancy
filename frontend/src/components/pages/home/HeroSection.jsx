@@ -1,17 +1,24 @@
-import { useState } from 'react';
-import { BsSearch, BsLightningCharge, BsArrowRight, BsCheck2Circle } from 'react-icons/bs';
-import { FaShieldAlt } from 'react-icons/fa';
-import { GiArtificialIntelligence } from 'react-icons/gi';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+import {
+  BsSearch,
+  BsLightningCharge,
+  BsArrowRight,
+  BsCheck2Circle,
+} from "react-icons/bs";
+import { FaShieldAlt } from "react-icons/fa";
+import { GiArtificialIntelligence } from "react-icons/gi";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const stats = [
     { value: "24h", label: "Avg. Response Time" },
     { value: "98%", label: "Success Rate" },
     { value: "500+", label: "Active Experts" },
-    { value: "10+", label: "Years Avg. Experience" }
+    { value: "10+", label: "Years Avg. Experience" },
   ];
 
   const industries = [
@@ -20,17 +27,29 @@ const HeroSection = () => {
     "Computer Vision",
     "LLM Development",
     "Predictive Analytics",
-    "AI Security"
+    "AI Security",
   ];
-
+  const goToSignup = () => {
+    navigate("/signup");
+  };
   return (
     <section className="relative w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-white py-20 px-4 md:px-8 overflow-hidden transition-colors duration-500">
       {/* Subtle grid background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+              />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -60,14 +79,15 @@ const HeroSection = () => {
             {/* Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary">
-                Empowering Real-Time{" "}
+              Connecting People,{" "}
               </span>
-              Collaboration to Drive Excellence
+           Delivering Excellence.
             </h1>
 
             {/* Description */}
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-              Solve complex technical challenges instantly through our curated networks of vetted specialists across 50+ domains.
+              Solve complex technical challenges instantly through our curated
+              networks of vetted specialists across 50+ domains.
             </p>
 
             {/* Search and CTA */}
@@ -80,12 +100,12 @@ const HeroSection = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Describe your technical challenge..."
+                    placeholder="Search by role, skills, and keyworkds"
                     className="w-full px-5 py-4 pl-12 text-gray-800 dark:text-gray-200 bg-transparent focus:outline-none placeholder-gray-400"
                   />
                   <GiArtificialIntelligence className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary" />
                   <button className="bg-gradient-to-r from-primary to-primary text-white px-6 py-4 font-medium hover:from-primary hover:to-primary/90 transition-all flex items-center gap-2">
-                    <span className=' text-nowrap'>Find Expert</span>
+                    <span className=" text-nowrap">Search</span>
                     <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -121,8 +141,12 @@ const HeroSection = () => {
                   whileHover={{ scale: 1.01 }}
                   className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700  lg:rounded-xl backdrop-blur-sm"
                 >
-                  <div className="text-3xl font-bold text-primary">{stat.value}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{stat.label}</div>
+                  <div className="text-3xl font-bold text-primary">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -132,7 +156,8 @@ const HeroSection = () => {
               {/* Immediate Access */}
               <motion.div
                 whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 lg:rounded-xl flex items-start gap-4"
+                onClick={goToSignup} // <-- add click handler
+                className="cursor-pointer p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 lg:rounded-xl flex items-start gap-4"
               >
                 <div className="flex-shrink-0 p-3 bg-primary/10 rounded-lg text-primary">
                   <BsLightningCharge className="text-xl" />
@@ -140,39 +165,9 @@ const HeroSection = () => {
                 <div>
                   <h3 className="font-semibold text-lg">Immediate Access</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
-                    Connect with experts in minutes, not weeks. Our matching algorithm finds the perfect specialist for your specific need.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Security */}
-              <motion.div
-                whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-purple-500/20 lg:rounded-xl flex items-start gap-4"
-              >
-                <div className="flex-shrink-0 p-3 bg-purple-500/10 rounded-lg text-purple-500">
-                  <FaShieldAlt className="text-xl" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Enterprise-Grade Security</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
-                    All engagements include NDAs, secure communication channels, and compliance with your security protocols.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Vetted Expertise */}
-              <motion.div
-                whileHover={{ y: -5 }}
-                className="p-6 bg-gray-50 dark:bg-gray-800 border border-primary/20 lg:rounded-xl flex items-start gap-4"
-              >
-                <div className="flex-shrink-0 p-3 bg-primary/10 rounded-lg text-primary">
-                  <BsCheck2Circle className="text-xl" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Vetted Expertise</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 lg:line-clamp-2 line-clamp-1">
-                    Every specialist undergoes rigorous technical evaluation and industry experience verification.
+                    Connect with experts in minutes, not weeks. Our matching
+                    algorithm finds the perfect specialist for your specific
+                    need.
                   </p>
                 </div>
               </motion.div>

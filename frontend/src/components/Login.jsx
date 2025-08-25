@@ -175,14 +175,9 @@ import Navbar from "./Navbar";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
-<<<<<<< HEAD
-  const [email, setEmail] = useState("consultant11@gmail.com");
-  const [pwd, setPwd] = useState("consultant");
-  const [showPassword, setShowPassword] = useState(false);
-=======
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
->>>>>>> ad44338081accadd3cea627b9ecac5cafc8c2a26
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -207,18 +202,10 @@ const Login = () => {
       const userRole = response.data.role;
       toast.success("Login successful! Welcome to Worklify");
 
-      if (userRole === "consultant") {
-        navigate("/consultant-dashboard");
-      }
-      if (userRole === "user") {
-        navigate("/user-dashboard");
-      }
-      if (userRole === "admin") {
-        navigate("/admin-dashboard");
-      }
-      if (userRole === "sub-admin") {
-        navigate("/sub-admin-dashboard");
-      }
+      if (userRole === "consultant") navigate("/consultant-dashboard");
+      if (userRole === "user") navigate("/user-dashboard");
+      if (userRole === "admin") navigate("/admin-dashboard");
+      if (userRole === "sub-admin") navigate("/sub-admin-dashboard");
 
     } catch (err) {
       const errMsg =
