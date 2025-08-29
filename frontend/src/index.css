@@ -1,22 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');@tailwind base;
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
     font-family: "Roboto", sans-serif;
-  background-image: url('./assets/image.png');
-  background-image: url('./assets/image.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+    background-image: url('./assets/image.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .hero-section-img {
-  background-image: url("./assets/ApartmentCoderSm.jpg");
+    background-image: url("./assets/ApartmentCoderSm.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@layer components {
+    .input-field {
+        @apply sm:text-base text-sm w-full px-4 py-3 rounded-lg bg-gray-50 text-gray-600 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600;
+    }
+    td {
+        @apply py-2;
+    }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    display: inline-flex;
+    animation: marquee 15s linear infinite;
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: "Inter", "Roboto", sans-serif;
+  background: linear-gradient(to bottom right, #f9fafb, #eef2f7);
+  color: #1f2937; /* neutral gray-800 */
+}
+
+.dark body {
+  background: linear-gradient(to bottom right, #111827, #1f2937);
+  color: #f3f4f6; /* gray-100 */
+}
+
+/* Hero section with subtle tech background */
+.hero-section-img {
+  background-image: url("./assets/tech-bg-pattern.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  border-radius: 0.75rem; /* modern rounded look */
 }
 
 html {
@@ -27,36 +94,43 @@ tr{
 }
 @layer components {
   .input-field {
-    @apply sm:text-base text-sm w-full px-4 py-3 rounded-lg  bg-gray-50 text-gray-600 placeholder-gray-400 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:border-gray-600;
+    @apply sm:text-base text-sm w-full px-4 py-3 rounded-xl 
+    bg-white/70 backdrop-blur-md text-gray-700 placeholder-gray-400 
+    border border-gray-300 shadow-sm
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+    dark:bg-gray-800/70 dark:text-gray-200 dark:placeholder-gray-500 dark:border-gray-600;
   }
-  td{
-    @apply py-2
+
+  td {
+    @apply py-3 px-4 text-gray-700 dark:text-gray-200;
+  }
+
+  .btn-primary {
+    @apply px-6 py-2 rounded-xl bg-blue-600 text-white font-medium shadow-md 
+    hover:bg-blue-700 transition-all duration-200;
+  }
+
+  .card {
+    @apply p-6 rounded-2xl shadow-lg bg-white/80 backdrop-blur-md 
+    dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700;
   }
 }
 
-/* Add to your global styles or Tailwind config */
+/* Hide scrollbar */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
 .scrollbar-hide {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
+/* Modern marquee effect */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
-
 .animate-marquee {
   display: inline-flex;
-  animation: marquee 15s linear infinite;
+  animation: marquee 20s linear infinite;
 }

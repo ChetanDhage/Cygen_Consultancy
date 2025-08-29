@@ -13,7 +13,7 @@ const HeroSection = () => {
     { value: "24h", label: "Avg. Response Time" },
     { value: "98%", label: "Success Rate" },
     { value: "500+", label: "Active Experts" },
-    { value: "10+", label: "Years Avg. Experience" }
+    { value: "10+", label: "Years Avg. Experience" },
   ];
 
   const industries = [
@@ -22,7 +22,7 @@ const HeroSection = () => {
     "Computer Vision",
     "LLM Development",
     "Predictive Analytics",
-    "AI Security"
+    "AI Security",
   ];
 
   const submit = () => {
