@@ -90,7 +90,7 @@ const HeroSection = () => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Describe your technical challenge..."
+                        placeholder="Search by role, skills, or keywords"
                         className="w-full px-5 py-4 pl-12 text-gray-800 dark:text-gray-200 bg-transparent focus:outline-none placeholder-gray-400"
                       />
                       <GiArtificialIntelligence className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary" />
